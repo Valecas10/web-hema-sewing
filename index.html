@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+        (function(){
+        // SUSTITUYE "TU_PUBLIC_KEY" por la que te da EmailJS en su panel (Account -> API Keys)
+        emailjs.init('GtTEbj4qoWdwpMU81');
+    })();
+    </script>
 </head>
 <body>
     <h1> Hema Sewing </h1>
@@ -32,7 +40,41 @@
         <img src="assets/Emojis.jpg" alt="Emojis">
         <span>Emojis</span>
     </div>
+    <div class="card-opcion" data-valor="Letras">
+        <img src="assets/Letras.jpg" alt="Letras">
+        <span>Letras</span>
+    </div>
 </div>
+
+<div id="personalizacion-extra">
+    <h3>Paso 3: Personalización</h3>
+    
+    <div class="campo">
+        <label for="letras-bordado">Frase para bordar:</label>
+        <input type="text" id="letras-bordado" placeholder="Ej: Mi Taller de Costura">
+    </div>
+
+    <div class="campo">
+        <label for="imagenes-bordado">Sube tus diseños o emojis (Máximo 3):</label>
+        <input type="file" id="imagenes-bordado" accept="image/*" multiple>
+        <small>Puedes subir hasta 3 archivos.</small>
+    </div>
+</div>
+
+<hr>
+
+<h3>Paso 4: Datos de Envío</h3>
+<div id="datos-cliente">
+    <input type="text" id="nombre-cliente" placeholder="Nombre completo" required>
+    <input type="email" id="email-cliente" placeholder="Tu Email" required>
+    <textarea id="notas-adicionales" placeholder="Alguna aclaración extra..."></textarea>
+</div>
+
+<input type="text" id="nombre-cliente" placeholder="Tu Nombre" required>
+
+<button id="boton-enviar-pedido">Confirmar Pedido y Enviar Fotos</button>
+
+<button id="boton-enviar-pedido">Enviar Pedido por Email</button>
 
 <input type="hidden" id="tela-seleccionada">
 <input type="hidden" id="bordado-seleccionado">

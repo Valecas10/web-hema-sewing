@@ -43,6 +43,57 @@ tarjetasBordado.forEach(tarjeta => {
     });
 });
 
+document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
+    // 1. Recolectar TODA la información
+    const pedido = {
+        cliente: document.getElementById('nombre-cliente').value,
+        email: document.getElementById('email-cliente').value,
+        tela: document.getElementById('tela-seleccionada').value,
+        bordado: document.getElementById('bordado-seleccionado').value,
+        frase: document.getElementById('letras-bordado').value,
+        notas: document.getElementById('notas-adicionales').value
+    };
+
+    // 2. Validación básica (Ingeniería de software: siempre validar entradas)
+    if (!pedido.cliente || !pedido.tela) {
+        alert("Por favor, completa tu nombre y elige una tela.");
+        return;
+    }
+
+    // 3. Enviar vía EmailJS (Este código es el estándar de su librería)
+    // Nota: Las imágenes requieren un manejo especial (Cloudinary o Base64), 
+    // por ahora enviemos el texto para asegurar que la conexión funciona.
+    
+    console.log("Enviando pedido...", pedido);
+    
+     emailjs.send('service_gnblx8l', 'template_76chn1e', pedido)
+        .then(() => {
+            alert('¡Pedido enviado con éxito!');
+            enviarAWhatsApp(pedido);
+            alert("¡Pedido registrado! Ahora se abrirá WhatsApp para que envíes las fotos.");
+        }, (err) => {
+            alert('Fallo el envío: ' + JSON.stringify(err));
+        });
+    
+});
+
+
+function enviarAWhatsApp(pedido) {
+    const telefonoDueña = "5493512511146"; // Reemplaza con el número real (sin el +)
+    
+    // Creamos el mensaje codificado para URL (encodeURIComponent maneja espacios y símbolos)
+    const mensaje = `Hola! Soy ${pedido.cliente}. Acabo de realizar un pedido por la web:
+- Tela: ${pedido.tela}
+- Bordado: ${pedido.bordado}
+- Frase: ${pedido.frase}
+Aquí te mando las fotos/emojis para el diseño.`;
+
+    const url = `https://wa.me/${telefonoDueña}?text=${encodeURIComponent(mensaje)}`;
+    
+    // Abrimos en una pestaña nueva
+    window.open(url, '_blank');
+}
+
 // Función de prueba para ingenieros
 function verificarSeleccion() {
     const tela = document.getElementById('tela-seleccionada').value;

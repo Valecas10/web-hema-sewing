@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Hema Sewing </h1>
+    <button id="boton-test">Calcular Presupuesto</button>
+
+    <link rel="stylesheet" href="style.css">
+    <h2>Paso 1: Elige tu Tela</h2>
+<div id="contenedor-telas" class="grid-seleccion">
+    <div class="card-opcion" data-valor="lino">
+        <img src="assets/Lino.webp" alt="Tela Lino">
+        <span>Lino Premium</span>
+    </div>
+    <div class="card-opcion" data-valor="algodon">
+        <img src="assets/Algodon.jpeg" alt="Tela Algodón">
+        <span>Algodón 100%</span>
+    </div>
+</div>
+
+<h2>Paso 2: Elige el Estilo de Bordado</h2>
+<div id="contenedor-bordados" class="grid-seleccion">
+    <div class="card-opcion" data-valor="Retrato">
+        <img src="assets/Retrato.jpg" alt="Retrato">
+        <span>Retrato</span>
+    </div>
+    <div class="card-opcion" data-valor="Emojis">
+        <img src="assets/Emojis.jpg" alt="Emojis">
+        <span>Emojis</span>
+    </div>
+</div>
+
+<input type="hidden" id="tela-seleccionada">
+<input type="hidden" id="bordado-seleccionado">
+<script src="script.js"></script>
+</body>
+</html>

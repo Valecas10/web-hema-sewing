@@ -41,3 +41,21 @@ body {
     transform: scale(1.05); /* Un poquito más grande para resaltar */
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
+
+.oculto {
+    display: none;
+}
+
+/* Un poquito de estilo para que el campo de texto resalte al aparecer */
+#contenedor-frase {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border-left: 4px solid #a0816c;
+    animation: fadeIn 0.5s; /* Efecto suave al aparecer */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

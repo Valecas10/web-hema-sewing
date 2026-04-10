@@ -51,7 +51,7 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
         tela: document.getElementById('tela-seleccionada').value,
         bordado: document.getElementById('bordado-seleccionado').value,
         frase: document.getElementById('letras-bordado').value,
-        notas: document.getElementById('notas-adicionales').value
+        telefono: document.getElementById('telefono-cliente').value,
     };
 
     // 2. Validación básica (Ingeniería de software: siempre validar entradas)
@@ -69,9 +69,11 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
      emailjs.send('service_gnblx8l', 'template_76chn1e', pedido)
         .then(() => {
             alert('¡Pedido enviado con éxito!');
-            enviarAWhatsApp(pedido);
-            alert("¡Pedido registrado! Ahora se abrirá WhatsApp para que envíes las fotos.");
-        }, (err) => {
+            if (pedido.bordado  == ('Emojis' || 'Retrato')){
+                enviarAWhatsApp(pedido);
+                alert("¡Pedido registrado! Ahora se abrirá WhatsApp para que envíes las fotos.");
+            }
+            }, (err) => {
             alert('Fallo el envío: ' + JSON.stringify(err));
         });
     
@@ -83,9 +85,6 @@ function enviarAWhatsApp(pedido) {
     
     // Creamos el mensaje codificado para URL (encodeURIComponent maneja espacios y símbolos)
     const mensaje = `Hola! Soy ${pedido.cliente}. Acabo de realizar un pedido por la web:
-- Tela: ${pedido.tela}
-- Bordado: ${pedido.bordado}
-- Frase: ${pedido.frase}
 Aquí te mando las fotos/emojis para el diseño.`;
 
     const url = `https://wa.me/${telefonoDueña}?text=${encodeURIComponent(mensaje)}`;
@@ -110,3 +109,33 @@ function verificarSeleccion() {
 document.body.addEventListener('click', () => {
     verificarSeleccion();
 });
+
+const contenedorFrase = document.getElementById('personalizacion-extra');
+
+tarjetasBordado.forEach(tarjeta => {
+    tarjeta.addEventListener('click', () => {
+        // 1. Limpiar selección visual
+        tarjetasBordado.forEach(t => t.classList.remove('seleccionada'));
+        tarjeta.classList.add('seleccionada');
+        
+        // 2. Guardar el valor
+        const valorElegido = tarjeta.dataset.valor;
+        document.getElementById('bordado-seleccionado').value = valorElegido;
+
+        // --- LÓGICA DE VISIBILIDAD ---
+        // Supongamos que tu tarjeta de frase tiene data-valor="letras"
+        if (valorElegido === 'Letras') {
+            contenedorFrase.classList.remove('oculto');
+        } else {
+            contenedorFrase.classList.add('oculto');
+            // Opcional: Limpiar el input si eligen otra cosa
+            document.getElementById('letras-bordado').value = ""; 
+        }
+    });
+});
+
+console.log("--- TEST DE ELEMENTOS ---");
+console.log("Contenedor Frase:", document.getElementById('contenedor-frase'));
+console.log("Tarjetas Bordado:", document.querySelectorAll('.card-opcion').length);
+console.log("Input Invisible:", document.getElementById('bordado-seleccionado'));
+console.log("-------------------------");

@@ -59,3 +59,24 @@ body {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+.sugerencias-estilo {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 2000; /* Para que flote sobre el mapa */
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sugerencia-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.sugerencia-item:hover {
+    background-color: #fdf5f0;
+}

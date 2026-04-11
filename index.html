@@ -71,6 +71,37 @@
     </div>
 </div>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<div id="seccion-direccion">
+    <h3>Paso 5: Datos de Entrega</h3>
+    
+    <div class="campo">
+        <label>Provincia:</label>
+        <select id="select-provincia">
+            <option value="">Seleccioná tu provincia</option>
+            <option value="Buenos Aires">Buenos Aires</option>
+            <option value="CABA">CABA</option>
+            <option value="Córdoba">Córdoba</option>
+            <option value="Santa Fe">Santa Fe</option>
+            </select>
+    </div>
+
+    <div class="campo">
+        <label>Ciudad / Localidad:</label>
+        <input type="text" id="input-ciudad" placeholder="Ej: Tandil">
+    </div>
+
+    <div class="campo">
+        <label>Calle y Altura:</label>
+        <input type="text" id="input-calle" placeholder="Ej: Av. Colón 1234">
+        <div id="contenedor-sugerencias" class="sugerencias-estilo"></div>
+    </div>
+
+    <div id="mapa-libre" style="height: 250px; width: 100%; border-radius: 8px; margin-top: 10px; border: 2px solid #a0816c;"></div>
+</div>
+
 <button id="boton-enviar-pedido">Confirmar Pedido</button>
 
 <input type="hidden" id="tela-seleccionada">

@@ -5,6 +5,7 @@ let direccionValidada = "";
 let latitudFinal = "";
 let longitudFinal = "";
 const contenedorFrase = document.getElementById('personalizacion-extra');
+const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
 
 const coordenadasProvincias = {
     "Buenos Aires": [-37.15, -58.48],
@@ -185,14 +186,83 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
         alert("Por favor, selecciona una dirección válida del mapa.");
         return;
     }
-    
-console.log("aca no lelgamos");
 
     emailjs.send('service_gnblx8l', 'template_76chn1e', pedido)
         .then(() => {
             alert('¡Pedido enviado!');
             if (pedido.bordado === 'Emojis' || pedido.bordado === 'Retrato') enviarAWhatsApp(pedido);
         }, (err) => alert('Error EmailJS'));
+});
+
+// Función para transformar links de Drive en links directos
+function formatearLinkDrive(url) {
+    if (url.includes('drive.google.com')) {
+        // Extraemos el ID del archivo usando una expresión regular
+        const idMatch = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
+        if (idMatch && idMatch[1]) {
+            return `https://lh3.googleusercontent.com/u/0/d/${idMatch[1]}`;
+        }
+    }
+    return url; // Si no es de Drive o ya está bien, lo devuelve igual
+}
+
+async function cargarTelasDinamicas() {
+    try {
+        const respuesta = await fetch(URL_EXCEL_TELAS);
+        const texto = await respuesta.text();
+        
+        // Convertimos el CSV a un Array de objetos
+        const filas = texto.split('\n').slice(1); // Quitamos la cabecera
+        const contenedor = document.getElementById('contenedor-telas');
+        contenedor.innerHTML = ""; // Limpiamos
+
+        filas.forEach(fila => {
+            const columnas = fila.split(',');
+            if (columnas.length < 3) return; // Evita filas vacías
+
+            const [nombre, costo, rutaImagen, id] = columnas.map(c => c.trim());
+
+            console.log(rutaImagen);
+
+            const imagenDirecta = formatearLinkDrive(rutaImagen);
+
+            console.log(rutaImagen);
+
+            // Creamos el HTML de la card
+            const card = document.createElement('div');
+            card.className = 'card-opcion';
+            card.dataset.valor = id;
+            card.dataset.precio = costo;
+
+            card.innerHTML = `
+                <img src="${imagenDirecta}" 
+                alt="${nombre}"
+                onerror="this.onerror=null; this.src='assets/Logo.jpg';">
+                <span>${nombre}</span>
+                <small>$${costo}</small>
+            `;
+
+            // Lógica de selección
+            card.addEventListener('click', () => {
+                document.querySelectorAll('#contenedor-telas .card-opcion').forEach(t => 
+                    t.classList.remove('seleccionada')
+                );
+                card.classList.add('seleccionada');
+                document.getElementById('tela-seleccionada').value = id;
+                console.log(`Tela seleccionada: ${nombre} - Costo: $${costo}`);
+            });
+
+            contenedor.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Error al cargar telas desde Excel:", error);
+    }
+}
+
+// Llamamos a la función al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    cargarTelasDinamicas();
+    // ... resto de tus funciones del mapa ...
 });
 
 function enviarAWhatsApp(pedido) {

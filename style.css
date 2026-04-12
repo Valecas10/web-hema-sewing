@@ -80,3 +80,27 @@ body {
 .sugerencia-item:hover {
     background-color: #fdf5f0;
 }
+
+.oculto {
+    display: none !important;
+}
+
+/* Estilo para que los botones de volver queden lindos */
+.btn-volver {
+    background: none;
+    border: 1px solid #a0816c;
+    color: #a0816c;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    float: left;
+}
+
+.acciones-inicio {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-top: 50px;
+}

@@ -1,131 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hema Sewing - Pedidos</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script type="text/javascript">
         (function(){
-        // SUSTITUYE "TU_PUBLIC_KEY" por la que te da EmailJS en su panel (Account -> API Keys)
-        emailjs.init('GtTEbj4qoWdwpMU81');
-    })();
+            emailjs.init('GtTEbj4qoWdwpMU81');
+        })();
     </script>
 </head>
 <body>
     <h1> Hema Sewing </h1>
-    <button id="boton-test">Calcular Presupuesto</button>
 
-    <link rel="stylesheet" href="style.css">
-    <h2>Paso 1: Elige tu Tela</h2>
-<div id="contenedor-telas" class="grid-seleccion">
-    </div>
-<input type="hidden" id="tela-seleccionada" value="">
-
-<h2>Paso 2: Elige el Estilo de Bordado</h2>
-<div id="contenedor-bordados" class="grid-seleccion">
-    <div class="card-opcion" data-valor="Retrato">
-        <img src="assets/Retrato.jpg" alt="Retrato">
-        <span>Retrato</span>
-    </div>
-    <div class="card-opcion" data-valor="Emojis">
-        <img src="assets/Emojis.jpg" alt="Emojis">
-        <span>Emojis</span>
-    </div>
-    <div class="card-opcion" data-valor="Letras">
-        <img src="assets/Letras.jpg" alt="Letras">
-        <span>Letras</span>
-    </div>
-</div>
-
-
-<div id="personalizacion-extra" class="oculto">    
-    <div class="campo">
-        <label for="letras-bordado">Escribi tu frase aquí:</label>
-        <input type="text" id="letras-bordado" required>
-    </div>
- </div>
-<hr>
-
-<h3>Paso 4: Datos de Envío</h3>
-<div id="datos-cliente">
-    <div class="campo">
-        <label for="nombre-cliente">Tu nombre completo:</label>
-        <input type="text" id="nombre-cliente" required>
-    </div>
-    <div>
-        <label for="email-cliente">Tu email:</label>
-        <input type="email" id="email-cliente" required>
-    </div>
-    <div>
-        <label for="telefono-cliente">Tu numero telefonico:</label>
-        <input type="tel" id="telefono-cliente" required>
-    </div>
-</div>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<div id="seccion-direccion">
-    <h3>Paso 5: Datos de Entrega</h3>
-    
-    <div class="campo">
-        <label>Provincia:</label>
-        <select id="select-provincia">
-            <option value="">Seleccioná tu provincia</option>
-            <option value="Buenos Aires">Buenos Aires</option>
-            <option value="CABA">Ciudad Autónoma de Buenos Aires</option>
-            <option value="Catamarca">Catamarca</option>
-            <option value="Chaco">Chaco</option>
-            <option value="Chubut">Chubut</option>
-            <option value="Córdoba">Córdoba</option>
-            <option value="Corrientes">Corrientes</option>
-            <option value="Entre Ríos">Entre Ríos</option>
-            <option value="Formosa">Formosa</option>
-            <option value="Jujuy">Jujuy</option>
-            <option value="La Pampa">La Pampa</option>
-            <option value="La Rioja">La Rioja</option>
-            <option value="Mendoza">Mendoza</option>
-            <option value="Misiones">Misiones</option>
-            <option value="Neuquén">Neuquén</option>
-            <option value="Río Negro">Río Negro</option>
-            <option value="Salta">Salta</option>
-            <option value="San Juan">San Juan</option>
-            <option value="San Luis">San Luis</option>
-            <option value="Santa Cruz">Santa Cruz</option>
-            <option value="Santa Fe">Santa Fe</option>
-            <option value="Santiago del Estero">Santiago del Estero</option>
-            <option value="Tierra del Fuego">Tierra del Fuego</option>
-            <option value="Tucumán">Tucumán</option>
-            </select>
+    <div id="vista-inicio">
+        <header>
+            <p>Tote Bags artesanales personalizadas</p>
+        </header>
+        
+        <div class="acciones-inicio">
+            <button id="btn-comenzar" class="btn-principal">Armar mi Tote Bag</button>
+            <button id="btn-ir-seguimiento" class="btn-secundario">Seguir mi pedido</button>
+        </div>
     </div>
 
-    <div class="campo">
-    <label>Ciudad / Localidad:</label>
-    <input type="text" id="input-ciudad" placeholder="Ej: Tandil" autocomplete="off">
-    <div id="sugerencias-ciudad" class="sugerencias-estilo"></div>
-</div>
-
-    <div class="campo">
-        <label>Calle y Altura:</label>
-        <input type="text" id="input-calle" placeholder="Ej: Av. Colón 1234">
-        <div id="contenedor-sugerencias" class="sugerencias-estilo"></div>
+    <div id="vista-seguimiento" class="oculto">
+        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+        <h2>Consulta tu Pedido</h2>
+        <div class="buscador-seguimiento-box">
+            <input type="text" id="input-busqueda-tracking" placeholder="Código HEMA-XXXX">
+            <button onclick="consultarEstadoPedido()">Consultar</button>
+        </div>
+        <div id="resultado-busqueda" class="oculto">
+            <p>Estado actual: <strong id="estado-pedido"></strong></p>
+        </div>
     </div>
 
-    <div class="campo">
-        <label>Datos extra:(Opcional)</label>
-        <input type="text" id="dato-extra" placeholder="Ej: Piso/Departamento">
-        <div id="contenedor-sugerencias" class="sugerencias-estilo"></div>
-    </div>
+    <div id="vista-configurador" class="oculto">
+        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+        <br><br>
 
-    <div id="mapa-libre" style="height: 250px; width: 100%; border-radius: 8px; margin-top: 10px; border: 2px solid #a0816c;"></div>
-</div>
+        <section class="paso">
+            <h2>Paso 1: Elige tu Tela</h2>
+            <div id="contenedor-telas" class="grid-seleccion"></div>
+            <input type="hidden" id="tela-seleccionada" value="">
+        </section>
 
-<button id="boton-enviar-pedido">Confirmar Pedido</button>
+        <section id="seccion-bordado" class="paso" style="display: none;">
+            <h3>Paso 2: Personalización de Bordado</h3>
+            <div class="opciones-bordado">
+                <label>
+                    <input type="radio" name="tipo-bordado" value="sin_bordar" checked> 
+                     Sin Bordar
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="tipo-bordado" value="contorno" data-extra="1500"> 
+                    Bordado de Contorno (+$1500)
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="tipo-bordado" value="relleno" data-extra="2500"> 
+                    Bordado con Relleno (+$2500)
+                </label>
+            </div>
 
-<input type="hidden" id="tela-seleccionada">
-<input type="hidden" id="bordado-seleccionado">
-<script src="script.js"></script>
+            <div id="personalizacion-extra" class="campo oculto" style="margin-top: 15px;">    
+                <label for="letras-bordado">Escribí tu frase aquí:</label>
+                <input type="text" id="letras-bordado">
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="paso">
+            <h3>Paso 3: Tus Datos de Contacto</h3>
+            <div id="datos-cliente" class="formulario-grid">
+                <div class="campo">
+                    <label for="nombre-cliente">Tu nombre completo:</label>
+                    <input type="text" id="nombre-cliente" required>
+                </div>
+                <div class="campo">
+                    <label for="email-cliente">Tu email:</label>
+                    <input type="email" id="email-cliente" required>
+                </div>
+                <div class="campo">
+                    <label for="telefono-cliente">Tu número telefónico:</label>
+                    <input type="tel" id="telefono-cliente" required>
+                </div>
+            </div>
+        </section>
+
+        <section id="seccion-direccion" class="paso">
+            <h3>Paso 4: Datos de Entrega</h3>
+            <div class="formulario-grid">
+                <div class="campo">
+                    <label>Provincia:</label>
+                    <select id="select-provincia">
+                        <option value="">Seleccioná tu provincia</option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="CABA">Ciudad Autónoma de Buenos Aires</option>
+                        <option value="Catamarca">Catamarca</option>
+                        <option value="Chaco">Chaco</option>
+                        <option value="Chubut">Chubut</option>
+                        <option value="Córdoba">Córdoba</option>
+                        <option value="Corrientes">Corrientes</option>
+                        <option value="Entre Ríos">Entre Ríos</option>
+                        <option value="Formosa">Formosa</option>
+                        <option value="Jujuy">Jujuy</option>
+                        <option value="La Pampa">La Pampa</option>
+                        <option value="La Rioja">La Rioja</option>
+                        <option value="Mendoza">Mendoza</option>
+                        <option value="Misiones">Misiones</option>
+                        <option value="Neuquén">Neuquén</option>
+                        <option value="Río Negro">Río Negro</option>
+                        <option value="Salta">Salta</option>
+                        <option value="San Juan">San Juan</option>
+                        <option value="San Luis">San Luis</option>
+                        <option value="Santa Cruz">Santa Cruz</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="Santiago del Estero">Santiago del Estero</option>
+                        <option value="Tierra del Fuego">Tierra del Fuego</option>
+                        <option value="Tucumán">Tucumán</option>
+                    </select>
+                </div>
+
+                <div class="campo" style="position: relative;">
+                    <label>Ciudad / Localidad:</label>
+                    <input type="text" id="input-ciudad" placeholder="Ej: Tandil" autocomplete="off">
+                    <div id="sugerencias-ciudad" class="sugerencias-estilo"></div>
+                </div>
+
+                <div class="campo" style="position: relative;">
+                    <label>Calle y Altura:</label>
+                    <input type="text" id="input-calle" placeholder="Ej: Av. Colón 1234">
+                    <div id="contenedor-sugerencias" class="sugerencias-estilo"></div>
+                </div>
+
+                <div class="campo">
+                    <label>Datos extra (Opcional):</label>
+                    <input type="text" id="dato-extra" placeholder="Ej: Piso/Departamento">
+                </div>
+            </div>
+
+            <div id="mapa-libre" style="height: 250px; width: 100%; border-radius: 8px; margin-top: 15px; border: 2px solid #a0816c;"></div>
+        </section>
+
+        <div style="margin-top: 30px; padding-bottom: 50px;">
+            <button id="boton-test">Calcular Presupuesto</button>
+            <button id="boton-enviar-pedido" style="background-color: #a0816c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Confirmar Pedido
+            </button>
+        </div>
+    </div> <input type="hidden" id="bordado-seleccionado">
+    <script src="script.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ let direccionValidada = "";
 let latitudFinal = "";
 let longitudFinal = "";
 const contenedorFrase = document.getElementById('personalizacion-extra');
-const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
+const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-JOFsNSltYfHh2WKpTu2Hif5VOgAYpr_vRxblZlqUThS5cjRb3Cc4KrQTRbeLAuxTLsXmnjMNLiZM/pub?output=csv';
 
 const coordenadasProvincias = {
     "Buenos Aires": [-37.15, -58.48],

@@ -104,3 +104,18 @@ body {
     align-items: center;
     margin-top: 50px;
 }
+
+/* La imagen normal */
+.card-tela img {
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+
+/* Cuando se activa el zoom */
+.zoom-active {
+    transform: scale(1.8); /* Ajustá qué tanto querés el zoom */
+    position: relative;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-radius: 8px;
+}

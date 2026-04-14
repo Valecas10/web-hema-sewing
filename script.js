@@ -1,14 +1,16 @@
 /** * HEMA SEWING - Lógica de Pedidos
  */
-//const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv'; // Link Dueña
-const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-JOFsNSltYfHh2WKpTu2Hif5VOgAYpr_vRxblZlqUThS5cjRb3Cc4KrQTRbeLAuxTLsXmnjMNLiZM/pub?output=csv'; // Link Test
+const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv'; // Link Dueña
+//const URL_EXCEL_TELAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-JOFsNSltYfHh2WKpTu2Hif5VOgAYpr_vRxblZlqUThS5cjRb3Cc4KrQTRbeLAuxTLsXmnjMNLiZM/pub?output=csv'; // Link Test
+const URL_WEB_APP_EXCEL = 'https://script.google.com/macros/s/AKfycbw6TXsATigHwzDERHmEzojiQqA1fJzXzCGlHImIgftE8aUVUIsx2V9Z48ov8xkjjDAi/exec';
 
 // 1. VARIABLES GLOBALES
 let mapa;
 let marcador;
 let direccionValidada = ""; 
 let latitudFinal = "";
-let longitudFinal = ""
+let longitudFinal = "";
+let timer
 
 const coordenadasProvincias = {
     "Buenos Aires": [-37.15, -58.48],
@@ -30,7 +32,44 @@ function inicializarMapa() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(mapa);
-    marcador = L.marker([-38.4161, -63.6167]).addTo(mapa);
+    marcador = L.marker([-38.4161, -63.6167],{
+        draggable: true
+    }).addTo(mapa);
+
+    marcador.on('dragend', async function(event) {
+    const posicion = marcador.getLatLng();
+    latitudFinal = posicion.lat;
+    longitudFinal = posicion.lng;
+    try {
+        // Consultamos a Photon por la dirección de esas coordenadas
+        const res = await fetch(`https://photon.komoot.io/reverse?lon=${longitudFinal}&lat=${latitudFinal}`);
+        const data = await res.json();
+
+        if (data.features && data.features.length > 0) {
+            const info = data.features[0].properties;
+            
+            // Armamos la dirección: Calle + Altura (si existe)
+            let calle = info.street || info.name || "";
+            let altura = info.housenumber || "";
+
+            if (calle === altura) {
+                calle = info.district || info.city || "Dirección marcada";
+            }
+
+            const direccionTexto = `${calle} ${altura}`.trim();
+
+            // Actualizamos el input de calle para que el usuario vea el cambio
+            if (direccionTexto) {
+                document.getElementById('input-calle').value = direccionTexto;
+                direccionValidada = direccionTexto; // Actualizamos la variable global
+            }
+        }
+    } catch (error) {
+        console.error("Error en reverse geocoding:", error);
+    }
+    });
+
+    console.log("Nueva ubicación:", latitudFinal, longitudFinal);
     
     configurarEventosDireccion();
 }
@@ -63,6 +102,32 @@ async function cargarTelasDinamicas() {
                 <small>$${costo}</small>
             `;
 
+            const img = card.querySelector('img');
+            let timer;
+
+            const activarZoom = (e) => {
+                // Previene el menú contextual del celu al mantener apretado
+                if (e.type === 'touchstart') e.preventDefault(); 
+                timer = setTimeout(() => {
+                    img.classList.add('zoom-active');
+                }, 500); // 500ms para activar
+            };
+
+            const desactivarZoom = () => {
+                clearTimeout(timer);
+                img.classList.remove('zoom-active');
+            };
+
+            // Eventos para Mouse
+            img.addEventListener('mousedown', activarZoom);
+            img.addEventListener('mouseup', desactivarZoom);
+            img.addEventListener('mouseleave', desactivarZoom);
+
+            // Eventos para Celular
+            img.addEventListener('touchstart', activarZoom, {passive: false});
+            img.addEventListener('touchend', desactivarZoom);
+            img.addEventListener('touchmove', desactivarZoom);
+
             card.addEventListener('click', () => {
                 document.querySelectorAll('#contenedor-telas .card-opcion').forEach(t => t.classList.remove('seleccionada'));
                 card.classList.add('seleccionada');
@@ -93,15 +158,15 @@ function configurarEventosBordado() {
 
 function gestionarSeccionBordado(esBordable) {
     const seccionBordado = document.getElementById('seccion-bordado');
-    const contenedorFrase = document.getElementById('personalizacion-extra');
-    const opcionesBordado = document.querySelectorAll('input[name="tipo-bordado"]');
+    const inputBordadoOculto = document.getElementById('bordado-seleccionado');
 
     if (esBordable === 'SI') {
         seccionBordado.style.display = 'block';
+        // Si el usuario no elige nada aún, por defecto es sin bordar
+        inputBordadoOculto.value = "sin_bordar"; 
     } else {
         seccionBordado.style.display = 'none';
-        opcionesBordado.forEach(opt => opt.checked = false);
-        document.getElementById('bordado-seleccionado').value = "";
+        inputBordadoOculto.value = "No permite bordado";
     }
 }
 
@@ -126,7 +191,8 @@ function configurarEventosDireccion() {
         if (query.length < 3 || !prov) return;
 
         try {
-            const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query + " " + prov)}&limit=5&osm_tag=place:city&osm_tag=place:town`);
+            const urlCiudad = `https://photon.komoot.io/api/?q=${encodeURIComponent(query + " " + prov)}&limit=5&osm_tag=place:city&osm_tag=place:town`;
+            const res = await fetch(urlCiudad); // Photon no requiere 'mode: cors' explícito si la URL es simple
             const data = await res.json();
             sugerenciasCiudad.innerHTML = "";
 
@@ -182,12 +248,14 @@ function configurarEventosDireccion() {
 // 5. ENVÍO DE PEDIDO (EMAILJS)
 document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
     const trackingID = generarCodigoSeguimiento();
+    const bordadoValor = document.getElementById('bordado-seleccionado').value || "Sin Bordado";
     const pedido = {
         cliente: document.getElementById('nombre-cliente').value,
+        tracking_id: trackingID,
         email: document.getElementById('email-cliente').value,
         telefono: document.getElementById('telefono-cliente').value,
         tela: document.getElementById('tela-seleccionada').value,
-        bordado: document.getElementById('bordado-seleccionado').value,
+        bordado: bordadoValor,
         provincia: document.getElementById('select-provincia').value,
         ciudad: document.getElementById('input-ciudad').value,
         calle: document.getElementById('input-calle').value,
@@ -196,23 +264,52 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
         direccionMapa: direccionValidada
     };
 
-    console.log('cliente');
-    console.log('bordado');
-
     if (!pedido.cliente || !pedido.tela || !latitudFinal) {
         alert("Por favor, completa los datos y selecciona una dirección válida en el mapa.");
         return;
     }
 
-    emailjs.send('service_gnblx8l', 'template_76chn1e', pedido)
-    .then(() => {
-        alert(`¡Pedido enviado con éxito!\n Tu codigo de siguimiento es: ${trackingID} \nGuardalo para consultar el estado de tu compra.`);
-        if(pedido.bordado !== 'sin_bordar'){
+    document.getElementById('boton-enviar-pedido').addEventListener('click', async () => {
+    const boton = document.getElementById('boton-enviar-pedido');
+    
+    // 1. Bloqueamos el botón y cambiamos el texto
+    boton.disabled = true;
+    const textoOriginal = boton.innerText;
+    boton.innerText = "Procesando pedido...";
+
+    console.log("--- CHEQUEO DE DATOS ---");
+    console.log("Nombre:", pedido.cliente);
+    console.log("ID Tela:", pedido.tela);
+    console.log("ID Bordado:", pedido.bordado); 
+    console.log("------------------------");
+    
+    try {
+        // 1. Envío al Excel
+        await fetch(URL_WEB_APP_EXCEL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(pedido)
+        });
+
+        // 2. Envío de Mail
+        await emailjs.send('service_gnblx8l', 'template_76chn1e', pedido);
+
+        alert(`¡Pedido enviado con éxito!\nTu código es: ${trackingID}`);
+        
+        if(pedido.bordado !== 'sin_bordar' && pedido.bordado !== 'No permite bordado') {
             enviarAWhatsApp(pedido);
         }
-        location.reload(); // Recargamos para limpiar todo
-        })
-    .catch((err) => alert('Error al enviar el pedido. Intenta nuevamente.'));
+        
+        boton.innerText = 'Confirmado';
+    } catch (error) {
+        console.error(error);
+        alert("Error al enviar. Intentá de nuevo.");
+        boton.disabled = false;
+        boton.innerText = "Confirmar Pedido";
+    }
+});
+
+
 });
 
 // Utilidades
@@ -255,5 +352,35 @@ function mostrarVista(vista) {
         }, 300);
     } else if (vista === 'seguimiento') {
         document.getElementById('vista-seguimiento').classList.remove('oculto');
+    }
+}
+
+async function consultarEstadoPedido() {
+    const idInput = document.getElementById('input-busqueda-tracking').value.trim();
+    const resultadoDiv = document.getElementById('resultado-busqueda');
+    const estadoTexto = document.getElementById('estado-pedido');
+
+    if (!idInput) {
+        alert("Por favor, ingresa un código de seguimiento.");
+        return;
+    }
+
+    try {
+        // Hacemos una petición GET al script pasando el ID como parámetro
+        const respuesta = await fetch(`${URL_WEB_APP_EXCEL}?id=${idInput}`);
+        const data = await respuesta.json();
+
+        resultadoDiv.classList.remove('oculto');
+
+        if (data.error) {
+            estadoTexto.innerText = "Código no encontrado. Revisa si está bien escrito.";
+            estadoTexto.style.color = "red";
+        } else {
+            estadoTexto.innerText = data.estado;
+            estadoTexto.style.color = "#a0816c"; // El color de tu marca
+        }
+    } catch (error) {
+        console.error("Error al consultar:", error);
+        alert("Hubo un error al conectar con el servidor.");
     }
 }

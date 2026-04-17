@@ -3,76 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hema Sewing - Pedidos</title>
-    
+    <title>Hema Sewing - Piezas con alma</title>
+
+    <!-- Estilos -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Scripts externos -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <script type="text/javascript">
-        (function(){
+    <!-- (No está bien usada, pero la dejo como pediste) -->
+    <link href="https://fonts.googleapis.com/css2?family=Arapey:ital@0;1&display=swap" rel="stylesheet">
+
+    <!-- Inicialización EmailJS -->
+    <script>
+        (function () {
             emailjs.init('GtTEbj4qoWdwpMU81');
         })();
     </script>
 </head>
+
 <body>
-    <h1> Hema Sewing </h1>
 
+    <!-- ================== VISTA INICIO ================== -->
     <div id="vista-inicio">
-        <header>
-            <p>Tote Bags artesanales personalizadas</p>
-        </header>
-        
-        <div class="acciones-inicio">
-            <button id="btn-comenzar" class="btn-principal">Armar mi Tote Bag</button>
-            <button id="btn-ir-seguimiento" class="btn-secundario">Seguir mi pedido</button>
+        <div class="site-container">
+
+            <header class="main-header">
+                <div class="logo">
+                    <h1>HEMA</h1>
+                    <span class="sub-logo-sewing">SEWING</span>
+                    <span class="sub-logo-alma">piezas con alma</span>
+                </div>
+
+                <nav class="nav-menu">
+                    <a href="index.html" class="active">Inicio</a>
+                    <a href="#" onclick="mostrarVista('armar')">Personalizar</a>
+                    <a href="#" onclick="mostrarVista('seguimiento')">Seguimiento</a>
+                </nav>
+            </header>
+
+            <main class="hero-magazine">
+
+                <aside class="side-text left">
+                    <div class="promo-box">
+                        <h2>TOTE BAGS</h2>
+                        <p>100% ARTESANALES</p>
+                    </div>
+                </aside>
+
+                <section class="central-gallery">
+                    <div class="photo-frame frame-1">
+                        <div class="border-overlay"></div>
+                        <img src="assets/Modelo-1.jpg">
+                    </div>
+
+                    <div class="photo-frame frame-2">
+                        <div class="border-overlay"></div>
+                        <img src="assets/Modelo-2.jpg">
+                    </div>
+
+                    <div class="photo-frame frame-3">
+                        <div class="border-overlay"></div>
+                        <img src="assets/Modelo-3.png">
+                    </div>
+                </section>
+
+                <aside class="side-text right">
+                    <div class="promo-box">
+                        <h2>PIEZAS</h2>
+                        <p>CON ALMA</p>
+                    </div>
+                </aside>
+
+            </main>
+
+            <div class="cta-container">
+                <button class="btn-main-action" onclick="mostrarVista('armar')">
+                    EMPEZAR MI PEDIDO
+                </button>
+            </div>
+
         </div>
     </div>
 
-    <div id="vista-seguimiento" class="oculto">
-        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
-        <h2>Consulta tu Pedido</h2>
-        <div class="buscador-seguimiento-box">
-            <input type="text" id="input-busqueda-tracking" placeholder="Código HEMA-XXXX">
-            <button onclick="consultarEstadoPedido()">Consultar</button>
-        </div>
-        <div id="resultado-busqueda" class="oculto">
-            <p>Estado actual: <strong id="estado-pedido"></strong></p>
-        </div>
-    </div>
-
+    <!-- ================== VISTA CONFIGURADOR ================== -->
     <div id="vista-configurador" class="oculto">
+
         <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
         <br><br>
 
+        <!-- Paso 1 -->
         <section class="paso">
             <h2>Paso 1: Elige tu Tela</h2>
             <div id="contenedor-telas" class="grid-seleccion"></div>
-            <input type="hidden" id="tela-seleccionada" value="">
+            <input type="hidden" id="tela-seleccionada">
         </section>
 
+        <!-- Bordado -->
         <section id="seccion-bordado" class="paso" style="display: none;">
             <h3>Personalización de Bordado</h3>
+
             <div class="opciones-bordado">
                 <label>
-                    <input type="radio" name="tipo-bordado" value="sin_bordar" checked> 
-                     Sin Bordar
+                    <input type="radio" name="tipo-bordado" value="sin_bordar" checked>
+                    Sin Bordar
                 </label>
+
                 <br>
+
                 <label>
-                    <input type="radio" name="tipo-bordado" value="contorno" data-extra="1500"> 
+                    <input type="radio" name="tipo-bordado" value="contorno" data-extra="1500">
                     Bordado de Contorno (+$1500)
                 </label>
+
                 <br>
+
                 <label>
-                    <input type="radio" name="tipo-bordado" value="relleno" data-extra="2500"> 
+                    <input type="radio" name="tipo-bordado" value="relleno" data-extra="2500">
                     Bordado con Relleno (+$2500)
                 </label>
             </div>
 
-            <div id="personalizacion-extra" class="campo oculto" style="margin-top: 15px;">    
+            <div id="personalizacion-extra" class="campo oculto" style="margin-top: 15px;">
                 <label for="letras-bordado">Escribí tu frase aquí:</label>
                 <input type="text" id="letras-bordado">
             </div>
@@ -80,55 +134,64 @@
 
         <hr>
 
+        <!-- Paso 2 -->
         <section class="paso">
             <h3>Paso 2: Tus Datos de Contacto</h3>
+
             <div id="datos-cliente" class="formulario-grid">
+
                 <div class="campo">
                     <label for="nombre-cliente">Tu nombre completo:</label>
                     <input type="text" id="nombre-cliente" required>
                 </div>
+
                 <div class="campo">
                     <label for="email-cliente">Tu email:</label>
                     <input type="email" id="email-cliente" required>
                 </div>
+
                 <div class="campo">
                     <label for="telefono-cliente">Tu número telefónico:</label>
                     <input type="tel" id="telefono-cliente" required>
                 </div>
+
             </div>
         </section>
 
+        <!-- Paso 3 -->
         <section id="seccion-direccion" class="paso">
             <h3>Paso 3: Datos de Entrega</h3>
+
             <div class="formulario-grid">
+
                 <div class="campo">
                     <label>Provincia:</label>
                     <select id="select-provincia">
                         <option value="">Seleccioná tu provincia</option>
-                        <option value="Buenos Aires">Buenos Aires</option>
-                        <option value="CABA">Ciudad Autónoma de Buenos Aires</option>
-                        <option value="Catamarca">Catamarca</option>
-                        <option value="Chaco">Chaco</option>
-                        <option value="Chubut">Chubut</option>
-                        <option value="Córdoba">Córdoba</option>
-                        <option value="Corrientes">Corrientes</option>
-                        <option value="Entre Ríos">Entre Ríos</option>
-                        <option value="Formosa">Formosa</option>
-                        <option value="Jujuy">Jujuy</option>
-                        <option value="La Pampa">La Pampa</option>
-                        <option value="La Rioja">La Rioja</option>
-                        <option value="Mendoza">Mendoza</option>
-                        <option value="Misiones">Misiones</option>
-                        <option value="Neuquén">Neuquén</option>
-                        <option value="Río Negro">Río Negro</option>
-                        <option value="Salta">Salta</option>
-                        <option value="San Juan">San Juan</option>
-                        <option value="San Luis">San Luis</option>
-                        <option value="Santa Cruz">Santa Cruz</option>
-                        <option value="Santa Fe">Santa Fe</option>
-                        <option value="Santiago del Estero">Santiago del Estero</option>
-                        <option value="Tierra del Fuego">Tierra del Fuego</option>
-                        <option value="Tucumán">Tucumán</option>
+                        <option>Buenos Aires</option>
+                        <option>CABA</option>
+                        <option>Catamarca</option>
+                        <option>Chaco</option>
+                        <option>Chubut</option>
+                        <option>Córdoba</option>
+                        <option>Corrientes</option>
+                        <option>Entre Ríos</option>
+                        <option>Formosa</option>
+                        <option>Jujuy</option>
+                        <option>La Pampa</option>
+                        <option>La Rioja</option>
+                        <option>Mendoza</option>
+                        <option>Misiones</option>
+                        <option>Neuquén</option>
+                        <option>Río Negro</option>
+                        <option>Salta</option>
+                        <option>San Juan</option>
+                        <option>San Luis</option>
+                        <option>Santa Cruz</option>
+                        <option>Santa Fe</option>
+                        <option>Santiago del Estero</option>
+                        <option>Tierra del Fuego</option>
+                        <option>Tucumán</option>
                     </select>
                 </div>
 
@@ -148,18 +211,43 @@
                     <label>Datos extra (Opcional):</label>
                     <input type="text" id="dato-extra" placeholder="Ej: Piso/Departamento">
                 </div>
+
             </div>
 
-            <div id="mapa-libre" style="height: 250px; width: 100%; border-radius: 8px; margin-top: 15px; border: 2px solid #a0816c;"></div>
+            <div id="mapa-libre"></div>
         </section>
 
+        <!-- Acciones -->
         <div style="margin-top: 30px; padding-bottom: 50px;">
             <button id="boton-test">Calcular Presupuesto</button>
-            <button id="boton-enviar-pedido" style="background-color: #a0816c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+
+            <button id="boton-enviar-pedido" style="
+                background-color: #a0816c;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            ">
                 Confirmar Pedido
             </button>
         </div>
-    </div> <input type="hidden" id="bordado-seleccionado">
+
+    </div>
+
+    <div id="vista-seguimiento" class="oculto">
+    <h2>Seguimiento de pedido</h2>
+
+    <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
+    <button onclick="consultarEstadoPedido()">Buscar</button>
+
+    <div id="resultado-busqueda" class="oculto">
+        <p id="estado-pedido"></p>
+    </div>
+</div>
+
+    <input type="hidden" id="bordado-seleccionado">
+
     <script src="script.js"></script>
 </body>
 </html>

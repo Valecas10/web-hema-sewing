@@ -1,10 +1,157 @@
+/* ================== RESET ================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================== VARIABLES ================== */
+:root {
+    --marron-oscuro: #6F4E37;
+    --marron-claro: #A67B5B;
+    --beige-fondo: #FDFBF9;
+    --beige-acento: #EADBC8;
+
+    --texto: #333;
+    --borde-suave: #ddd;
+
+    --font-arapey: 'Arapey', serif;
+    --font-aileron: 'Aileron', sans-serif;
+}
+
+/* ================== BASE ================== */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f4f0; /* Color cremita tipo lino */
-    color: #4a4a4a;
+    background-color: var(--beige-fondo);
+    color: var(--texto);
+    font-family: var(--font-aileron);
+    line-height: 1.6;
+}
+
+.site-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ================== HEADER ================== */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--borde-suave);
+}
+
+.logo {
     text-align: center;
 }
 
+.logo h1 {
+    font-family: var(--font-arapey);
+    font-size: 3rem;
+    color: var(--marron-oscuro);
+    letter-spacing: 4px;
+    line-height: 1;
+}
+
+.sub-logo-sewing {
+    font-family: var(--font-arapey);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--marron-claro);
+    display: block;
+    margin-top: -5px;
+}
+
+.sub-logo-alma {
+    font-family: var(--font-aileron);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: block;
+    margin-top: 5px;
+    color: #555;
+}
+
+/* ================== HERO ================== */
+.hero-magazine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.central-gallery {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.photo-frame {
+    position: relative;
+    width: 200px;
+    height: 300px;
+}
+
+.border-overlay {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--marron-claro);
+    z-index: 1;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    background-color: #eee;
+}
+
+.frame-2 {
+    transform: translateY(-20px);
+}
+
+.side-text h2 {
+    font-family: var(--font-arapey);
+    font-size: 1.8rem;
+    color: var(--marron-oscuro);
+}
+
+/* ================== BOTONES ================== */
+.btn-main-action {
+    background-color: var(--marron-oscuro);
+    color: white;
+    font-family: var(--font-aileron);
+    padding: 15px 40px;
+    border: none;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: 0.3s;
+}
+
+.btn-main-action:hover {
+    background-color: var(--marron-claro);
+}
+
+.btn-volver {
+    background: none;
+    border: 1px solid var(--marron-claro);
+    color: var(--marron-claro);
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    float: left;
+}
+
+/* ================== CARDS ================== */
 .grid-seleccion {
     display: flex;
     gap: 20px;
@@ -13,7 +160,7 @@ body {
 }
 
 .card-opcion {
-    border: 2px solid #ddd;
+    border: 2px solid var(--borde-suave);
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
@@ -25,40 +172,32 @@ body {
 .card-opcion img {
     width: 100%;
     height: 100px;
-    object-fit: cover; /* Para que las fotos no se deformen */
+    object-fit: cover;
     border-radius: 5px;
 }
 
 .card-opcion:hover {
-    transform: translateY(-5s px);
-    border-color: #a0816c; /* Un color madera/textil */
+    transform: translateY(-5px);
+    border-color: var(--marron-claro);
 }
 
-/* Clase que aplicaremos con JS cuando el usuario haga clic */
 .seleccionada {
-    border: 3px solid #a0816c !important; /* Un borde más grueso y oscuro */
+    border: 3px solid var(--marron-claro) !important;
     background-color: #fdf5f0;
-    transform: scale(1.05); /* Un poquito más grande para resaltar */
+    transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.oculto {
-    display: none;
+/* ================== ZOOM ================== */
+.zoom-active {
+    transform: scale(1.8);
+    position: relative;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-radius: 8px;
 }
 
-/* Un poquito de estilo para que el campo de texto resalte al aparecer */
-#contenedor-frase {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #fff;
-    border-left: 4px solid #a0816c;
-    animation: fadeIn 0.5s; /* Efecto suave al aparecer */
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+/* ================== FORM / SUGERENCIAS ================== */
 .sugerencias-estilo {
     position: absolute;
     top: 100%;
@@ -66,7 +205,7 @@ body {
     right: 0;
     background: white;
     border: 1px solid #ccc;
-    z-index: 2000; /* Para que flote sobre el mapa */
+    z-index: 2000;
     border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
@@ -81,41 +220,16 @@ body {
     background-color: #fdf5f0;
 }
 
+/* ================== UTILIDADES ================== */
 .oculto {
     display: none !important;
 }
 
-/* Estilo para que los botones de volver queden lindos */
-.btn-volver {
-    background: none;
-    border: 1px solid #a0816c;
-    color: #a0816c;
-    padding: 5px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    float: left;
+/* ================== ANIMACIONES ================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.acciones-inicio {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin-top: 50px;
-}
-
-/* La imagen normal */
-.card-tela img {
-    transition: transform 0.3s ease;
-    cursor: zoom-in;
-}
-
-/* Cuando se activa el zoom */
-.zoom-active {
-    transform: scale(1.8); /* Ajustá qué tanto querés el zoom */
-    position: relative;
-    z-index: 999;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    border-radius: 8px;
-}
+/* ================== FUENTES ================== */
+@import url('https://fonts.googleapis.com/css2?family=Arapey:ital@0;1&display=swap');

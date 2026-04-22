@@ -73,6 +73,18 @@ body {
     color: #555;
 }
 
+.logo-img {
+    position: relative;
+    left: 140px;
+    height: 170px; /* Ajusta la altura según necesites */
+    width: auto;   /* Esto mantiene la proporción de la imagen */
+    display: block;
+}
+
+.logo-img:hover {
+    opacity: 0.8;
+}
+
 /* ================== HERO ================== */
 .hero-magazine {
     display: flex;

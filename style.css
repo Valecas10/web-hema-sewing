@@ -54,8 +54,16 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 0;
-    
+    padding: 30px 0;   
+}
+
+#seguimiento .main-header{
+    display: flex;
+    justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
+    align-items: center;            /* Alineación vertical perfecta */
+    position: relative;
+    padding: 20px 0;
+    width: 100%;
 }
 
 .logo {
@@ -136,15 +144,27 @@ body {
 }
 
 .logo-img {
-    height: 170px; /* Ajusta la altura según necesites */
-    width: auto;   /* Esto mantiene la proporción de la imagen */
+    height: 170px; 
+    width: auto;  
     display: block;
     margin: 0;
 }
 
- .logo-img:hover {
+#seguimiento .logo-img{
+    height: 170px; 
+    width: auto;  
+    display: block;
+    margin: 0;
+    flex-grow: 1;      
+    display: flex;
+    justify-content: center;
+}
+
+.logo-img:hover {
     opacity: 0.8;
 }
+
+
 
 /* ================== HERO ================== */
 .hero-magazine {
@@ -159,6 +179,16 @@ body {
     display: flex;
     gap: 30px;
     align-items: center;
+}
+
+#seguimiento .central-gallery{
+    flex-direction: column;
+    background-color: var(--marron-oscuro);
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 .photo-frame {
@@ -208,6 +238,24 @@ body {
     font-family: var(--font-arapey);
     font-size: 1.8rem;
     color: var(--marron-oscuro);
+
+}
+
+#resultado-busqueda {
+    margin-top: 20px;
+    padding-top: 15px;  
+}
+
+.status {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;       /* Forma de cápsula */
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background-color: #f0f0f0; /* Color gris por defecto */
+    color: #666;
 }
 
 /* ================== BOTONES ================== */
@@ -237,9 +285,60 @@ body {
     padding: 5px 15px;
     border-radius: 20px;
     cursor: pointer;
-    margin-bottom: 20px;
     float: left;
 }
+
+#seguimiento .btn-volver {
+    float: none;       /* Quitamos el float que tenías antes */
+    margin: 0;
+    z-index: 10;
+}
+
+.central-gallery h2{
+
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    
+}
+
+.space {
+    width: 85.68px;       /* Debe medir lo mismo que tu botón aproximadamente */
+}
+
+.busqueda-seguimiento{
+    display: flex;
+    gap: 0; /* Para que parezcan unidos */
+    justify-content: center;
+    margin-bottom: 20px;
+
+}
+
+.busqueda-seguimiento button:hover {
+    background-color: #8e6f5e;
+}
+
+.busqueda-seguimiento input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px; /* Redondea solo el lado izquierdo */
+    outline: none;
+}
+
+.busqueda-seguimiento button {
+    padding: 10px 20px;
+    font: var(--font-arapey);
+    background-color: var(--marron-claro); /* Color acorde a tu logo (marrón suave) */
+    color: var(--beige-acento);
+    border: none;
+    border-radius: 0 5px 5px 0; /* Redondea solo el lado derecho */
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+
+
+
 
 /* ================== CARDS ================== */
 .grid-seleccion {

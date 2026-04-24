@@ -23,8 +23,8 @@
 
 <body>
 
-    <!-- ================== VISTA INICIO ================== -->
-    <section id="vista-inicio">
+    <!-- ==================== INICIO ==================== -->
+    <section id="inicio">
         <div class="site-container">
 
             <header class="main-header">
@@ -95,8 +95,8 @@
         </div>
     </section>
 
-    <!-- ================== VISTA CONFIGURADOR ================== -->
-    <section id="vista-configurador" class="oculto">
+    <!-- ==================== COMPRA ==================== -->
+    <section id="compra" class="oculto">
 
         <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
         <br><br>
@@ -242,21 +242,33 @@
 
     </section>
 
-    <section id="vista-seguimiento" class="oculto">
+    <!-- ================== SEGUIMIENTO ================== -->
+    <section id="seguimiento" class="oculto">
+        <div class="site-container">
+            <header class="main-header">
+                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+                <div class="logo-img">
+                    <a href="#inicio">
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img" >
+                    </a>
+                </div>
+                <div class= "space"></div>
+            </header>
+            <main class="central-gallery">
+                <h2>Seguimiento de pedido</h2>
 
-        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
-        <br><br>
-        <h2>Seguimiento de pedido</h2>
+                <div class="busqueda-seguimiento">
+                    <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
+                    <button onclick="consultarEstadoPedido()">Buscar</button>
+                </div>
 
-        <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
-        <button onclick="consultarEstadoPedido()">Buscar</button>
-
-        <div id="resultado-busqueda" class="oculto">
-            <p id="estado-pedido"></p>
+                <div id="resultado-busqueda" class="oculto">
+                    <p class="status" id="estado-pedido"></p>
+                </div>
+                
+            </main>
         </div>
     </section>
-
-    <input type="hidden" id="bordado-seleccionado">
 
     <script src="script.js"></script>
 </body>

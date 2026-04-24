@@ -436,20 +436,22 @@ function generarCodigoSeguimiento() {
 
 // ================== VISTAS ==================
 function mostrarVista(vista) {
-    document.getElementById('vista-inicio').classList.add('oculto');
-    document.getElementById('vista-configurador').classList.add('oculto');
-    document.getElementById('vista-seguimiento').classList.add('oculto');
+    document.getElementById('inicio').classList.add('oculto');
+    document.getElementById('compra').classList.add('oculto');
+    document.getElementById('seguimiento').classList.add('oculto');
+    localStorage.setItem('vistaActual', vista);
+    window.location.hash = vista;
 
     if (vista === 'inicio') {
-        document.getElementById('vista-inicio').classList.remove('oculto');
+        document.getElementById('inicio').classList.remove('oculto');
 
     } else if (vista === 'armar') {
-        document.getElementById('vista-configurador').classList.remove('oculto');
+        document.getElementById('compra').classList.remove('oculto');
 
         setTimeout(() => mapa.invalidateSize(), 300);
 
     } else if (vista === 'seguimiento') {
-        document.getElementById('vista-seguimiento').classList.remove('oculto');
+        document.getElementById('seguimiento').classList.remove('oculto');
     }
 }
 
@@ -552,3 +554,23 @@ function rotarSecuencial() {
 
 // Iniciar el intervalo (ej: cada 4 segundos para que dé tiempo al efecto de 1.5s)
 setInterval(rotarSecuencial, 4000);
+
+
+window.onload = function() {
+    const ultimaVista = localStorage.getItem('vistaActual');
+    
+    if (ultimaVista) {
+        mostrarVista(ultimaVista);
+    } else {
+        mostrarVista('inicio'); // Si es la primera vez que entra, va al inicio
+    }
+};
+
+window.addEventListener('hashchange', function() {
+    // Obtenemos el hash actual (quitándole el símbolo #)
+    const vistaDeseada = window.location.hash.replace('#', '');
+    
+    if (vistaDeseada) {
+        mostrarVista(vistaDeseada);
+    }
+});

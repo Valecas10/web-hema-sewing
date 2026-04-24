@@ -13,9 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- (No está bien usada, pero la dejo como pediste) -->
-    <link href="https://fonts.googleapis.com/css2?family=Arapey:ital@0;1&display=swap" rel="stylesheet">
-
     <!-- Inicialización EmailJS -->
     <script>
         (function () {
@@ -27,25 +24,30 @@
 <body>
 
     <!-- ================== VISTA INICIO ================== -->
-    <div id="vista-inicio">
+    <section id="vista-inicio">
         <div class="site-container">
 
             <header class="main-header">
                 <div class="logo">
                     <h1>HEMA</h1>
                     <span class="sub-logo-sewing">SEWING</span>
-                    <span class="sub-logo-alma">piezas con alma</span>
+                    <span class="sub-logo-alma">handmade with love</span>
                 </div>
 
-                <div class="logo">
+                <div class="logo-img">
                     <a href="index.html">
-                    <img src="assets/Logo-crudo.png" alt="Hema" class="logo-img" >
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img" >
+                    </a>
                 </div>
 
                 <nav class="nav-menu">
-                    <a href="index.html" class="active">Inicio</a>
-                    <a href="#" onclick="mostrarVista('armar')">Personalizar</a>
-                    <a href="#" onclick="mostrarVista('seguimiento')">Seguimiento</a>
+                    <button class="btn-main-action btn-nav" onclick="mostrarVista('seguimiento')">
+                        Seguimiento
+                    </button>
+
+                    <button class="menu-toggle" id="mobile-menu">
+                        ☰
+                    </button>       
                 </nav>
             </header>
 
@@ -61,17 +63,17 @@
                 <section class="central-gallery">
                     <div class="photo-frame frame-1">
                         <div class="border-overlay"></div>
-                        <img src="assets/Modelo-1.jpg">
+                        <img src="assets/fotos-inicio/Modelo-1.jpg">
                     </div>
 
                     <div class="photo-frame frame-2">
                         <div class="border-overlay"></div>
-                        <img src="assets/Modelo-2.jpg">
+                        <img src="assets/fotos-inicio/Modelo-2.jpg">
                     </div>
 
                     <div class="photo-frame frame-3">
                         <div class="border-overlay"></div>
-                        <img src="assets/Modelo-3.png">
+                        <img src="assets/fotos-inicio/Modelo-3.png">
                     </div>
                 </section>
 
@@ -91,10 +93,10 @@
             </div>
 
         </div>
-    </div>
+    </section>
 
     <!-- ================== VISTA CONFIGURADOR ================== -->
-    <div id="vista-configurador" class="oculto">
+    <section id="vista-configurador" class="oculto">
 
         <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
         <br><br>
@@ -238,18 +240,21 @@
             </button>
         </div>
 
-    </div>
+    </section>
 
-    <div id="vista-seguimiento" class="oculto">
-    <h2>Seguimiento de pedido</h2>
+    <section id="vista-seguimiento" class="oculto">
 
-    <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
-    <button onclick="consultarEstadoPedido()">Buscar</button>
+        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+        <br><br>
+        <h2>Seguimiento de pedido</h2>
 
-    <div id="resultado-busqueda" class="oculto">
-        <p id="estado-pedido"></p>
-    </div>
-</div>
+        <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
+        <button onclick="consultarEstadoPedido()">Buscar</button>
+
+        <div id="resultado-busqueda" class="oculto">
+            <p id="estado-pedido"></p>
+        </div>
+    </section>
 
     <input type="hidden" id="bordado-seleccionado">
 

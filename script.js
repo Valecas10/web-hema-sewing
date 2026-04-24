@@ -17,7 +17,6 @@ let direccionValidada = "";
 let latitudFinal = "";
 let longitudFinal = "";
 
-let timer;
 
 const coordenadasProvincias = {
     "Buenos Aires": [-37.15, -58.48],
@@ -26,16 +25,28 @@ const coordenadasProvincias = {
 
 // ================== INIT ==================
 document.addEventListener('DOMContentLoaded', () => {
-    const btnPedido = document.querySelector('.btn-main-action');
+    const btnPedido = document.querySelector('.cta-container .btn-main-action');
 
     if (btnPedido) {
         btnPedido.onclick = () => mostrarVista('armar');
     }
 
-    const btnSeguimiento = document.querySelector('.btn-ir-seguimiento');
-    
+    const btnSeguimiento = document.querySelector('.nav-menu .btn-main-action');
     if(btnSeguimiento){ 
-        btnSeguimiento.onclick = () => mostrarVista('seguimiento');
+        btnSeguimiento.onclick = () => {
+            mostrarVista('seguimiento');
+            document.querySelector('.nav-menu').classList.remove('mostrar'); // Cierra el menú al hacer clic
+        };
+    }
+
+    const menuBtn = document.getElementById('mobile-menu');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (menuBtn && navMenu) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita que el clic se propague
+            navMenu.classList.toggle('mostrar');
+        });
     }
 
     inicializarMapa();
@@ -89,8 +100,6 @@ function inicializarMapa() {
             console.error("Error en reverse geocoding:", error);
         }
     });
-
-    console.log("Nueva ubicación:", latitudFinal, longitudFinal);
 
     configurarEventosDireccion();
 }
@@ -322,7 +331,10 @@ function configurarEventosDireccion() {
 }
 
 // ================== PEDIDO ==================
-document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
+document.getElementById('boton-enviar-pedido').addEventListener('click', async () => {
+
+    const boton = document.getElementById('boton-enviar-pedido');
+
     const trackingID = generarCodigoSeguimiento();
 
     const bordado =
@@ -349,51 +361,40 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', () => {
         return;
     }
 
-    // ⚠️ Mantengo tu lógica original (aunque no es lo ideal)
-    document
-        .getElementById('boton-enviar-pedido')
-        .addEventListener('click', async () => {
+    boton.disabled = true;
+    const textoOriginal = boton.innerText;
+    boton.innerText = "Procesando pedido...";
 
-            const boton = document.getElementById('boton-enviar-pedido');
-
-            boton.disabled = true;
-            const textoOriginal = boton.innerText;
-
-            boton.innerText = "Procesando pedido...";
-
-            try {
-                await fetch(URL_WEB_APP_EXCEL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(pedido)
-                });
-
-                await emailjs.send(
-                    'service_gnblx8l',
-                    'template_76chn1e',
-                    pedido
-                );
-
-                alert(`¡Pedido enviado! Código: ${trackingID}`);
-
-                if (
-                    pedido.bordado !== 'sin_bordar' &&
-                    pedido.bordado !== 'No permite bordado'
-                ) {
-                    enviarAWhatsApp(pedido);
-                }
-
-                boton.innerText = 'Confirmado';
-
-            } catch (error) {
-                console.error(error);
-
-                alert("Error al enviar.");
-
-                boton.disabled = false;
-                boton.innerText = textoOriginal;
-            }
+    try {
+        await fetch(URL_WEB_APP_EXCEL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(pedido)
         });
+
+        await emailjs.send(
+            'service_gnblx8l',
+            'template_76chn1e',
+            pedido
+        );
+
+        alert(`¡Pedido enviado! Código: ${trackingID}`);
+
+        if (
+            pedido.bordado !== 'sin_bordar' &&
+            pedido.bordado !== 'No permite bordado'
+        ) {
+            enviarAWhatsApp(pedido);
+        }
+
+        boton.innerText = 'Confirmado';
+
+    } catch (error) {
+        console.error(error);
+        alert("Error al enviar.");
+        boton.disabled = false;
+        boton.innerText = textoOriginal;
+    }
 });
 
 // ================== UTILIDADES ==================
@@ -483,3 +484,71 @@ async function consultarEstadoPedido() {
         alert("Error al consultar.");
     }
 }
+
+// ================== SLIDESHOW CROSSFADE ==================
+
+const todasLasFotos = [
+    "assets/fotos-inicio/Modelo-1.jpg",
+    "assets/fotos-inicio/Modelo-2.jpg",
+    "assets/fotos-inicio/Modelo-3.png",
+    "assets/fotos-inicio/Modelo-4.jpeg",
+    "assets/fotos-inicio/Modelo-5.jpeg",
+    "assets/fotos-inicio/Modelo-6.jpeg",
+    "assets/fotos-inicio/Modelo-7.jpeg",
+    "assets/fotos-inicio/Modelo-8.jpeg",
+    "assets/fotos-inicio/Modelo-9.jpeg",
+    "assets/fotos-inicio/Modelo-10.jpeg"
+];
+
+// Variables de estado
+let fotosLibres = todasLasFotos.slice(3);
+let frameActual = 0;
+
+function rotarSecuencial() {
+    // Seleccionamos los marcos actualizados cada vez
+    const framesContenedores = document.querySelectorAll('.photo-frame');
+    const imagenesPrincipales = document.querySelectorAll('.photo-frame img:not(.temp-fade)');
+    
+    const contenedor = framesContenedores[frameActual];
+    const imgPrincipal = imagenesPrincipales[frameActual];
+
+    if (!contenedor || !imgPrincipal) return;
+
+    const fotoSaliendo = imgPrincipal.getAttribute('src');
+    const fotoEntrante = fotosLibres.shift();
+
+    if (!fotoEntrante) return;
+
+    // 1. Pre-carga de la imagen
+    const cargador = new Image();
+    cargador.src = fotoEntrante;
+
+    cargador.onload = () => {
+        // 2. Crear el elemento temporal para el efecto
+        const clon = document.createElement('img');
+        clon.src = fotoEntrante;
+        clon.classList.add('temp-fade');
+        contenedor.appendChild(clon);
+        clon.offsetWidth;
+        imgPrincipal.style.transition = 'opacity 1.5s ease-in-out';
+        imgPrincipal.style.setProperty('--opacidad','0')
+
+        // 4. Finalizar transición
+        setTimeout(() => {
+            imgPrincipal.style.transition = 'none';
+            // Actualizar la imagen de fondo y limpiar el clon
+            imgPrincipal.src = fotoEntrante;
+            imgPrincipal.style.setProperty('--opacidad','1');
+            clon.remove();
+
+            // Devolver la foto vieja al banco
+            fotosLibres.push(fotoSaliendo);
+        }, 1600); // Un poco más que el transition del CSS (1.5s)
+    };
+
+    // Mover al siguiente marco
+    frameActual = (frameActual + 1) % framesContenedores.length;
+}
+
+// Iniciar el intervalo (ej: cada 4 segundos para que dé tiempo al efecto de 1.5s)
+setInterval(rotarSecuencial, 4000);

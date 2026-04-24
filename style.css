@@ -258,6 +258,43 @@ body {
     color: #666;
 }
 
+.status.pendiente {
+    background-color: #fff4e5; /* Naranja muy claro */
+    color: #d47a00;           /* Naranja oscuro para el texto */
+    border: 1px solid #ffe2b9;
+}
+
+.status.enviado {
+    background-color: #e3f2fd; /* Azul claro */
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+}
+
+.status.error {
+    background-color: #fce4ec;
+    color: #c2185b;
+    border: 1px solid #f8bbd0;
+}
+
+.status.enproceso {
+    background-color: #fff9c4; /* Amarillo suave */
+    color: #856404;           /* Marrón/Dorado oscuro para contraste */
+    border: 1px solid #fff3cd;
+}
+
+.status.terminado {
+    background-color: #e8f5e9; /* Verde muy suave */
+    color: #4caf50;           /* Verde vibrante */
+    border: 1px solid #c8e6c9;
+}
+
+.status.entregado {
+    background-color: #2e7d32; /* Verde sólido oscuro */
+    color: #ffffff;           /* Texto blanco para contraste */
+    border: 1px solid #1b5e20;
+}
+
+
 /* ================== BOTONES ================== */
 .btn-main-action {
     background-color: var(--marron-oscuro);

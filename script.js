@@ -473,12 +473,27 @@ async function consultarEstadoPedido() {
 
         resultado.classList.remove('oculto');
 
+        estado.className = 'status';
+
         if (data.error) {
             estado.innerText = "Código no encontrado";
-            estado.style.color = "red";
+            estado.classList.add('error'); // Opcional: una clase para errores
         } else {
-            estado.innerText = data.estado;
-            estado.style.color = "#a0816c";
+            const textoStatus = data.estado; 
+            estado.innerText = textoStatus;
+
+            // 3. Lógica para asignar el color según el texto exacto
+            if (textoStatus === 'Pendiente') {
+                estado.classList.add('pendiente');
+            } else if (textoStatus === 'En proceso') { // Asegúrate que coincida con tu Excel
+                estado.classList.add('enproceso');
+            } else if (textoStatus === 'Terminado'){
+                estado.classList.add('terminado')
+            } else if (textoStatus === 'Enviado') {
+                estado.classList.add('enviado');
+            } else if (textoStatus === 'Entregado') {
+                estado.classList.add('entregado');
+            }
         }
 
     } catch (error) {

@@ -25,9 +25,11 @@ const coordenadasProvincias = {
 
 const opcionesPersonalizacion = [
     { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: 'assets/opciones/basico.jpg' },
-    { id: 'lazo', nombre: 'Agregar Lazo', precio: 1000, img: 'assets/opciones/lazo.jpg' },
-    { id: 'tutu', nombre: 'Agregar Tutú', precio: 1500, img: 'assets/opciones/tutu.jpg' },
-    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/bordado.jpg' }
+    { id: 'lazo-tela', nombre: 'Agregar Lazo de Tela', precio: 1000, img: 'assets/opciones/lazo-tela.jpg' },
+    { id: 'lazo-cintas', nombre: 'Agregar Lazo de Cintas', precio: 1000, img: 'assets/opciones/lazo-cintas.jpg' },
+    { id: 'volado', nombre: 'Agregar Volado', precio: 1500, img: 'assets/opciones/volado.jpg' },
+    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/bordado.jpg' },
+    { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/mosaico.jpg' }
 ];
 
 // ================== INIT ==================
@@ -58,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inicializarMapa();
     cargarTelasDinamicas();
-    //configurarEventosBordado();
     cargarOpcionesPersonalizacion();
 });
 
@@ -184,8 +185,6 @@ async function cargarTelasDinamicas() {
 
                 document.getElementById('tela-seleccionada').value = id;
 
-                gestionarSeccionPersonalizacion(card.dataset.bordable);
-
             });
 
             contenedor.appendChild(card);
@@ -193,33 +192,6 @@ async function cargarTelasDinamicas() {
 
     } catch (error) {
         console.error("Error al cargar telas:", error);
-    }
-}
-
-// ================== BORDADO ==================
-/*function configurarEventosBordado() {
-    const opciones = document.querySelectorAll('input[name="tipo-bordado"]');
-
-    opciones.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.checked) {
-                document.getElementById('tipo-bordado').value =
-                    radio.value;
-            }
-        });
-    });
-}*/
-
-function gestionarSeccionPersonalizacion(esBordable) {
-    const seccion = document.getElementById('seccion-personalizacion');
-    const input = document.getElementById('tipo-bordado');
-
-    if (esBordable === 'SI') {
-        seccion.style.display = 'block';
-        input.value = "sin_bordar";
-    } else {
-        seccion.style.display = 'none';
-        input.value = "No permite bordado";
     }
 }
 
@@ -237,7 +209,7 @@ function cargarOpcionesPersonalizacion() {
         card.innerHTML = `
             <img src="${opc.img}" alt="${opc.nombre}" onerror="this.src='assets/Logo.jpg';">
             <span>${opc.nombre}</span>
-            <small>${opc.precio > 0 ? '+$' + opc.precio : 'Gratis'}</small>
+            <small>${opc.precio > 0 ? '+$' + opc.precio : ''}</small>
         `;
 
         card.onclick = () => {
@@ -373,17 +345,13 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', async (
 
     const trackingID = generarCodigoSeguimiento();
 
-    const bordado =
-        document.getElementById('tipo-bordado').value ||
-        "Sin Bordado";
-
     const pedido = {
         cliente: document.getElementById('nombre-cliente').value,
         tracking_id: trackingID,
         email: document.getElementById('email-cliente').value,
         telefono: document.getElementById('telefono-cliente').value,
         tela: document.getElementById('tela-seleccionada').value,
-        bordado,
+        personalizacion : document.getElementById('personalizacion-seleccionada').value,
         provincia: document.getElementById('select-provincia').value,
         ciudad: document.getElementById('input-ciudad').value,
         calle: document.getElementById('input-calle').value,
@@ -654,6 +622,8 @@ function renderizarCarrito() {
     const lista = document.getElementById('cart-items');
     const totalTxt = document.getElementById('total-price');
     const contador = document.getElementById('cart-count');
+    const cartBtn = document.getElementById('cart-button');
+    
 
     if (!lista || !totalTxt || !contador) return;
 
@@ -663,6 +633,13 @@ function renderizarCarrito() {
 
     if (carrito.length === 0) {
         lista.innerHTML = '<p class="empty-msg">El carrito está vacío</p>';
+    }
+
+    if (cartBtn) {
+    cartBtn.style.transform = "scale(1.5) translateY(-5px)";
+    setTimeout(() => {
+        cartBtn.style.transform = "scale(1) translateY(0)";
+    }, 200);
     }
 
     carrito.forEach(item => {
@@ -686,6 +663,7 @@ function renderizarCarrito() {
 
     totalTxt.innerText = total;
     contador.innerText = unidades;
+    
 }
 
 // ================== ACCIONES ==================
@@ -704,8 +682,7 @@ function agregarAlCarritoPersonalizado(producto) {
         cartBtn.classList.add('pulse-animation');
         setTimeout(() => cartBtn.classList.remove('pulse-animation'), 500);
     }
-
-    alert("¡Producto agregado al carrito!");
+    
 }
 
 // ================== BOTÓN FINAL ==================
@@ -717,7 +694,9 @@ if (btnAgregarFinal) {
 
         const telaId = document.getElementById('tela-seleccionada').value;
         const telaCard = document.querySelector('.card-opcion.seleccionada');
-        const bordadoTipo = document.getElementById('tipo-bordado').value;
+        const personalizacion = document.getElementById('personalizacion-seleccionada').value;
+        
+        
 
         if (!telaId || !telaCard) {
             alert("Por favor, selecciona primero una tela.");
@@ -727,15 +706,12 @@ if (btnAgregarFinal) {
         const nombreTela = telaCard.querySelector('span').innerText;
         const precioBase = parseFloat(telaCard.dataset.precio);
 
-        let extraBordado = 0;
-        if (bordadoTipo === 'contorno') extraBordado = 1500;
-        if (bordadoTipo === 'relleno') extraBordado = 2500;
 
         const productoParaCarrito = {
-            id: `${telaId}-${bordadoTipo}-${Date.now()}`,
+            id: `${telaId}-${personalizacion}-${Date.now()}`,
             nombre: `Tote ${nombreTela}`,
-            detalle: `Bordado: ${bordadoTipo}`,
-            precio: precioBase + extraBordado,
+            detalle: `Personalificacion: `,
+            precio: precioBase,
             cantidad: 1
         };
 

@@ -36,7 +36,7 @@
 
                 <div class="logo-img">
                     <a href="index.html">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img" >
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
                     </a>
                 </div>
 
@@ -47,7 +47,7 @@
 
                     <button class="menu-toggle" id="mobile-menu">
                         ☰
-                    </button>       
+                    </button>
                 </nav>
             </header>
 
@@ -98,48 +98,65 @@
     <!-- ==================== COMPRA ==================== -->
     <section id="compra" class="oculto">
 
-        <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
-        <br><br>
+        <div class="site-container">
 
-        <!-- Paso 1 -->
-        <section class="paso">
-            <h2>Paso 1: Elige tu Tela</h2>
-            <div id="contenedor-telas" class="grid-seleccion"></div>
-            <input type="hidden" id="tela-seleccionada">
-        </section>
+            <header class="main-header">
+                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
 
-        <!-- Bordado -->
-        <section id="seccion-bordado" class="paso" style="display: none;">
-            <h3>Personalización de Bordado</h3>
+                <div class="logo-img">
+                    <a href="#inicio">
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                    </a>
+                </div>
 
-            <div class="opciones-bordado">
-                <label>
-                    <input type="radio" name="tipo-bordado" value="sin_bordar" checked>
-                    Sin Bordar
-                </label>
+                <div class="space"></div>
+            </header>
+    
 
-                <br>
+            <!-- Paso 1 -->
+            <section class="paso">
+                <h2>Paso 1: Elige tu Tela</h2>
+                <div id="contenedor-telas" class="grid-seleccion"></div>
+                <input type="hidden" id="tela-seleccionada">
+            </section>
 
-                <label>
-                    <input type="radio" name="tipo-bordado" value="contorno" data-extra="1500">
-                    Bordado de Contorno (+$1500)
-                </label>
+            <section id="seccion-personalizacion" class="paso" style="display: none;">
+                <h3>Paso 2: Tipo de Personalización</h3>
+                <div id="contenedor-personalizacion" class="grid-seleccion">
+                </div>
+                <input type="hidden" id="personalizacion-seleccionada" value="sin-nada">
+            </section>
 
-                <br>
-
-                <label>
-                    <input type="radio" name="tipo-bordado" value="relleno" data-extra="2500">
-                    Bordado con Relleno (+$2500)
-                </label>
+            <div class="checkout-actions">
+                <button id="btn-agregar-final" class="btn-main-action">
+                Agregar al Carrito
+                </button>
             </div>
+            
+            <div id="cart-container" class="cart-container">
+                <div id="cart-window" class="cart-window oculto">
+                    <div class="cart-header">
+                        <span>Tu Pedido</span>
+                        <button id="close-cart">×</button>
+                    </div>
+                    <div id="cart-items" class="cart-items">
+                        <p class="empty-msg">El carrito está vacío</p>
+                    </div>
+                    <div class="cart-footer">
+                        <div class="cart-total">Total: $<span id="total-price">0</span></div>
+                        <button id="btn-checkout" class="btn-pay">Pagar ahora</button>
+                    </div>
+                </div>
 
-            <div id="personalizacion-extra" class="campo oculto" style="margin-top: 15px;">
-                <label for="letras-bordado">Escribí tu frase aquí:</label>
-                <input type="text" id="letras-bordado">
+                <div id="cart-button" class="floating-cart">
+                    <span class="cart-icon"><img src="assets/carrito-blanco.png" alt="carrito"></span>
+                    <span id="cart-count">0</span>
+                </div> 
             </div>
-        </section>
-
-        <hr>
+        </div>    
+    </section>
+        
+    <section id="datos-comprador" class="oculto">
 
         <!-- Paso 2 -->
         <section class="paso">
@@ -245,15 +262,19 @@
     <!-- ================== SEGUIMIENTO ================== -->
     <section id="seguimiento" class="oculto">
         <div class="site-container">
+
             <header class="main-header">
                 <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+
                 <div class="logo-img">
                     <a href="#inicio">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img" >
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
                     </a>
                 </div>
-                <div class= "space"></div>
+
+                <div class="space"></div>
             </header>
+
             <main class="central-gallery">
                 <h2>Seguimiento de pedido</h2>
 
@@ -265,7 +286,7 @@
                 <div id="resultado-busqueda" class="oculto">
                     <p class="status" id="estado-pedido"></p>
                 </div>
-                
+
             </main>
         </div>
     </section>

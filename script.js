@@ -23,6 +23,13 @@ const coordenadasProvincias = {
     "CABA": [-34.6037, -58.3816]
 };
 
+const opcionesPersonalizacion = [
+    { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: 'assets/opciones/basico.jpg' },
+    { id: 'lazo', nombre: 'Agregar Lazo', precio: 1000, img: 'assets/opciones/lazo.jpg' },
+    { id: 'tutu', nombre: 'Agregar Tutú', precio: 1500, img: 'assets/opciones/tutu.jpg' },
+    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/bordado.jpg' }
+];
+
 // ================== INIT ==================
 document.addEventListener('DOMContentLoaded', () => {
     const btnPedido = document.querySelector('.cta-container .btn-main-action');
@@ -51,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inicializarMapa();
     cargarTelasDinamicas();
-    configurarEventosBordado();
+    //configurarEventosBordado();
+    cargarOpcionesPersonalizacion();
 });
 
 // ================== MAPA ==================
@@ -176,7 +184,8 @@ async function cargarTelasDinamicas() {
 
                 document.getElementById('tela-seleccionada').value = id;
 
-                gestionarSeccionBordado(card.dataset.bordable);
+                gestionarSeccionPersonalizacion(card.dataset.bordable);
+
             });
 
             contenedor.appendChild(card);
@@ -188,22 +197,22 @@ async function cargarTelasDinamicas() {
 }
 
 // ================== BORDADO ==================
-function configurarEventosBordado() {
+/*function configurarEventosBordado() {
     const opciones = document.querySelectorAll('input[name="tipo-bordado"]');
 
     opciones.forEach(radio => {
         radio.addEventListener('change', () => {
             if (radio.checked) {
-                document.getElementById('bordado-seleccionado').value =
+                document.getElementById('tipo-bordado').value =
                     radio.value;
             }
         });
     });
-}
+}*/
 
-function gestionarSeccionBordado(esBordable) {
-    const seccion = document.getElementById('seccion-bordado');
-    const input = document.getElementById('bordado-seleccionado');
+function gestionarSeccionPersonalizacion(esBordable) {
+    const seccion = document.getElementById('seccion-personalizacion');
+    const input = document.getElementById('tipo-bordado');
 
     if (esBordable === 'SI') {
         seccion.style.display = 'block';
@@ -212,6 +221,33 @@ function gestionarSeccionBordado(esBordable) {
         seccion.style.display = 'none';
         input.value = "No permite bordado";
     }
+}
+
+// ================== PERSONALIZACION ==================
+
+function cargarOpcionesPersonalizacion() {
+    const contenedor = document.getElementById('contenedor-personalizacion');
+    contenedor.innerHTML = "";
+
+    opcionesPersonalizacion.forEach(opc => {
+        const card = document.createElement('div');
+        card.className = 'card-opcion';
+        if(opc.id === 'sin-nada') card.classList.add('seleccionada');
+
+        card.innerHTML = `
+            <img src="${opc.img}" alt="${opc.nombre}" onerror="this.src='assets/Logo.jpg';">
+            <span>${opc.nombre}</span>
+            <small>${opc.precio > 0 ? '+$' + opc.precio : 'Gratis'}</small>
+        `;
+
+        card.onclick = () => {
+            document.querySelectorAll('#contenedor-personalizacion .card-opcion')
+                    .forEach(c => c.classList.remove('seleccionada'));
+            card.classList.add('seleccionada');
+            document.getElementById('personalizacion-seleccionada').value = opc.id;
+        };
+        contenedor.appendChild(card);
+    });
 }
 
 // ================== DIRECCIONES ==================
@@ -338,7 +374,7 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', async (
     const trackingID = generarCodigoSeguimiento();
 
     const bordado =
-        document.getElementById('bordado-seleccionado').value ||
+        document.getElementById('tipo-bordado').value ||
         "Sin Bordado";
 
     const pedido = {
@@ -589,3 +625,120 @@ window.addEventListener('hashchange', function() {
         mostrarVista(vistaDeseada);
     }
 });
+
+// ================== CARRITO ==================
+
+let carrito = [];
+
+// ================== UI CARRITO ==================
+
+const cartButton = document.getElementById('cart-button');
+const cartWindow = document.getElementById('cart-window');
+const closeCart = document.getElementById('close-cart');
+
+if (cartButton && cartWindow) {
+    cartButton.onclick = () => {
+        cartWindow.classList.toggle('oculto');
+    };
+}
+
+if (closeCart && cartWindow) {
+    closeCart.onclick = () => {
+        cartWindow.classList.add('oculto');
+    };
+}
+
+// ================== RENDER ==================
+
+function renderizarCarrito() {
+    const lista = document.getElementById('cart-items');
+    const totalTxt = document.getElementById('total-price');
+    const contador = document.getElementById('cart-count');
+
+    if (!lista || !totalTxt || !contador) return;
+
+    lista.innerHTML = "";
+    let total = 0;
+    let unidades = 0;
+
+    if (carrito.length === 0) {
+        lista.innerHTML = '<p class="empty-msg">El carrito está vacío</p>';
+    }
+
+    carrito.forEach(item => {
+        total += item.precio * item.cantidad;
+        unidades += item.cantidad;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+
+        div.innerHTML = `
+            <div>
+                <strong>${item.nombre}</strong><br>
+                <small>${item.detalle || ""}</small><br>
+                <small>$${item.precio * item.cantidad}</small>
+            </div>
+            <button class="btn-remove" onclick="eliminarDelCarrito('${item.id}')">Quitar</button>
+        `;
+
+        lista.appendChild(div);
+    });
+
+    totalTxt.innerText = total;
+    contador.innerText = unidades;
+}
+
+// ================== ACCIONES ==================
+
+function eliminarDelCarrito(id) {
+    carrito = carrito.filter(item => item.id !== id);
+    renderizarCarrito();
+}
+
+function agregarAlCarritoPersonalizado(producto) {
+    carrito.push(producto);
+    renderizarCarrito();
+
+    const cartBtn = document.getElementById('cart-button');
+    if (cartBtn) {
+        cartBtn.classList.add('pulse-animation');
+        setTimeout(() => cartBtn.classList.remove('pulse-animation'), 500);
+    }
+
+    alert("¡Producto agregado al carrito!");
+}
+
+// ================== BOTÓN FINAL ==================
+
+const btnAgregarFinal = document.getElementById('btn-agregar-final');
+
+if (btnAgregarFinal) {
+    btnAgregarFinal.addEventListener('click', () => {
+
+        const telaId = document.getElementById('tela-seleccionada').value;
+        const telaCard = document.querySelector('.card-opcion.seleccionada');
+        const bordadoTipo = document.getElementById('tipo-bordado').value;
+
+        if (!telaId || !telaCard) {
+            alert("Por favor, selecciona primero una tela.");
+            return;
+        }
+
+        const nombreTela = telaCard.querySelector('span').innerText;
+        const precioBase = parseFloat(telaCard.dataset.precio);
+
+        let extraBordado = 0;
+        if (bordadoTipo === 'contorno') extraBordado = 1500;
+        if (bordadoTipo === 'relleno') extraBordado = 2500;
+
+        const productoParaCarrito = {
+            id: `${telaId}-${bordadoTipo}-${Date.now()}`,
+            nombre: `Tote ${nombreTela}`,
+            detalle: `Bordado: ${bordadoTipo}`,
+            precio: precioBase + extraBordado,
+            cantidad: 1
+        };
+
+        agregarAlCarritoPersonalizado(productoParaCarrito);
+    });
+}

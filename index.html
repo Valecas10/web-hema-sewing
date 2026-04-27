@@ -144,7 +144,7 @@
                     </div>
                     <div class="cart-footer">
                         <div class="cart-total">Total: $<span id="total-price">0</span></div>
-                        <button id="btn-checkout" class="btn-pay" onclick="mostrarVista('datos-comprador')">
+                        <button id="btn-checkout" class="btn-pay btn-deshabilitado" onclick="mostrarVista('datos-comprador')">
                             Pagar ahora
                         </button>
                     </div>
@@ -153,11 +153,12 @@
                 <div id="cart-button" class="floating-cart">
                     <span class="cart-icon"><img src="assets/carrito-blanco.png" alt="carrito"></span>
                     <span id="cart-count">0</span>
-                    
                 </div> 
             </div>
         </div>    
     </section>
+
+    <!-- ==================== DATOS COMPRADOR ==================== -->
         
     <section id="datos-comprador" class="oculto">
 
@@ -165,7 +166,7 @@
 
 
             <header class="main-header">
-                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+                <button class="btn-volver" onclick="mostrarVista('armar')">← Volver</button>
 
                 <div class="logo-img">
                     <a href="#inicio">
@@ -198,15 +199,7 @@
                     </div>
 
                 </div>
-        </div>
-    </section>
-    
-    <section id="dirreccion-comprador" class="oculto">
-        <!-- Paso 3 -->
-        <section id="seccion-direccion" class="paso">
-            <h3>Paso 3: Datos de Entrega</h3>
-
-            <div class="formulario-grid">
+                <h3>Paso 3: Datos de Entrega</h3>
 
                 <div class="campo">
                     <label>Provincia:</label>
@@ -256,28 +249,27 @@
                     <input type="text" id="dato-extra" placeholder="Ej: Piso/Departamento">
                 </div>
 
+                
+
+                <div id="mapa-libre"></div>
+            </section>
+            
+            <div style="margin-top: 30px; padding-bottom: 50px;">
+                <button id="boton-enviar-pedido" style="
+                    background-color: #a0816c;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    ">
+                    Confirmar Pedido
+                </button>
             </div>
 
-            <div id="mapa-libre"></div>
-        </section>
-
-        <!-- Acciones -->
-        <div style="margin-top: 30px; padding-bottom: 50px;">
-            <button id="boton-test">Calcular Presupuesto</button>
-
-            <button id="boton-enviar-pedido" style="
-                background-color: #a0816c;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            ">
-                Confirmar Pedido
-            </button>
         </div>
-
     </section>
+    
 
     <!-- ================== SEGUIMIENTO ================== -->
     <section id="seguimiento" class="oculto">
@@ -291,7 +283,6 @@
                         <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
                     </a>
                 </div>
-
                 <div class="space"></div>
             </header>
 

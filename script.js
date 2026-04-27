@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    const btnDatosComprador = document.querySelector('.armar');
+    if(btnDatosComprador){
+        btnDatosComprador.onclick = () => mostrarVista('datos-comprador');
+    }
+
     const menuBtn = document.getElementById('mobile-menu');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -443,17 +448,16 @@ function mostrarVista(vista) {
     document.getElementById('inicio').classList.add('oculto');
     document.getElementById('compra').classList.add('oculto');
     document.getElementById('seguimiento').classList.add('oculto');
+    document.getElementById('datos-comprador').classList.add('oculto');
     localStorage.setItem('vistaActual', vista);
     window.location.hash = vista;
 
     if (vista === 'inicio') {
         document.getElementById('inicio').classList.remove('oculto');
-
     } else if (vista === 'armar') {
         document.getElementById('compra').classList.remove('oculto');
-
-        setTimeout(() => mapa.invalidateSize(), 300);
-
+    } else if (vista === 'datos-comprador'){
+        document.getElementById('datos-comprador').classList.remove('oculto');
     } else if (vista === 'seguimiento') {
         document.getElementById('seguimiento').classList.remove('oculto');
     }
@@ -623,6 +627,7 @@ function renderizarCarrito() {
     const totalTxt = document.getElementById('total-price');
     const contador = document.getElementById('cart-count');
     const cartBtn = document.getElementById('cart-button');
+    const btnCheckout = document.getElementById('btn-checkout');
     
 
     if (!lista || !totalTxt || !contador) return;
@@ -633,6 +638,16 @@ function renderizarCarrito() {
 
     if (carrito.length === 0) {
         lista.innerHTML = '<p class="empty-msg">El carrito está vacío</p>';
+        if (btnCheckout) {
+            btnCheckout.disabled = true;
+            btnCheckout.classList.add('btn-deshabilitado');
+        }
+    } else {
+        // --- Lógica de desbloqueo ---
+        if (btnCheckout) {
+            btnCheckout.disabled = false;
+            btnCheckout.classList.remove('btn-deshabilitado');
+        }
     }
 
     if (cartBtn) {
@@ -727,8 +742,13 @@ document.getElementById('cart-button').onclick = () => {
 document.getElementById('close-cart').onclick = (e) => {
     e.stopPropagation();
     cartWindow.classList.remove('activo');
+    cartWindow.classList.toggle('oculto');
 };
 
 window.addEventListener('load', () => {
     document.getElementById('cart-window').classList.add('oculto');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarCarrito(); // Esto inicializa el estado del botón al cargar la web
 });

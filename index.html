@@ -144,7 +144,9 @@
                     </div>
                     <div class="cart-footer">
                         <div class="cart-total">Total: $<span id="total-price">0</span></div>
-                        <button id="btn-checkout" class="btn-pay">Pagar ahora</button>
+                        <button id="btn-checkout" class="btn-pay" onclick="mostrarVista('datos-comprador')">
+                            Pagar ahora
+                        </button>
                     </div>
                 </div>
 
@@ -159,30 +161,47 @@
         
     <section id="datos-comprador" class="oculto">
 
-        <!-- Paso 2 -->
-        <section class="paso">
-            <h3>Paso 2: Tus Datos de Contacto</h3>
+        <div class="site-container">
 
-            <div id="datos-cliente" class="formulario-grid">
 
-                <div class="campo">
-                    <label for="nombre-cliente">Tu nombre completo:</label>
-                    <input type="text" id="nombre-cliente" required>
+            <header class="main-header">
+                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+
+                <div class="logo-img">
+                    <a href="#inicio">
+                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                    </a>
                 </div>
 
-                <div class="campo">
-                    <label for="email-cliente">Tu email:</label>
-                    <input type="email" id="email-cliente" required>
+                <div class="space"></div>
+            </header>
+
+            <!-- Paso 2 -->
+            <section class="paso">
+                <h3>Paso 2: Tus Datos de Contacto</h3>
+
+                <div id="datos-cliente" class="formulario-grid">
+
+                    <div class="campo">
+                        <label for="nombre-cliente">Tu nombre completo:</label>
+                        <input type="text" id="nombre-cliente" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email-cliente">Tu email:</label>
+                        <input type="email" id="email-cliente" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="telefono-cliente">Tu número telefónico:</label>
+                        <input type="tel" id="telefono-cliente" required>
+                    </div>
+
                 </div>
-
-                <div class="campo">
-                    <label for="telefono-cliente">Tu número telefónico:</label>
-                    <input type="tel" id="telefono-cliente" required>
-                </div>
-
-            </div>
-        </section>
-
+        </div>
+    </section>
+    
+    <section id="dirreccion-comprador" class="oculto">
         <!-- Paso 3 -->
         <section id="seccion-direccion" class="paso">
             <h3>Paso 3: Datos de Entrega</h3>

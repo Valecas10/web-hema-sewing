@@ -718,3 +718,17 @@ if (btnAgregarFinal) {
         agregarAlCarritoPersonalizado(productoParaCarrito);
     });
 }
+
+document.getElementById('cart-button').onclick = () => {
+    cartWindow.classList.remove('oculto');
+    cartWindow.classList.toggle('activo');
+};
+
+document.getElementById('close-cart').onclick = (e) => {
+    e.stopPropagation();
+    cartWindow.classList.remove('activo');
+};
+
+window.addEventListener('load', () => {
+    document.getElementById('cart-window').classList.add('oculto');
+});

@@ -3,6 +3,8 @@
  */
 
 // ================== CONFIG ==================
+const PROXY_CORS = "https://api.allorigins.win/raw?url=";
+
 const URL_EXCEL_TELAS =
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
 
@@ -17,6 +19,16 @@ let direccionValidada = "";
 let latitudFinal = "";
 let longitudFinal = "";
 
+const BBOX_ARG = "-73,-55,-53,-21";
+
+const estadoUbicacion = {
+    provincia: null,
+    ciudad: null,
+    coords: {
+        lat: -38.4161,
+        lon: -63.6167
+    }
+};
 
 const coordenadasProvincias = {
     "Buenos Aires": [-37.15, -58.48],
@@ -31,6 +43,14 @@ const opcionesPersonalizacion = [
     { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/bordado.jpg' },
     { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/mosaico.jpg' }
 ];
+
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
 
 // ================== INIT ==================
 document.addEventListener('DOMContentLoaded', () => {
@@ -53,6 +73,70 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDatosComprador.onclick = () => mostrarVista('datos-comprador');
     }
 
+    const btnEnviar = document.getElementById('boton-enviar-pedido')
+    if(btnEnviar){
+
+        btnEnviar.addEventListener('click', async () => {
+
+        const boton = document.getElementById('boton-enviar-pedido');
+
+        const trackingID = generarCodigoSeguimiento();
+
+        const pedido = {
+            cliente: document.getElementById('nombre-cliente').value,
+            tracking_id: trackingID,
+            email: document.getElementById('email-cliente').value,
+            telefono: document.getElementById('telefono-cliente').value,
+            tela: document.getElementById('tela-seleccionada').value,
+            personalizacion : document.getElementById('personalizacion-seleccionada').value,
+            provincia: document.getElementById('select-provincia').value,
+            ciudad: document.getElementById('input-ciudad').value,
+            calle: document.getElementById('input-calle').value,
+            link_mapa: `https://www.google.com/maps?q=${latitudFinal},${longitudFinal}`,
+            dato_extra: document.getElementById('dato-extra').value,
+            direccionMapa: direccionValidada
+        };
+
+        if (!pedido.cliente || !pedido.tela || !latitudFinal) {
+            alert("Completa los datos y selecciona una dirección válida.");
+            return;
+        }
+
+        boton.disabled = true;
+        const textoOriginal = boton.innerText;
+        boton.innerText = "Procesando pedido...";
+
+        try {
+            await fetch(URL_WEB_APP_EXCEL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(pedido)
+            });
+
+            await emailjs.send(
+                'service_gnblx8l',
+                'template_76chn1e',
+                pedido
+            );
+
+            alert(`¡Pedido enviado! Código: ${trackingID}`);
+
+            if (pedido.personalizacion !== 'sin-nada') {
+            enviarAWhatsApp(pedido);
+            }
+
+            boton.innerText = 'Confirmado';
+
+        } catch (error) {
+            console.error(error);
+            alert("Error al enviar.");
+            boton.disabled = false;
+            boton.innerText = textoOriginal;
+        }
+    });
+
+    }
+
     const menuBtn = document.getElementById('mobile-menu');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -70,7 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ================== MAPA ==================
 function inicializarMapa() {
-    mapa = L.map('mapa-libre').setView([-38.4161, -63.6167], 4);
+    const inputCalle = document.getElementById('input-calle');
+    mapa = L.map('mapa-libre').setView(
+        [estadoUbicacion.coords.lat, estadoUbicacion.coords.lon],
+        4
+    );
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
@@ -81,38 +169,33 @@ function inicializarMapa() {
     }).addTo(mapa);
 
     marcador.on('dragend', async () => {
-        const posicion = marcador.getLatLng();
+        const pos = marcador.getLatLng();
 
-        latitudFinal = posicion.lat;
-        longitudFinal = posicion.lng;
+        latitudFinal = pos.lat;
+        longitudFinal = pos.lng;
 
         try {
             const res = await fetch(
-                `https://photon.komoot.io/reverse?lon=${longitudFinal}&lat=${latitudFinal}`
+                `https://photon.komoot.io/reverse?lon=${pos.lng}&lat=${pos.lat}`
             );
 
             const data = await res.json();
 
             if (data.features && data.features.length > 0) {
-                const info = data.features[0].properties;
+                const p = data.features[0].properties;
 
-                let calle = info.street || info.name || "";
-                let altura = info.housenumber || "";
+                const direccion = `${p.street || p.name || 'Direccion Desconocida'} ${p.housenumber || ''}`;
 
-                if (calle === altura) {
-                    calle = info.district || info.city || "Dirección marcada";
+                // Actualizamos el input y la variable de validación
+                if (inputCalle) {
+                    inputCalle.value = direccion;
                 }
-
-                const direccionTexto = `${calle} ${altura}`.trim();
-
-                if (direccionTexto) {
-                    document.getElementById('input-calle').value = direccionTexto;
-                    direccionValidada = direccionTexto;
-                }
+                direccionValidada = `${direccion}, ${p.city || ''}`;
             }
-        } catch (error) {
-            console.error("Error en reverse geocoding:", error);
-        }
+
+        } catch (e) {
+        console.error(e);
+    }
     });
 
     configurarEventosDireccion();
@@ -236,111 +319,84 @@ function configurarEventosDireccion() {
     const inputCalle = document.getElementById('input-calle');
     const sugerenciasCalle = document.getElementById('contenedor-sugerencias');
 
+    if (!sugerenciasCiudad || !sugerenciasCalle) return;
+
     selectProvincia.addEventListener('change', (e) => {
         const prov = e.target.value;
 
         if (prov && coordenadasProvincias[prov]) {
-            mapa.setView(
-                coordenadasProvincias[prov],
-                prov === "CABA" ? 12 : 6
-            );
+            const [lat, lon] = coordenadasProvincias[prov];
+
+            estadoUbicacion.provincia = prov;
+            estadoUbicacion.coords = { lat, lon };
+
+            mapa.flyTo([lat, lon], prov === "CABA" ? 12 : 7, {
+            duration: 1.5
+            });
         }
     });
 
-    inputCiudad.addEventListener('input', async () => {
+    inputCiudad.addEventListener('input',debounce( async () => {
         const query = inputCiudad.value.trim();
         const prov = selectProvincia.value;
 
-        if (query.length < 3 || !prov) return;
+        if (query.length < 3 || !prov){
+            sugerenciasCiudad.innerHTML = "";
+            return;
+        } 
 
         try {
-            const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query + " " + prov)}&limit=5&osm_tag=place:city&osm_tag=place:town`;
+            const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query + " " + prov + " Argentina")}&limit=10&bbox=${BBOX_ARG}`;
 
             const res = await fetch(url);
             const data = await res.json();
 
-            sugerenciasCiudad.innerHTML = "";
-
-            data.features.forEach(lugar => {
-                const p = lugar.properties;
-                const nombre = p.name || p.city;
-
-                const div = document.createElement('div');
-                div.className = 'sugerencia-item';
-
-                div.innerHTML = `
-                    <strong>${nombre}</strong>
-                    <small>(${p.state || ''})</small>
-                `;
-
-                div.onclick = () => {
-                    const [lon, lat] = lugar.geometry.coordinates;
-
-                    inputCiudad.value = nombre;
-                    mapa.setView([lat, lon], 13);
-
-                    sugerenciasCiudad.innerHTML = "";
-                };
-
-                sugerenciasCiudad.appendChild(div);
-            });
+            renderizarSugerenciasCiudad(data.features);
 
         } catch (e) {
             console.error(e);
         }
-    });
+    },200));
 
-    inputCalle.addEventListener('input', async () => {
-        const calle = inputCalle.value.trim();
-        const ciudad = inputCiudad.value.trim();
+    inputCalle.addEventListener('input',debounce( async () => {
+    const ciudad = inputCiudad.value.trim();
+    const provincia = selectProvincia.value;
+    const calle = inputCalle.value.trim();
 
-        if (calle.length < 4 || !ciudad) return;
+    // Bajamos a 3 caracteres para que sea más fluido
+    if (calle.length < 3 || !ciudad) {
+        sugerenciasCalle.innerHTML = "";   
+        return;
+    }
+    try {
+        // Obtenemos las coordenadas de la ciudad que ya guardamos en estadoUbicacion
+        const { lat, lon } = estadoUbicacion.coords;
 
-        try {
-            const res = await fetch(
-                `https://photon.komoot.io/api/?q=${encodeURIComponent(calle + " " + ciudad)}&limit=10`
-            );
+        // Construimos la URL con lat y lon para priorizar resultados locales
+        // También incluimos la provincia y "Argentina" en el texto de búsqueda para mayor precisión
+        const queryBusqueda = `${calle}, ${ciudad}, ${provincia}, Argentina`;
+        const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(queryBusqueda)}&lat=${lat}&lon=${lon}&limit=10`;
 
-            const data = await res.json();
+        const res = await fetch(url);
+        const data = await res.json();
 
-            sugerenciasCalle.innerHTML = "";
+        renderizarSugerenciasCalle(data.features);
 
-            data.features.forEach(lugar => {
-                const p = lugar.properties;
+    } catch (e) {
+        console.error("Error buscando calle:", e);
+    }
+    }),300);
 
-                const dir = `${p.street || p.name || ''} ${p.housenumber || ''}`;
+}
 
-                const div = document.createElement('div');
-                div.className = 'sugerencia-item';
+function actualizarMarcador(lat, lon, zoom ) {
+    if (!mapa || !marcador) return;
 
-                div.innerHTML = `
-                    <strong>${dir}</strong>
-                    <br>
-                    <small>${p.city || ''}</small>
-                `;
+    marcador.setLatLng([lat, lon]);
+    mapa.flyTo([lat, lon], zoom, { duration: 1.2 });
 
-                div.onclick = () => {
-                    const [lon, lat] = lugar.geometry.coordinates;
-
-                    mapa.setView([lat, lon], 17);
-                    marcador.setLatLng([lat, lon]);
-
-                    inputCalle.value = dir;
-                    direccionValidada = `${dir}, ${p.city || ''}`;
-
-                    latitudFinal = lat;
-                    longitudFinal = lon;
-
-                    sugerenciasCalle.innerHTML = "";
-                };
-
-                sugerenciasCalle.appendChild(div);
-            });
-
-        } catch (e) {
-            console.error(e);
-        }
-    });
+    latitudFinal = lat;
+    longitudFinal = lon;
 }
 
 // ================== PEDIDO ==================
@@ -389,11 +445,8 @@ document.getElementById('boton-enviar-pedido').addEventListener('click', async (
 
         alert(`¡Pedido enviado! Código: ${trackingID}`);
 
-        if (
-            pedido.bordado !== 'sin_bordar' &&
-            pedido.bordado !== 'No permite bordado'
-        ) {
-            enviarAWhatsApp(pedido);
+        if (pedido.personalizacion !== 'sin-nada') {
+        enviarAWhatsApp(pedido);
         }
 
         boton.innerText = 'Confirmado';
@@ -458,6 +511,9 @@ function mostrarVista(vista) {
         document.getElementById('compra').classList.remove('oculto');
     } else if (vista === 'datos-comprador'){
         document.getElementById('datos-comprador').classList.remove('oculto');
+        setTimeout(() => {
+            mapa.invalidateSize();
+        }, 100);
     } else if (vista === 'seguimiento') {
         document.getElementById('seguimiento').classList.remove('oculto');
     }
@@ -608,7 +664,7 @@ const cartButton = document.getElementById('cart-button');
 const cartWindow = document.getElementById('cart-window');
 const closeCart = document.getElementById('close-cart');
 
-if (cartButton && cartWindow) {
+/*if (cartButton && cartWindow) {
     cartButton.onclick = () => {
         cartWindow.classList.toggle('oculto');
     };
@@ -618,7 +674,7 @@ if (closeCart && cartWindow) {
     closeCart.onclick = () => {
         cartWindow.classList.add('oculto');
     };
-}
+}*/
 
 // ================== RENDER ==================
 
@@ -741,8 +797,8 @@ document.getElementById('cart-button').onclick = () => {
 
 document.getElementById('close-cart').onclick = (e) => {
     e.stopPropagation();
-    cartWindow.classList.remove('activo');
-    cartWindow.classList.toggle('oculto');
+    cartWindow.classList.remove('oculto');
+    cartWindow.classList.toggle('activo');
 };
 
 window.addEventListener('load', () => {
@@ -752,3 +808,81 @@ window.addEventListener('load', () => {
 document.addEventListener('DOMContentLoaded', () => {
     renderizarCarrito(); // Esto inicializa el estado del botón al cargar la web
 });
+
+function renderizarSugerenciasCiudad(features) {
+    const sugerenciasCiudad = document.getElementById('sugerencias-ciudad');
+    const inputCiudad = document.getElementById('input-ciudad');
+    const selectProvincia = document.getElementById('select-provincia');
+
+    //sugerenciasCiudad.innerHTML = ""; // Limpiamos lo anterior
+
+    features
+        .filter(lugar => {
+            const tipo = lugar.properties.type;
+            return tipo === 'city' || tipo === 'town' || tipo === 'village';
+        })
+        .slice(0, 5)
+        .forEach(lugar => {
+            const p = lugar.properties;
+            const nombre = p.name || p.city;
+
+            const div = document.createElement('div');
+            div.className = 'sugerencia-item';
+            div.innerHTML = `
+                <strong>${nombre}</strong>
+                <small>(${p.state || ''})</small>
+            `;
+
+            div.onclick = () => {
+                const [lon, lat] = lugar.geometry.coordinates;
+                inputCiudad.value = nombre;
+                
+                // Actualizamos el estado global de ubicación
+                estadoUbicacion.ciudad = nombre;
+                estadoUbicacion.coords = { lat, lon };
+
+                actualizarMarcador(lat, lon, 13);
+                sugerenciasCiudad.innerHTML = "";
+            };
+            sugerenciasCiudad.appendChild(div);
+        });
+}
+
+function renderizarSugerenciasCalle(features) {
+    const sugerenciasCalle = document.getElementById('contenedor-sugerencias');
+    const inputCalle = document.getElementById('input-calle');
+    const ciudadActual = document.getElementById('input-ciudad').value;
+
+    sugerenciasCalle.innerHTML = "";
+
+    features.forEach(lugar => {
+        const p = lugar.properties;
+        const nombreVia = p.street || p.name || '';
+        const altura = p.housenumber || '';
+        const dirCompleta = `${nombreVia} ${altura}`.trim();
+
+        if (!nombreVia) return;
+
+        const div = document.createElement('div');
+        div.className = 'sugerencia-item';
+        div.innerHTML = `
+            <strong>${dirCompleta}</strong>
+            <br>
+            <small>${p.city || ciudadActual}</small>
+        `;
+
+        div.onclick = () => {
+            const [lon, lat] = lugar.geometry.coordinates;
+            inputCalle.value = dirCompleta;
+
+            // Guardamos las coordenadas finales para el pedido [source: 2]
+            latitudFinal = lat;
+            longitudFinal = lon;
+            direccionValidada = `${dirCompleta}, ${p.city || ciudadActual}`;
+
+            actualizarMarcador(lat, lon, 17); // Zoom más cerca para ver la casa
+            sugerenciasCalle.innerHTML = "";
+        };
+        sugerenciasCalle.appendChild(div);
+    });
+}

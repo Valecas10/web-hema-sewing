@@ -31,8 +31,57 @@ const estadoUbicacion = {
 };
 
 const coordenadasProvincias = {
-    "Buenos Aires": [-37.15, -58.48],
-    "CABA": [-34.6037, -58.3816]
+    "Buenos Aires": [-36.6769, -60.5588],
+  "CABA": [-34.6037, -58.3816],
+  "Catamarca": [-27.3350, -66.9477],
+  "Chaco": [-26.3864, -60.7653],
+  "Chubut": [-43.3000, -65.1000],
+  "Córdoba": [-31.4201, -64.1888],
+  "Corrientes": [-28.4696, -57.8500],
+  "Entre Ríos": [-31.7333, -60.5333],
+  "Formosa": [-24.8958, -60.2750],
+  "Jujuy": [-23.3167, -65.3000],
+  "La Pampa": [-36.6167, -64.2833],
+  "La Rioja": [-29.4131, -66.8558],
+  "Mendoza": [-34.0000, -69.0000],
+  "Misiones": [-26.8754, -54.6517],
+  "Neuquén": [-38.9516, -68.0591],
+  "Río Negro": [-40.8135, -63.0000],
+  "Salta": [-24.7859, -65.4117],
+  "San Juan": [-31.5375, -68.5364],
+  "San Luis": [-33.3017, -66.3378],
+  "Santa Cruz": [-48.7500, -69.0000],
+  "Santa Fe": [-30.0000, -61.0000],
+  "Santiago del Estero": [-27.7951, -64.2615],
+  "Tierra del Fuego": [-54.5000, -67.2000],
+  "Tucumán": [-26.8241, -65.2226]
+};
+
+const zoomPorProvincia = {
+  "Buenos Aires": 6,
+  "CABA": 12,
+  "Catamarca": 7,
+  "Chaco": 7,
+  "Chubut": 6,
+  "Córdoba": 7,
+  "Corrientes": 7,
+  "Entre Ríos": 7,
+  "Formosa": 7,
+  "Jujuy": 7,
+  "La Pampa": 7,
+  "La Rioja": 7,
+  "Mendoza": 6,
+  "Misiones": 8,
+  "Neuquén": 7,
+  "Río Negro": 6,
+  "Salta": 6,
+  "San Juan": 7,
+  "San Luis": 7,
+  "Santa Cruz": 5,
+  "Santa Fe": 7,
+  "Santiago del Estero": 7,
+  "Tierra del Fuego": 7,
+  "Tucumán": 8
 };
 
 const opcionesPersonalizacion = [
@@ -319,20 +368,30 @@ function configurarEventosDireccion() {
     const inputCalle = document.getElementById('input-calle');
     const sugerenciasCalle = document.getElementById('contenedor-sugerencias');
 
+    inputCiudad.disabled = true;
+    inputCalle.disabled = true;
+
     if (!sugerenciasCiudad || !sugerenciasCalle) return;
 
     selectProvincia.addEventListener('change', (e) => {
         const prov = e.target.value;
+        
 
         if (prov && coordenadasProvincias[prov]) {
             const [lat, lon] = coordenadasProvincias[prov];
+            const zoom = zoomPorProvincia[prov];
 
             estadoUbicacion.provincia = prov;
             estadoUbicacion.coords = { lat, lon };
-
-            mapa.flyTo([lat, lon], prov === "CABA" ? 12 : 7, {
+            actualizarMarcador(lat,lon,zoom);
+            mapa.flyTo([lat, lon], zoom , {
             duration: 1.5
             });
+            inputCiudad.disabled = false;
+            limpiarCiudadYCalle();
+        }else {
+        inputCiudad.disabled = true;
+        inputCalle.disabled = true;
         }
     });
 
@@ -352,10 +411,19 @@ function configurarEventosDireccion() {
             const data = await res.json();
 
             renderizarSugerenciasCiudad(data.features);
-
+            
         } catch (e) {
             console.error(e);
         }
+
+        if (inputCiudad.value.trim().length > 0) {
+            inputCalle.disabled = false;
+        } else {
+            inputCalle.disabled = true;
+        }
+
+        limpiarCalle();
+        
     },200));
 
     inputCalle.addEventListener('input',debounce( async () => {
@@ -387,6 +455,39 @@ function configurarEventosDireccion() {
     }
     }),300);
 
+}
+
+function limpiarCiudadYCalle() {
+    const inputCiudad = document.getElementById('input-ciudad');
+    const inputCalle = document.getElementById('input-calle');
+    const sugerenciasCiudad = document.getElementById('sugerencias-ciudad');
+    const sugerenciasCalle = document.getElementById('contenedor-sugerencias');
+
+    inputCiudad.value = "";
+    inputCalle.value = "";
+
+    sugerenciasCiudad.innerHTML = "";
+    sugerenciasCalle.innerHTML = "";
+
+    inputCalle.disabled = true;
+
+    latitudFinal = null;
+    longitudFinal = null;
+
+    if (marcador) {
+        marcador.setLatLng([-38.4161, -63.6167]);
+    }
+}
+
+function limpiarCalle() {
+    const inputCalle = document.getElementById('input-calle');
+    const sugerenciasCalle = document.getElementById('contenedor-sugerencias');
+
+    inputCalle.value = "";
+    sugerenciasCalle.innerHTML = "";
+
+    latitudFinal = null;
+    longitudFinal = null;
 }
 
 function actualizarMarcador(lat, lon, zoom ) {

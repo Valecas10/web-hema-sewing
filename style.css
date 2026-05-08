@@ -547,7 +547,7 @@ body {
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    /*pointer-events: none;*/
+    pointer-events: none;
 }
 
 .cart-window {
@@ -783,4 +783,30 @@ body {
     border-radius: 12px;
     border: 1px solid var(--borde-suave);
     margin-top: 20px;
+}
+
+/* Clase que aplicaremos al contenedor 'campo' cuando haya error */
+.campo.error .input-group-hema {
+    border: 2px solid #ff4d4d !important;
+    background-color: #fff9f9;
+    position: relative;
+}
+
+/* La cruz roja */
+.campo.error::after {
+    content: '✕';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 1.2rem;
+    pointer-events: none; /* Para que no interfiera al hacer clic en el input */
+    z-index: 10;
+}
+
+/* Ajuste para que el input no pise la cruz */
+.campo.error input {
+    padding-right: 40px;
 }

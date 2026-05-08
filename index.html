@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <!-- ==================== META ==================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Hema Sewing - Piezas con alma</title>
 
-    <!-- Estilos -->
+    <!-- ==================== ESTILOS ==================== -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-    <!-- Scripts externos -->
+    <!-- ==================== LIBRERÍAS ==================== -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Inicialización EmailJS -->
+    <!-- ==================== EMAILJS ==================== -->
     <script>
         (function () {
             emailjs.init('GtTEbj4qoWdwpMU81');
@@ -23,11 +26,17 @@
 
 <body>
 
-    <!-- ==================== INICIO ==================== -->
+    <!-- ========================================================= -->
+    <!-- ======================== INICIO ========================= -->
+    <!-- ========================================================= -->
+
     <section id="inicio">
+
         <div class="site-container">
 
+            <!-- HEADER -->
             <header class="main-header">
+
                 <div class="logo">
                     <h1>HEMA</h1>
                     <span class="sub-logo-sewing">SEWING</span>
@@ -36,284 +45,569 @@
 
                 <div class="logo-img">
                     <a href="index.html">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                        <img
+                            src="assets/Logo-crudo.png"
+                            alt="HEMA"
+                            class="logo-img">
                     </a>
                 </div>
 
                 <nav class="nav-menu">
-                    <button class="btn-main-action btn-nav" onclick="mostrarVista('seguimiento')">
+
+                    <button
+                        class="btn-main-action btn-nav"
+                        onclick="mostrarVista('seguimiento')">
                         Seguimiento
                     </button>
 
-                    <button class="menu-toggle" id="mobile-menu">
+                    <button
+                        class="menu-toggle"
+                        id="mobile-menu">
                         ☰
                     </button>
+
                 </nav>
+
             </header>
 
+            <!-- HERO -->
             <main class="hero-magazine">
 
+                <!-- TEXTO IZQUIERDO -->
                 <aside class="side-text left">
+
                     <div class="promo-box">
                         <h2>TOTE BAGS</h2>
                         <p>100% ARTESANALES</p>
                     </div>
+
                 </aside>
 
+                <!-- GALERÍA CENTRAL -->
                 <section class="central-gallery">
+
                     <div class="photo-frame frame-1">
                         <div class="border-overlay"></div>
-                        <img src="assets/fotos-inicio/Modelo-1.jpg">
+
+                        <img
+                            src="assets/fotos-inicio/Modelo-1.jpg"
+                            alt="Modelo 1">
                     </div>
 
                     <div class="photo-frame frame-2">
                         <div class="border-overlay"></div>
-                        <img src="assets/fotos-inicio/Modelo-2.jpg">
+
+                        <img
+                            src="assets/fotos-inicio/Modelo-2.jpg"
+                            alt="Modelo 2">
                     </div>
 
                     <div class="photo-frame frame-3">
                         <div class="border-overlay"></div>
-                        <img src="assets/fotos-inicio/Modelo-3.png">
+
+                        <img
+                            src="assets/fotos-inicio/Modelo-3.png"
+                            alt="Modelo 3">
                     </div>
+
                 </section>
 
+                <!-- TEXTO DERECHO -->
                 <aside class="side-text right">
+
                     <div class="promo-box">
                         <h2>PIEZAS</h2>
                         <p>CON ALMA</p>
                     </div>
+
                 </aside>
 
             </main>
 
+            <!-- CTA -->
             <div class="cta-container">
-                <button class="btn-main-action" onclick="mostrarVista('armar')">
+
+                <button
+                    class="btn-main-action"
+                    onclick="mostrarVista('armar')">
+
                     EMPEZAR MI PEDIDO
+
                 </button>
+
             </div>
 
         </div>
+
     </section>
 
-    <!-- ==================== COMPRA ==================== -->
+    <!-- ========================================================= -->
+    <!-- ======================== COMPRA ========================= -->
+    <!-- ========================================================= -->
+
     <section id="compra" class="oculto">
 
         <div class="site-container">
 
+            <!-- HEADER -->
             <header class="main-header">
-                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('inicio')">
+
+                    ← Volver
+
+                </button>
 
                 <div class="logo-img">
                     <a href="#inicio">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                        <img
+                            src="assets/Logo-crudo.png"
+                            alt="HEMA"
+                            class="logo-img">
                     </a>
                 </div>
 
                 <div class="space"></div>
+
             </header>
-    
 
-            <!-- Paso 1 -->
+            <!-- PASO 1 -->
             <section class="paso">
+
                 <h2>Paso 1: Elige tu Tela</h2>
-                <div id="contenedor-telas" class="grid-seleccion"></div>
-                <input type="hidden" id="tela-seleccionada">
+
+                <div
+                    id="contenedor-telas"
+                    class="grid-seleccion">
+                </div>
+
+                <input
+                    type="hidden"
+                    id="tela-seleccionada">
+
             </section>
 
-            <section id="seccion-personalizacion" class="paso">
+            <!-- PASO 2 -->
+            <section
+                id="seccion-personalizacion"
+                class="paso">
+
                 <h3>Paso 2: Tipo de Personalización</h3>
-                <div id="contenedor-personalizacion" class="grid-seleccion">
+
+                <div
+                    id="contenedor-personalizacion"
+                    class="grid-seleccion">
                 </div>
-                <input type="hidden" id="personalizacion-seleccionada" value="sin-nada">
+
+                <input
+                    type="hidden"
+                    id="personalizacion-seleccionada"
+                    value="sin-nada">
+
             </section>
 
+            <!-- BOTÓN AGREGAR -->
             <div class="checkout-actions">
-                <button id="btn-agregar-final" class="btn-main-action">
-                Agregar al Carrito
+
+                <button
+                    id="btn-agregar-final"
+                    class="btn-main-action">
+
+                    Agregar al Carrito
+
                 </button>
+
             </div>
-            
+
+            <!-- CARRITO -->
             <div id="cart-container" class="cart-container">
-                <div id="cart-window" class="cart-window oculto">
+
+                <!-- VENTANA -->
+                <div
+                    id="cart-window"
+                    class="cart-window oculto">
+
                     <div class="cart-header">
+
                         <span>Tu Pedido</span>
-                        <button id="close-cart" class="btn-close-hema">&times;</button>
-                    </div>
-                    <div id="cart-items" class="cart-items">
-                        <p class="empty-msg">El carrito está vacío</p>
-                    </div>
-                    <div class="cart-footer">
-                        <div class="cart-total">Total: $<span id="total-price">0</span></div>
-                        <button id="btn-checkout" class="btn-pay btn-deshabilitado" onclick="mostrarVista('datos-comprador')">
-                            Pagar ahora
+
+                        <button
+                            id="close-cart"
+                            class="btn-close-hema">
+
+                            &times;
+
                         </button>
+
                     </div>
+
+                    <div
+                        id="cart-items"
+                        class="cart-items">
+
+                        <p class="empty-msg">
+                            El carrito está vacío
+                        </p>
+
+                    </div>
+
+                    <div class="cart-footer">
+
+                        <div class="cart-total">
+                            Total: $
+                            <span id="total-price">0</span>
+                        </div>
+
+                        <button
+                            id="btn-checkout"
+                            class="btn-pay btn-deshabilitado"
+                            onclick="mostrarVista('datos-comprador')">
+
+                            Pagar ahora
+
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <div id="cart-button" class="floating-cart">
-                    <span class="cart-icon"><img src="assets/carrito-blanco.png" alt="carrito"></span>
+                <!-- BOTÓN FLOTANTE -->
+                <div
+                    id="cart-button"
+                    class="floating-cart">
+
+                    <span class="cart-icon">
+                        <img
+                            src="assets/carrito-blanco.png"
+                            alt="Carrito">
+                    </span>
+
                     <span id="cart-count">0</span>
-                </div> 
+
+                </div>
+
             </div>
-        </div>    
+
+        </div>
+
     </section>
 
+    <!-- ========================================================= -->
     <!-- ==================== DATOS COMPRADOR ==================== -->
-        
+    <!-- ========================================================= -->
+
     <section id="datos-comprador" class="oculto">
 
         <div class="site-container">
 
-
+            <!-- HEADER -->
             <header class="main-header">
-                <button class="btn-volver" onclick="mostrarVista('armar')">← Volver</button>
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('armar')">
+
+                    ← Volver
+
+                </button>
 
                 <div class="logo-img">
                     <a href="#inicio">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                        <img
+                            src="assets/Logo-crudo.png"
+                            alt="HEMA"
+                            class="logo-img">
                     </a>
                 </div>
 
                 <div class="space"></div>
+
             </header>
 
-            <!-- Paso 2 -->
+            <!-- FORMULARIO -->
             <section class="paso">
+
+                <!-- DATOS CONTACTO -->
                 <h3>Tus Datos de Contacto:</h3>
 
-                <div id="datos-cliente" class="formulario-grid">
+                <div
+                    id="datos-cliente"
+                    class="formulario-grid">
 
+                    <!-- NOMBRE -->
                     <div class="campo">
+
                         <div class="input-group-hema">
-                            <span class="label-inline">Nombre:</span>
-                            <input type="text" id="nombre-cliente" placeholder="Tu nombre completo" required>
+
+                            <span class="label-inline">
+                                Nombre:
+                            </span>
+
+                            <input
+                                type="text"
+                                id="nombre-cliente"
+                                placeholder="Tu nombre completo"
+                                required>
+
                         </div>
+
                     </div>
 
+                    <!-- EMAIL -->
                     <div class="campo">
+
                         <div class="input-group-hema">
-                            <span class="label-inline">Email:</span>
-                            <input type="text" id="email-cliente" placeholder="usuario@correo.com" required>
+
+                            <span class="label-inline">
+                                Email:
+                            </span>
+
+                            <input
+                                type="text"
+                                id="email-cliente"
+                                placeholder="usuario@correo.com"
+                                required>
+
                         </div>
+
                     </div>
 
+                    <!-- TELÉFONO -->
                     <div class="campo">
+
                         <div class="input-group-hema">
-                            <span class="label-inline">Número telefónico:</span>
-                            <input type="text" id="telefono-cliente" placeholder="(Codigo de Area)-123456" required>
+
+                            <span class="label-inline">
+                                Número telefónico:
+                            </span>
+
+                            <input
+                                type="text"
+                                id="telefono-cliente"
+                                placeholder="(Codigo de Area)-123456"
+                                required>
+
                         </div>
+
                     </div>
+
                 </div>
+
+                <!-- ENTREGA -->
                 <h3>Datos de Entrega:</h3>
 
+                <!-- PROVINCIA -->
                 <div class="campo">
+
                     <div class="input-group-hema">
-                        <span class="label-inline">Provincia:</span>
+
+                        <span class="label-inline">
+                            Provincia:
+                        </span>
+
                         <select id="select-provincia">
-                        <option value="" disabled selected>Seleccioná tu provincia</option>
-                        <option>Buenos Aires</option>
-                        <option>CABA</option>
-                        <option>Catamarca</option>
-                        <option>Chaco</option>
-                        <option>Chubut</option>
-                        <option>Córdoba</option>
-                        <option>Corrientes</option>
-                        <option>Entre Ríos</option>
-                        <option>Formosa</option>
-                        <option>Jujuy</option>
-                        <option>La Pampa</option>
-                        <option>La Rioja</option>
-                        <option>Mendoza</option>
-                        <option>Misiones</option>
-                        <option>Neuquén</option>
-                        <option>Río Negro</option>
-                        <option>Salta</option>
-                        <option>San Juan</option>
-                        <option>San Luis</option>
-                        <option>Santa Cruz</option>
-                        <option>Santa Fe</option>
-                        <option>Santiago del Estero</option>
-                        <option>Tierra del Fuego</option>
-                        <option>Tucumán</option>
+
+                            <option value="" disabled selected>
+                                Seleccioná tu provincia
+                            </option>
+
+                            <option>Buenos Aires</option>
+                            <option>CABA</option>
+                            <option>Catamarca</option>
+                            <option>Chaco</option>
+                            <option>Chubut</option>
+                            <option>Córdoba</option>
+                            <option>Corrientes</option>
+                            <option>Entre Ríos</option>
+                            <option>Formosa</option>
+                            <option>Jujuy</option>
+                            <option>La Pampa</option>
+                            <option>La Rioja</option>
+                            <option>Mendoza</option>
+                            <option>Misiones</option>
+                            <option>Neuquén</option>
+                            <option>Río Negro</option>
+                            <option>Salta</option>
+                            <option>San Juan</option>
+                            <option>San Luis</option>
+                            <option>Santa Cruz</option>
+                            <option>Santa Fe</option>
+                            <option>Santiago del Estero</option>
+                            <option>Tierra del Fuego</option>
+                            <option>Tucumán</option>
+
                         </select>
+
                     </div>
+
                 </div>
 
+                <!-- CIUDAD -->
                 <div class="campo">
+
                     <div class="input-group-hema">
-                        <span class="label-inline">Ciudad / Localidad:</span>
-                        <input type="text" id="input-ciudad" placeholder="Ej: Tandil" autocomplete="on">
+
+                        <span class="label-inline">
+                            Ciudad / Localidad:
+                        </span>
+
+                        <input
+                            type="text"
+                            id="input-ciudad"
+                            placeholder="Ej: Tandil"
+                            autocomplete="on">
+
                     </div>
-                    <div id="sugerencias-ciudad" class="sugerencias-estilo"></div>
+
+                    <div
+                        id="sugerencias-ciudad"
+                        class="sugerencias-estilo">
+                    </div>
+
                 </div>
+
+                <!-- DIRECCIÓN -->
                 <div class="campo">
+
                     <div class="input-group-hema">
-                        <span class="label-inline">Calle y Altura:</span>
-                        <input type="text" id="input-calle" placeholder="Ej: Av. Colón 1234">
+
+                        <span class="label-inline">
+                            Calle y Altura:
+                        </span>
+
+                        <input
+                            type="text"
+                            id="input-calle"
+                            placeholder="Ej: Av. Colón 1234">
+
                     </div>
-                    <div id="contenedor-sugerencias" class="sugerencias-estilo"></div>
+
+                    <div
+                        id="contenedor-sugerencias"
+                        class="sugerencias-estilo">
+                    </div>
+
                 </div>
 
+                <!-- DATOS EXTRA -->
                 <div class="campo">
+
                     <div class="input-group-hema">
-                        <span class="label-inline">Datos extra (Opcional):</span>
-                        <input type="text" id="dato-extra" placeholder="Ej: Piso/Departamento">
+
+                        <span class="label-inline">
+                            Datos extra (Opcional):
+                        </span>
+
+                        <input
+                            type="text"
+                            id="dato-extra"
+                            placeholder="Ej: Piso/Departamento">
+
                     </div>
+
                 </div>
 
-                
-
+                <!-- MAPA -->
                 <div id="mapa-libre"></div>
+
             </section>
-            
+
+            <!-- BOTÓN CONFIRMAR -->
             <div style="margin-top: 30px; padding-bottom: 50px;">
-                <button id="boton-enviar-pedido" style="
-                    background-color: #a0816c;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
+
+                <button
+                    id="boton-enviar-pedido"
+                    style="
+                        background-color: #a0816c;
+                        color: white;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
                     ">
+
                     Confirmar Pedido
+
                 </button>
+
             </div>
 
         </div>
-    </section>
-    
 
-    <!-- ================== SEGUIMIENTO ================== -->
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- ===================== SEGUIMIENTO ======================= -->
+    <!-- ========================================================= -->
+
     <section id="seguimiento" class="oculto">
+
         <div class="site-container">
 
+            <!-- HEADER -->
             <header class="main-header">
-                <button class="btn-volver" onclick="mostrarVista('inicio')">← Volver</button>
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('inicio')">
+
+                    ← Volver
+
+                </button>
 
                 <div class="logo-img">
                     <a href="#inicio">
-                        <img src="assets/Logo-crudo.png" alt="HEMA" class="logo-img">
+                        <img
+                            src="assets/Logo-crudo.png"
+                            alt="HEMA"
+                            class="logo-img">
                     </a>
                 </div>
+
                 <div class="space"></div>
+
             </header>
 
+            <!-- CONTENIDO -->
             <main class="central-gallery">
+
                 <h2>Seguimiento de pedido</h2>
 
                 <div class="busqueda-seguimiento">
-                    <input type="text" id="input-busqueda-tracking" placeholder="Ingresá tu código">
-                    <button onclick="consultarEstadoPedido()">Buscar</button>
+
+                    <input
+                        type="text"
+                        id="input-busqueda-tracking"
+                        placeholder="Ingresá tu código">
+
+                    <button onclick="consultarEstadoPedido()">
+                        Buscar
+                    </button>
+
                 </div>
 
-                <div id="resultado-busqueda" class="oculto">
-                    <p class="status" id="estado-pedido"></p>
+                <div
+                    id="resultado-busqueda"
+                    class="oculto">
+
+                    <p
+                        class="status"
+                        id="estado-pedido">
+                    </p>
+
                 </div>
 
             </main>
+
         </div>
+
     </section>
 
+    <!-- ==================== SCRIPT PRINCIPAL ==================== -->
     <script src="script.js"></script>
+
 </body>
+
 </html>

@@ -127,62 +127,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btnEnviar.addEventListener('click', async () => {
 
-        const boton = document.getElementById('boton-enviar-pedido');
+            const boton = document.getElementById('boton-enviar-pedido');
 
-        const trackingID = generarCodigoSeguimiento();
+            // 1. LISTA DE INPUTS A VALIDAR
+            const camposAValidar = [
+                { id: 'nombre-cliente', nombre: 'Nombre' },
+                { id: 'email-cliente', nombre: 'Email' },
+                { id: 'telefono-cliente', nombre: 'Teléfono' },
+                { id: 'input-ciudad', nombre: 'Ciudad' },
+                { id: 'input-calle', nombre: 'Calle' }
+            ];
 
-        const pedido = {
-            cliente: document.getElementById('nombre-cliente').value,
-            tracking_id: trackingID,
-            email: document.getElementById('email-cliente').value,
-            telefono: document.getElementById('telefono-cliente').value,
-            tela: document.getElementById('tela-seleccionada').value,
-            personalizacion : document.getElementById('personalizacion-seleccionada').value,
-            provincia: document.getElementById('select-provincia').value,
-            ciudad: document.getElementById('input-ciudad').value,
-            calle: document.getElementById('input-calle').value,
-            link_mapa: `https://www.google.com/maps?q=${latitudFinal},${longitudFinal}`,
-            dato_extra: document.getElementById('dato-extra').value,
-            direccionMapa: direccionValidada
-        };
+            let hayError = false;
 
-        if (!pedido.cliente || !pedido.tela || !latitudFinal) {
-            alert("Completa los datos y selecciona una dirección válida.");
-            return;
-        }
+            // 2. LOGICA DE VALIDACIÓN VISUAL
+            camposAValidar.forEach(campo => {
+                const input = document.getElementById(campo.id);
+                const contenedor = input.closest('.campo'); // El div con la clase .campo
 
-        boton.disabled = true;
-        const textoOriginal = boton.innerText;
-        boton.innerText = "Procesando pedido...";
-
-        try {
-            await fetch(URL_WEB_APP_EXCEL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(pedido)
+                if (input.value.trim() === "") {
+                    contenedor.classList.add('error'); // Activa el CSS de la cruz y borde rojo
+                    hayError = true;
+                } else {
+                    contenedor.classList.remove('error');
+                }
             });
 
-            await emailjs.send(
-                'service_gnblx8l',
-                'template_76chn1e',
-                pedido
-            );
-
-            alert(`¡Pedido enviado! Código: ${trackingID}`);
-
-            if (pedido.personalizacion !== 'sin-nada') {
-            enviarAWhatsApp(pedido);
+            // 3. VALIDACIÓN EXTRA (Mapa y Tela)
+            if (hayError || !latitudFinal) {
+                alert("Por favor, completa los campos marcados y selecciona una dirección válida en el mapa.");
+                return;
             }
 
-            boton.innerText = 'Confirmado';
+            const trackingID = generarCodigoSeguimiento();
 
-        } catch (error) {
-            console.error(error);
-            alert("Error al enviar.");
-            boton.disabled = false;
-            boton.innerText = textoOriginal;
-        }
-    });
+            const pedido = {
+                cliente: document.getElementById('nombre-cliente').value,
+                tracking_id: trackingID,
+                email: document.getElementById('email-cliente').value,
+                telefono: document.getElementById('telefono-cliente').value,
+                tela: document.getElementById('tela-seleccionada').value,
+                personalizacion : document.getElementById('personalizacion-seleccionada').value,
+                provincia: document.getElementById('select-provincia').value,
+                ciudad: document.getElementById('input-ciudad').value,
+                calle: document.getElementById('input-calle').value,
+                link_mapa: `https://www.google.com/maps?q=${latitudFinal},${longitudFinal}`,
+                dato_extra: document.getElementById('dato-extra').value,
+                direccionMapa: direccionValidada
+            };
+
+            if (!pedido.cliente || !pedido.tela || !latitudFinal) {
+                alert("Completa los datos y selecciona una dirección válida.");
+                return;
+            }
+
+            boton.disabled = true;
+            const textoOriginal = boton.innerText;
+            boton.innerText = "Procesando pedido...";
+
+            try {
+                await fetch(URL_WEB_APP_EXCEL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(pedido)
+                });
+
+                await emailjs.send(
+                    'service_gnblx8l',
+                    'template_76chn1e',
+                    pedido
+                );
+
+                alert(`¡Pedido enviado! Código: ${trackingID}`);
+
+
+                boton.innerText = 'Confirmado';
+
+            } catch (error) {
+                console.error(error);
+                alert("Error al enviar.");
+                boton.disabled = false;
+                boton.innerText = textoOriginal;
+            }
+        });
 
     }
 
@@ -341,6 +368,12 @@ function cargarOpcionesPersonalizacion() {
     opcionesPersonalizacion.forEach(opc => {
         const card = document.createElement('div');
         card.className = 'card-opcion';
+        
+        // Guardamos los datos en la card para usarlos después
+        card.dataset.id = opc.id;
+        card.dataset.precio = opc.precio;
+        card.dataset.nombre = opc.nombre;
+
         if(opc.id === 'sin-nada') card.classList.add('seleccionada');
 
         card.innerHTML = `
@@ -350,11 +383,34 @@ function cargarOpcionesPersonalizacion() {
         `;
 
         card.onclick = () => {
-            document.querySelectorAll('#contenedor-personalizacion .card-opcion')
-                    .forEach(c => c.classList.remove('seleccionada'));
-            card.classList.add('seleccionada');
-            document.getElementById('personalizacion-seleccionada').value = opc.id;
+            const inputPersonalizacion = document.getElementById('personalizacion-seleccionada');
+
+            if (opc.id === 'sin-nada') {
+                // Si hace clic en "Sin nada", borramos todas las demás selecciones
+                document.querySelectorAll('#contenedor-personalizacion .card-opcion')
+                        .forEach(c => c.classList.remove('seleccionada'));
+                card.classList.add('seleccionada');
+            } else {
+                // Si hace clic en cualquier otra, le sacamos la selección a "Sin nada"
+                const sinNadaCard = document.querySelector('#contenedor-personalizacion .card-opcion[data-id="sin-nada"]');
+                if (sinNadaCard) sinNadaCard.classList.remove('seleccionada');
+
+                // Activamos/Desactivamos la card que tocó
+                card.classList.toggle('seleccionada');
+
+                // Si deseleccionó todo y no quedó ninguna marcada, volvemos a marcar "Sin nada"
+                const seleccionadas = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
+                if (seleccionadas.length === 0 && sinNadaCard) {
+                    sinNadaCard.classList.add('seleccionada');
+                }
+            }
+
+            // Guardamos todos los IDs seleccionados en el input oculto (ej: "bordado, volado")
+            const seleccionadasFinal = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
+            const idsSeleccionados = Array.from(seleccionadasFinal).map(c => c.dataset.id).join(', ');
+            inputPersonalizacion.value = idsSeleccionados;
         };
+        
         contenedor.appendChild(card);
     });
 }
@@ -389,9 +445,24 @@ function configurarEventosDireccion() {
             });
             inputCiudad.disabled = false;
             limpiarCiudadYCalle();
+            if (prov === "CABA") {
+                // Autocompletamos y bloqueamos ciudad
+                inputCiudad.value = "CABA";
+                inputCiudad.disabled = true;
+                estadoUbicacion.ciudad = "CABA"; 
+                inputCiudad.placeholder = "Aplica para todo CABA";
+                
+                // Habilitamos la calle para que sigan de largo
+                inputCalle.disabled = false;
+            } else {
+                // Comportamiento normal para el resto de provincias
+                inputCiudad.disabled = false;
+                inputCiudad.placeholder = "Ej: Tandil"; // Restauramos tu placeholder original
+                // inputCalle ya fue deshabilitado por limpiarCiudadYCalle()
+            }
         }else {
-        inputCiudad.disabled = true;
-        inputCalle.disabled = true;
+            inputCiudad.disabled = true;
+            inputCalle.disabled = true;
         }
     });
 
@@ -428,7 +499,7 @@ function configurarEventosDireccion() {
 
     inputCalle.addEventListener('input',debounce( async () => {
     const ciudad = inputCiudad.value.trim();
-    const provincia = selectProvincia.value;
+    let provincia = selectProvincia.value;
     const calle = inputCalle.value.trim();
 
     // Bajamos a 3 caracteres para que sea más fluido
@@ -442,6 +513,7 @@ function configurarEventosDireccion() {
 
         // Construimos la URL con lat y lon para priorizar resultados locales
         // También incluimos la provincia y "Argentina" en el texto de búsqueda para mayor precisión
+        if(provincia === "CABA"){provincia = "Buenos Aires"}
         const queryBusqueda = `${calle}, ${ciudad}, ${provincia}, Argentina`;
         const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(queryBusqueda)}&lat=${lat}&lon=${lon}&limit=10`;
 
@@ -500,66 +572,6 @@ function actualizarMarcador(lat, lon, zoom ) {
     longitudFinal = lon;
 }
 
-// ================== PEDIDO ==================
-document.getElementById('boton-enviar-pedido').addEventListener('click', async () => {
-
-    const boton = document.getElementById('boton-enviar-pedido');
-
-    const trackingID = generarCodigoSeguimiento();
-
-    const pedido = {
-        cliente: document.getElementById('nombre-cliente').value,
-        tracking_id: trackingID,
-        email: document.getElementById('email-cliente').value,
-        telefono: document.getElementById('telefono-cliente').value,
-        tela: document.getElementById('tela-seleccionada').value,
-        personalizacion : document.getElementById('personalizacion-seleccionada').value,
-        provincia: document.getElementById('select-provincia').value,
-        ciudad: document.getElementById('input-ciudad').value,
-        calle: document.getElementById('input-calle').value,
-        link_mapa: `https://www.google.com/maps?q=${latitudFinal},${longitudFinal}`,
-        dato_extra: document.getElementById('dato-extra').value,
-        direccionMapa: direccionValidada
-    };
-
-    if (!pedido.cliente || !pedido.tela || !latitudFinal) {
-        alert("Completa los datos y selecciona una dirección válida.");
-        return;
-    }
-
-    boton.disabled = true;
-    const textoOriginal = boton.innerText;
-    boton.innerText = "Procesando pedido...";
-
-    try {
-        await fetch(URL_WEB_APP_EXCEL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(pedido)
-        });
-
-        await emailjs.send(
-            'service_gnblx8l',
-            'template_76chn1e',
-            pedido
-        );
-
-        alert(`¡Pedido enviado! Código: ${trackingID}`);
-
-        if (pedido.personalizacion !== 'sin-nada') {
-        enviarAWhatsApp(pedido);
-        }
-
-        boton.innerText = 'Confirmado';
-
-    } catch (error) {
-        console.error(error);
-        alert("Error al enviar.");
-        boton.disabled = false;
-        boton.innerText = textoOriginal;
-    }
-});
-
 // ================== UTILIDADES ==================
 function formatearLinkDrive(url) {
     if (url.includes('drive.google.com')) {
@@ -575,26 +587,37 @@ function formatearLinkDrive(url) {
     return url;
 }
 
-function enviarAWhatsApp(pedido) {
-    const mensaje =
-        `¡Hola! Soy ${pedido.cliente}. Hice un pedido con bordado tipo ${pedido.bordado}.`;
+function enviarCotizacionWhatsApp() {
+    let mensaje = "¡Hola Nai! Quiero pedir un presupuesto para el siguiente pedido:\n\n";
+    
+    // Recorremos el carrito para detallar cada producto
+    carrito.forEach((producto, index) => {
+        // Asegurate de usar los nombres de variables exactos que tenés en tu objeto del carrito
+        mensaje += `${index + 1}- ${producto.nombre}\n`;
+        mensaje += `   Personalización: ${producto.personalizacion}\n`;
+        // Si tenés cantidad, podés agregarla: `Cantidad: ${producto.cantidad}`
+        mensaje += `\n`; 
+    });
 
-    const url =
-        `https://wa.me/5493512511146?text=${encodeURIComponent(mensaje)}`;
+    mensaje += "¡Quedo a la espera de la cotización y el link para cargar mis datos de envío!";
 
+    // El número de Hema Sewing
+    const numeroWhatsApp = "5493512511146"; 
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    
     window.open(url, '_blank');
 }
 
 function generarCodigoSeguimiento() {
     const fecha = new Date();
 
-    const año = fecha.getFullYear().toString().slice(-2);
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const dia = fecha.getDate().toString().padStart(2, '0');
     const random = Math.floor(Math.random() * 1000)
         .toString()
         .padStart(3, '0');
 
-    return `HEMA-${año}${mes}-${random}`;
+    return `HEMA-${mes}${dia}-${random}`;
 }
 
 // ================== VISTAS ==================
@@ -765,18 +788,6 @@ const cartButton = document.getElementById('cart-button');
 const cartWindow = document.getElementById('cart-window');
 const closeCart = document.getElementById('close-cart');
 
-/*if (cartButton && cartWindow) {
-    cartButton.onclick = () => {
-        cartWindow.classList.toggle('oculto');
-    };
-}
-
-if (closeCart && cartWindow) {
-    closeCart.onclick = () => {
-        cartWindow.classList.add('oculto');
-    };
-}*/
-
 // ================== RENDER ==================
 
 function renderizarCarrito() {
@@ -836,6 +847,30 @@ function renderizarCarrito() {
     totalTxt.innerText = total;
     contador.innerText = unidades;
     
+    //const btnCheckout = document.getElementById('btn-pay');
+
+    const requiereCotizacion = carrito.some(producto => 
+        typeof producto.personalizacion === 'string' &&
+        producto.personalizacion.toLowerCase().includes('bordado')
+    );
+
+    if (requiereCotizacion) {
+        // Cambiamos el diseño/texto para cotización
+        btnCheckout.innerText = 'Cotizar por WhatsApp';
+        
+        // Le asignamos la función que manda el mensaje a Nai
+        btnCheckout.onclick = enviarCotizacionWhatsApp; 
+    } else {
+        console.log("hola");
+        // Comportamiento normal de e-commerce
+        btnCheckout.innerText = 'Ir a Pagar';
+        
+        // Le asignamos tu función normal que los lleva a cargar los datos
+        btnCheckout.onclick = () => {
+            mostrarVista('datos-comprador'); 
+        };
+    }
+    
 }
 
 // ================== ACCIONES ==================
@@ -865,26 +900,41 @@ if (btnAgregarFinal) {
     btnAgregarFinal.addEventListener('click', () => {
 
         const telaId = document.getElementById('tela-seleccionada').value;
-        const telaCard = document.querySelector('.card-opcion.seleccionada');
-        const personalizacion = document.getElementById('personalizacion-seleccionada').value;
+        const telaCard = document.querySelector('#contenedor-telas .card-opcion.seleccionada');
+        const personalizacionInput = document.getElementById('personalizacion-seleccionada').value;
         
-        
-
         if (!telaId || !telaCard) {
             alert("Por favor, selecciona primero una tela.");
             return;
         }
 
         const nombreTela = telaCard.querySelector('span').innerText;
-        const precioBase = parseFloat(telaCard.dataset.precio);
+        let precioTotal = parseFloat(telaCard.dataset.precio); // Precio base de la tela
 
+        // Buscamos todas las cards de personalización que estén seleccionadas
+        const cardsPersonalizacion = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
+        let nombresPersonalizacion = [];
+
+        // Sumamos los precios y guardamos los nombres
+        cardsPersonalizacion.forEach(card => {
+            if (card.dataset.id !== 'sin-nada') {
+                precioTotal += parseFloat(card.dataset.precio || 0);
+                nombresPersonalizacion.push(card.dataset.nombre);
+            }
+        });
+
+        // Armamos el texto para el carrito
+        const textoDetalle = nombresPersonalizacion.length > 0 
+            ? `Personalización: ${nombresPersonalizacion.join(' + ')}` 
+            : 'Sin personalización';
 
         const productoParaCarrito = {
-            id: `${telaId}-${personalizacion}-${Date.now()}`,
-            nombre: `Tote ${nombreTela}`,
-            detalle: `Personalificacion: `,
-            precio: precioBase,
-            cantidad: 1
+            id: `${telaId}-${personalizacionInput.replace(/, /g, '-')}-${Date.now()}`,
+            nombre: `Tote de ${nombreTela}`,
+            detalle: textoDetalle,
+            precio: precioTotal,
+            cantidad: 1,
+            personalizacion: personalizacionInput
         };
 
         agregarAlCarritoPersonalizado(productoParaCarrito);
@@ -914,8 +964,6 @@ function renderizarSugerenciasCiudad(features) {
     const sugerenciasCiudad = document.getElementById('sugerencias-ciudad');
     const inputCiudad = document.getElementById('input-ciudad');
     const selectProvincia = document.getElementById('select-provincia');
-
-    //sugerenciasCiudad.innerHTML = ""; // Limpiamos lo anterior
 
     features
         .filter(lugar => {

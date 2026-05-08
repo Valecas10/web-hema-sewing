@@ -9,7 +9,7 @@ const URL_EXCEL_TELAS =
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
 
 const URL_WEB_APP_EXCEL =
-    'https://script.google.com/macros/s/AKfycbw6TXsATigHwzDERHmEzojiQqA1fJzXzCGlHImIgftE8aUVUIsx2V9Z48ov8xkjjDAi/exec';
+    'https://script.google.com/macros/s/AKfycbxvHl4RgAuQ_Y3I8r9xMJFWCn2nf7hysAB0zwoRnSMhR8TEtVD3k0OU1s7-wnw1VhrV/exec';
 
 // ================== VARIABLES GLOBALES ==================
 let mapa;
@@ -93,6 +93,8 @@ const opcionesPersonalizacion = [
     { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/mosaico.jpg' }
 ];
 
+const Tote ={}
+
 function debounce(func, timeout = 300) {
     let timer;
     return (...args) => {
@@ -161,22 +163,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const trackingID = generarCodigoSeguimiento();
 
+            const productosHTML = carrito.map((producto, index) => `
+                <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                <strong>Tote ${index + 1}</strong><br>
+                👜 Producto: ${producto.nombre}<br>
+                ✨ Personalización: ${producto.personalizacion || 'Sin personalización'}<br>
+                💰 Precio: $${producto.precio}
+                </div>
+            `).join('');
+
             const pedido = {
                 cliente: document.getElementById('nombre-cliente').value,
                 tracking_id: trackingID,
                 email: document.getElementById('email-cliente').value,
                 telefono: document.getElementById('telefono-cliente').value,
-                tela: document.getElementById('tela-seleccionada').value,
-                personalizacion : document.getElementById('personalizacion-seleccionada').value,
+                
+                productos: carrito,
+                productos_html: productosHTML,
+
                 provincia: document.getElementById('select-provincia').value,
                 ciudad: document.getElementById('input-ciudad').value,
                 calle: document.getElementById('input-calle').value,
                 link_mapa: `https://www.google.com/maps?q=${latitudFinal},${longitudFinal}`,
                 dato_extra: document.getElementById('dato-extra').value,
                 direccionMapa: direccionValidada
-            };
+            };  
 
-            if (!pedido.cliente || !pedido.tela || !latitudFinal) {
+            console.log("hola");
+
+            console.log(pedido);
+
+            if (!pedido.cliente || !latitudFinal) {
                 alert("Completa los datos y selecciona una dirección válida.");
                 return;
             }
@@ -197,9 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     'template_76chn1e',
                     pedido
                 );
-
-                alert(`¡Pedido enviado! Código: ${trackingID}`);
-
 
                 boton.innerText = 'Confirmado';
 
@@ -670,10 +684,10 @@ async function consultarEstadoPedido() {
             const textoStatus = data.estado; 
             estado.innerText = textoStatus;
 
-            // 3. Lógica para asignar el color según el texto exacto
+            
             if (textoStatus === 'Pendiente') {
                 estado.classList.add('pendiente');
-            } else if (textoStatus === 'En proceso') { // Asegúrate que coincida con tu Excel
+            } else if (textoStatus === 'En proceso') {
                 estado.classList.add('enproceso');
             } else if (textoStatus === 'Terminado'){
                 estado.classList.add('terminado')
@@ -861,7 +875,6 @@ function renderizarCarrito() {
         // Le asignamos la función que manda el mensaje a Nai
         btnCheckout.onclick = enviarCotizacionWhatsApp; 
     } else {
-        console.log("hola");
         // Comportamiento normal de e-commerce
         btnCheckout.innerText = 'Ir a Pagar';
         

@@ -307,7 +307,7 @@ async function cargarTelasDinamicas() {
 
             if (columnas.length < 3) return;
 
-            const [nombre, costo, rutaImagen, id, bordable] =
+            const [nombre, costo, rutaImagen, id, stock] =
                 columnas.map(c => c.trim());
 
             const imagenDirecta = formatearLinkDrive(rutaImagen);
@@ -317,15 +317,30 @@ async function cargarTelasDinamicas() {
             card.className = 'card-opcion';
             card.dataset.valor = id;
             card.dataset.precio = costo;
-            card.dataset.bordable = bordable
-                ? bordable.toUpperCase()
-                : "NO";
+            card.dataset.stock = stock;
+
+            const stockNumero = parseInt(stock);
+
+            let textoStock = "";
+
+            if (stockNumero === -1) {
+                textoStock = `<small class="stock-ilimitado">Disponible</small>`;
+            } else if (stockNumero > 0) {
+                textoStock = `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+            } else {
+                textoStock = `<small class="stock-agotado">Agotada</small>`;
+            }
 
             card.innerHTML = `
                 <img src="${imagenDirecta}" alt="${nombre}" onerror="this.src='assets/Logo.jpg';">
                 <span>${nombre}</span>
                 <small>$${costo}</small>
+                ${textoStock}
             `;
+            
+            if (stockNumero === 0) {
+                card.classList.add('agotada');
+            }
 
             const img = card.querySelector('img');
 
@@ -355,6 +370,20 @@ async function cargarTelasDinamicas() {
             img.addEventListener('touchmove', desactivarZoom);
 
             card.addEventListener('click', () => {
+                document
+                    .querySelectorAll('#contenedor-telas .card-opcion')
+                    .forEach(t => t.classList.remove('seleccionada'));
+
+                card.classList.add('seleccionada');
+
+                document.getElementById('tela-seleccionada').value = id;
+                
+                const stock = parseInt(card.dataset.stock);
+
+                if (stockNumero === 0) {
+                    return;
+                }
+
                 document
                     .querySelectorAll('#contenedor-telas .card-opcion')
                     .forEach(t => t.classList.remove('seleccionada'));
@@ -704,24 +733,33 @@ async function consultarEstadoPedido() {
     }
 }
 
+// ================== PRECARGAR IMÁGENES ==================
+
+
+
 // ================== SLIDESHOW CROSSFADE ==================
 
 const todasLasFotos = [
-    "assets/fotos-inicio/Modelo-1.jpg",
-    "assets/fotos-inicio/Modelo-2.jpg",
-    "assets/fotos-inicio/Modelo-3.png",
-    "assets/fotos-inicio/Modelo-4.jpeg",
-    "assets/fotos-inicio/Modelo-5.jpeg",
-    "assets/fotos-inicio/Modelo-6.jpeg",
-    "assets/fotos-inicio/Modelo-7.jpeg",
-    "assets/fotos-inicio/Modelo-8.jpeg",
-    "assets/fotos-inicio/Modelo-9.jpeg",
-    "assets/fotos-inicio/Modelo-10.jpeg"
+    "assets/fotos-inicio/Modelo-1.webp",
+    "assets/fotos-inicio/Modelo-2.webp",
+    "assets/fotos-inicio/Modelo-3.webp",
+    "assets/fotos-inicio/Modelo-4.webp",
+    "assets/fotos-inicio/Modelo-5.webp",
+    "assets/fotos-inicio/Modelo-6.webp",
+    "assets/fotos-inicio/Modelo-7.webp",
+    "assets/fotos-inicio/Modelo-8.webp",
+    "assets/fotos-inicio/Modelo-9.webp",
+    "assets/fotos-inicio/Modelo-10.webp"
 ];
 
 // Variables de estado
 let fotosLibres = todasLasFotos.slice(3);
 let frameActual = 0;
+
+todasLasFotos.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
 
 function rotarSecuencial() {
     // Seleccionamos los marcos actualizados cada vez
@@ -804,6 +842,10 @@ const closeCart = document.getElementById('close-cart');
 
 // ================== RENDER ==================
 
+function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
 function renderizarCarrito() {
     const lista = document.getElementById('cart-items');
     const totalTxt = document.getElementById('total-price');
@@ -860,8 +902,6 @@ function renderizarCarrito() {
 
     totalTxt.innerText = total;
     contador.innerText = unidades;
-    
-    //const btnCheckout = document.getElementById('btn-pay');
 
     const requiereCotizacion = carrito.some(producto => 
         typeof producto.personalizacion === 'string' &&
@@ -889,12 +929,52 @@ function renderizarCarrito() {
 // ================== ACCIONES ==================
 
 function eliminarDelCarrito(id) {
+    // Buscamos el producto antes de eliminarlo
+    const producto = carrito.find(item => item.id === id);
+
+    if (producto) {
+
+        // Buscamos la card de la tela correspondiente
+        const telaCard = document.querySelector(
+            `#contenedor-telas .card-opcion[data-valor="${producto.telaId}"]`
+        );
+
+        if (telaCard) {
+
+
+            // Solo devolvemos stock si NO es infinita
+            if (stockActual !== -1) {
+
+                let nuevoStock = stockActual - 1;
+
+                telaCard.dataset.stock = nuevoStock;
+
+                const stockTexto = telaCard.querySelector(
+                    '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                );
+
+                // Si estaba agotada la rehabilitamos
+                telaCard.classList.remove('agotada');
+
+                if (nuevoStock > 0) {
+
+                    stockTexto.className = 'stock-limitado';
+                    stockTexto.innerText = `Quedan ${nuevoStock}`;
+
+                }
+            }
+        }
+    }
+
+    // Eliminamos del carrito
     carrito = carrito.filter(item => item.id !== id);
+    guardarCarrito();
     renderizarCarrito();
 }
 
 function agregarAlCarritoPersonalizado(producto) {
     carrito.push(producto);
+    guardarCarrito();
     renderizarCarrito();
 
     const cartBtn = document.getElementById('cart-button');
@@ -902,8 +982,12 @@ function agregarAlCarritoPersonalizado(producto) {
         cartBtn.classList.add('pulse-animation');
         setTimeout(() => cartBtn.classList.remove('pulse-animation'), 500);
     }
+
+    
     
 }
+
+
 
 // ================== BOTÓN FINAL ==================
 
@@ -914,6 +998,7 @@ if (btnAgregarFinal) {
 
         const telaId = document.getElementById('tela-seleccionada').value;
         const telaCard = document.querySelector('#contenedor-telas .card-opcion.seleccionada');
+        const stockActual = parseInt(telaCard.dataset.stock);
         const personalizacionInput = document.getElementById('personalizacion-seleccionada').value;
         
         if (!telaId || !telaCard) {
@@ -941,16 +1026,52 @@ if (btnAgregarFinal) {
             ? `Personalización: ${nombresPersonalizacion.join(' + ')}` 
             : 'Sin personalización';
 
+        // Evita agregar si no hay stock
+        if (stockActual === 0) {
+            alert("Esta tela ya no tiene stock.");
+            return;
+        }
+
         const productoParaCarrito = {
             id: `${telaId}-${personalizacionInput.replace(/, /g, '-')}-${Date.now()}`,
             nombre: `Tote de ${nombreTela}`,
             detalle: textoDetalle,
             precio: precioTotal,
             cantidad: 1,
-            personalizacion: personalizacionInput
+            personalizacion: personalizacionInput,
+            telaId: telaId
         };
 
         agregarAlCarritoPersonalizado(productoParaCarrito);
+
+        // ================== DESCONTAR STOCK ==================
+
+        console.log("Stock antes de agregar al carrito:", stockActual);
+
+        if (stockActual !== -1) {
+
+            stockActual--;
+
+            telaCard.dataset.stock = stockActual;
+
+            const stockTexto = telaCard.querySelector('.stock-limitado, .stock-ilimitado, .stock-agotado');
+
+            if (stockActual > 0) {
+
+                stockTexto.className = 'stock-limitado';
+                stockTexto.innerText = `Quedan ${stockActual}`;
+
+            } else {
+
+                stockTexto.className = 'stock-agotado';
+                stockTexto.innerText = 'Agotada';
+
+                telaCard.classList.remove('seleccionada');
+                telaCard.classList.add('agotada');
+
+                document.getElementById('tela-seleccionada').value = "";
+            }
+        }
     });
 }
 
@@ -970,7 +1091,13 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarCarrito(); // Esto inicializa el estado del botón al cargar la web
+    const carritoGuardado = localStorage.getItem('carrito');
+
+    if (carritoGuardado) {
+        carrito = JSON.parse(carritoGuardado);
+    }
+
+    renderizarCarrito();
 });
 
 function renderizarSugerenciasCiudad(features) {

@@ -810,3 +810,44 @@ body {
 .campo.error input {
     padding-right: 40px;
 }
+
+.agotada {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    position: relative;
+    pointer-events: none;
+}
+
+.agotada::after {
+    content: "AGOTADA";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #a94442;
+    color: white;
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.stock-limitado {
+    display: block;
+    margin-top: 5px;
+    color: #a94442;
+    font-weight: bold;
+}
+
+.stock-ilimitado {
+    display: block;
+    margin-top: 5px;
+    color: #4caf50;
+}
+
+.stock-agotado {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+    font-weight: bold;
+}

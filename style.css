@@ -851,3 +851,68 @@ body {
     color: #999;
     font-weight: bold;
 }
+
+.cart-item-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.cart-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.loading {
+    opacity: 0.7;
+    transform: scale(0.98);
+}
+
+button.loading:disabled {
+    cursor: wait;
+}
+
+.success-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.success-card {
+    background-color: var(--marron-oscuro);
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.success-card h2 {
+    font-family: var(--font-arapey);
+    font-size: 2.5rem;
+    color: var(--beige-acento);
+    margin-bottom: 20px;
+}
+
+.success-text {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.codigo-hema {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--beige-acento);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 25px 0;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    font-weight: bold;
+}

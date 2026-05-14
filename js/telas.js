@@ -5,12 +5,12 @@
  */
 
 const opcionesPersonalizacion = [
-    { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: '../assets/opciones/Basico.webp' },
-    { id: 'lazo-tela', nombre: 'Agregar Lazo de Tela', precio: 1000, img: '../assets/opciones/Lazo-tela.webp' },
-    { id: 'lazo-cintas', nombre: 'Agregar Lazo de Cintas', precio: 1000, img: '../assets/opciones/Lazo-cintas.webp' },
-    { id: 'volado', nombre: 'Agregar Volado', precio: 1500, img: '../assets/opciones/Volado.webp' },
-    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: '../assets/opciones/Bordado.webp' },
-    { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: '../assets/opciones/Mosaico.jpg' }
+    { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: 'assets/opciones/Basico.webp' },
+    { id: 'lazo-tela', nombre: 'Agregar Lazo de Tela', precio: 1000, img: 'assets/opciones/Lazo-tela.webp' },
+    { id: 'lazo-cintas', nombre: 'Agregar Lazo de Cintas', precio: 1000, img: 'assets/opciones/Lazo-cintas.webp' },
+    { id: 'volado', nombre: 'Agregar Volado', precio: 1500, img: 'assets/opciones/Volado.webp' },
+    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/Bordado.webp' },
+    { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/Mosaico.jpg' }
 ];
 
 async function cargarTelasDinamicas() {

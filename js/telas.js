@@ -5,12 +5,12 @@
  */
 
 const opcionesPersonalizacion = [
-    { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: 'assets/opciones/basico.jpg' },
-    { id: 'lazo-tela', nombre: 'Agregar Lazo de Tela', precio: 1000, img: 'assets/opciones/lazo-tela.jpg' },
-    { id: 'lazo-cintas', nombre: 'Agregar Lazo de Cintas', precio: 1000, img: 'assets/opciones/lazo-cintas.jpg' },
-    { id: 'volado', nombre: 'Agregar Volado', precio: 1500, img: 'assets/opciones/volado.jpg' },
-    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: 'assets/opciones/bordado.jpg' },
-    { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/mosaico.jpg' }
+    { id: 'sin-nada', nombre: 'Sin nada', precio: 0, img: '../assets/opciones/basico.jpg' },
+    { id: 'lazo-tela', nombre: 'Agregar Lazo de Tela', precio: 1000, img: '../assets/opciones/lazo-tela.jpg' },
+    { id: 'lazo-cintas', nombre: 'Agregar Lazo de Cintas', precio: 1000, img: '../assets/opciones/lazo-cintas.jpg' },
+    { id: 'volado', nombre: 'Agregar Volado', precio: 1500, img: '../assets/opciones/volado.jpg' },
+    { id: 'bordado', nombre: 'Agregar Bordado', precio: 2500, img: '../assets/opciones/bordado.jpg' },
+    { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: '../assets/opciones/mosaico.jpg' }
 ];
 
 async function cargarTelasDinamicas() {

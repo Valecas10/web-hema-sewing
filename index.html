@@ -128,10 +128,18 @@
             <div class="cta-container">
 
                 <button
-                    class="btn-main-action"
+                    class="btn-main-action "
                     onclick="mostrarVista('armar')">
 
-                    EMPEZAR MI PEDIDO
+                    PERZONALIZAR MI TOTE 
+
+                </button>
+
+                <button
+                    class="btn-main-action"
+                    onclick="mostrarVista('catalogo')">
+
+                    CATALOGO
 
                 </button>
 
@@ -220,76 +228,7 @@
                 </button>
 
             </div>
-
-            <!-- CARRITO -->
-            <div id="cart-container" class="cart-container">
-
-                <!-- VENTANA -->
-                <div
-                    id="cart-window"
-                    class="cart-window oculto">
-
-                    <div class="cart-header">
-
-                        <span>Tu Pedido</span>
-
-                        <button
-                            id="close-cart"
-                            class="btn-close-hema">
-
-                            &times;
-
-                        </button>
-
-                    </div>
-
-                    <div
-                        id="cart-items"
-                        class="cart-items">
-
-                        <p class="empty-msg">
-                            El carrito está vacío
-                        </p>
-
-                    </div>
-
-                    <div class="cart-footer">
-
-                        <div class="cart-total">
-                            Total: $
-                            <span id="total-price">0</span>
-                        </div>
-
-                        <button
-                            id="btn-checkout"
-                            class="btn-pay btn-deshabilitado"
-                            onclick="mostrarVista('datos-comprador')">
-
-                            Pagar ahora
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <!-- BOTÓN FLOTANTE -->
-                <div
-                    id="cart-button"
-                    class="floating-cart">
-
-                    <span class="cart-icon">
-                        <img
-                            src="assets/carrito-blanco.png"
-                            alt="Carrito">
-                    </span>
-
-                    <span id="cart-count">0</span>
-
-                </div>
-
-            </div>
-
+            
         </div>
 
     </section>
@@ -662,6 +601,112 @@
 
     </section>
 
+    <!-- ========================================================= -->
+    <!-- ====================== CATALOGO ========================= -->
+    <!-- ========================================================= -->
+
+    <section id="catalogo">
+
+        <div class="site-container">
+
+            <!-- HEADER -->
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('inicio')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <a href="#inicio">
+                        <img
+                            src="assets/Logo-crudo.png"
+                            alt="HEMA"
+                            class="logo-img">
+                    </a>
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <div id="contenedor-catalogo"></div>
+
+        </div>
+
+    </section>
+
+    <!-- CARRITO -->
+    <div id="cart-container" class="cart-container">
+
+        <!-- VENTANA -->
+        <div
+            id="cart-window"
+            class="cart-window oculto">
+
+            <div class="cart-header">
+
+                <span>Tu Pedido</span>
+
+                <button
+                    id="close-cart"
+                    class="btn-close-hema">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <div id="cart-items" class="cart-items">
+
+                <p class="empty-msg">
+                    El carrito está vacío
+                </p>
+
+            </div>
+
+            <div class="cart-footer">
+
+                <div class="cart-total">
+                    Total: $
+                    <span id="total-price">0</span>
+                </div>
+
+                <button
+                    id="btn-checkout"
+                    class="btn-pay btn-deshabilitado"
+                    onclick="mostrarVista('datos-comprador')">
+
+                    Pagar ahora
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- BOTÓN FLOTANTE -->
+        <div id="cart-button" class="floating-cart">
+
+            <span class="cart-icon">
+            <img
+                src="assets/carrito-blanco.png"
+                alt="Carrito">
+            </span>
+
+            <span id="cart-count">0</span>
+
+        </div>
+
+    </div>
+
+        
+
+
     <!-- ==================== SCRIPT PRINCIPAL ==================== -->
     <script src="js/utilidades.js"></script>
     <script src="js/carrito.js"></script>
@@ -669,9 +714,10 @@
     <script src="js/slideshow.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/telas.js"></script>
+    <script src="js/catalogo.js"></script>
     <script src="js/mapa.js"></script>
     <script src="js/checkout.js"></script>
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 
 </body>
 

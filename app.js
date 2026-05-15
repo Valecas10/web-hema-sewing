@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDatosComprador.onclick = () => mostrarVista('datos-comprador');
     }
 
+    inicializarCatalogo();
     inicializarCheckout();
     inicializarCarrito();
     inicializarUI();

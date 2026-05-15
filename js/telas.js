@@ -13,6 +13,14 @@ const opcionesPersonalizacion = [
     { id: 'mosaico', nombre: 'Efecto Mosaico', precio: 3000, img: 'assets/opciones/Mosaico.jpg' }
 ];
 
+function obtenerStockGuardado() {
+    return JSON.parse(localStorage.getItem('stockTelas')) || {};
+}
+
+function guardarStock(stock) {
+    localStorage.setItem('stockTelas', JSON.stringify(stock));
+}
+
 async function cargarTelasDinamicas() {
     try {
         const respuesta = await fetch(URL_EXCEL_TELAS);
@@ -20,6 +28,7 @@ async function cargarTelasDinamicas() {
 
         const filas = texto.split('\n').slice(1);
         const contenedor = document.getElementById('contenedor-telas');
+        const stockGuardado = obtenerStockGuardado();
 
         contenedor.innerHTML = "";
 
@@ -40,7 +49,10 @@ async function cargarTelasDinamicas() {
             card.dataset.precio = costo;
             card.dataset.stock = stock;
 
-            const stockNumero = parseInt(stock);
+            const stockOriginal = parseInt(stock);
+
+            const stockNumero =
+                stockGuardado[id] ?? stockOriginal;
 
             let textoStock = "";
 
@@ -239,6 +251,12 @@ if (btnAgregarFinal) {
         if (stockActual !== -1) {
 
             let nuevoStock = stockActual - 1;
+            
+            const stockGuardado = obtenerStockGuardado();
+
+            stockGuardado[telaId] = nuevoStock;
+
+            guardarStock(stockGuardado);
 
             telaCard.dataset.stock = nuevoStock;
 
@@ -262,3 +280,8 @@ if (btnAgregarFinal) {
         }
     });
 }
+
+window.resetearStock = () => {
+    localStorage.removeItem('stockTelas');
+    location.reload();
+};

@@ -10,22 +10,33 @@ function mostrarVista(vista) {
     document.getElementById('seguimiento').classList.add('oculto');
     document.getElementById('datos-comprador').classList.add('oculto');
     document.getElementById('pedido-exitoso').classList.add('oculto');
+    document.getElementById('catalogo').classList.add('oculto');
+    const carrito = document.getElementById('cart-container');
+    carrito.classList.add('oculto');
     localStorage.setItem('vistaActual', vista);
     window.location.hash = vista;
 
     if (vista === 'inicio') {
         document.getElementById('inicio').classList.remove('oculto');
+        carrito.classList.remove('oculto');
     } else if (vista === 'armar') {
         document.getElementById('compra').classList.remove('oculto');
+         carrito.classList.remove('oculto');
     } else if (vista === 'datos-comprador'){
         document.getElementById('datos-comprador').classList.remove('oculto');
+         carrito.classList.add('oculto');
         setTimeout(() => {
             mapa.invalidateSize();
         }, 100);
     } else if (vista === 'seguimiento') {
         document.getElementById('seguimiento').classList.remove('oculto');
+        carrito.classList.add('oculto');
     } else if (vista === 'pedido-exitoso') {
         document.getElementById('pedido-exitoso').classList.remove('oculto');
+        carrito.classList.add('oculto');
+    } else if (vista === 'catalogo') {
+        document.getElementById('catalogo').classList.remove('oculto');
+        carrito.classList.remove('oculto');
     }
 }
 

@@ -115,14 +115,22 @@ function eliminarDelCarrito(id) {
         );
 
         if (telaCard) {
-             const stockActual = parseInt(telaCard.dataset.stock);
+            const stockGuardado = obtenerStockGuardado();
 
+            const stockActual =
+                stockGuardado[producto.telaId] ?? 0;
 
             // Solo devolvemos stock si NO es infinita
             if (stockActual !== -1) {
 
                 let nuevoStock = stockActual + 1;
 
+                // Guardamos el nuevo stock REAL
+                stockGuardado[producto.telaId] = nuevoStock;
+
+                guardarStock(stockGuardado);
+
+                // Actualizamos visualmente
                 telaCard.dataset.stock = nuevoStock;
 
                 const stockTexto = telaCard.querySelector(

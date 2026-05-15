@@ -124,15 +124,16 @@ async function cargarCatalogo() {
 
             botonAgregar.addEventListener('click', () => {
 
-                if (stockNumero === 0) return;
+                const stockActual =
+                    parseInt(card.dataset.stock);
+
+                if (stockActual === 0) return;
 
                 const productoCarrito = {
 
                     id: `${id}-${Date.now()}`,
 
                     nombre: nombre,
-
-                    detalle: descripcion,
 
                     precio: parseFloat(precio),
 
@@ -147,6 +148,54 @@ async function cargarCatalogo() {
                 };
 
                 agregarAlCarritoPersonalizado(productoCarrito);
+
+                // =========================
+                // DESCONTAR STOCK
+                // =========================
+
+                if (stockActual !== -1) {
+
+                    let nuevoStock = stockActual - 1;
+
+                    // Actualizamos dataset
+                    card.dataset.stock = nuevoStock;
+
+                    // =========================
+                    // GUARDAR STOCK
+                    // =========================
+
+                    const stockGuardado = obtenerStockGuardado();
+
+                    stockGuardado[id] = nuevoStock;
+
+                    guardarStock(stockGuardado);
+
+                    // =========================
+                    // ACTUALIZAR TEXTO
+                    // =========================
+
+                    const stockTexto = card.querySelector(
+                    '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                    );
+
+                    if (nuevoStock > 0) {
+
+                        stockTexto.className = 'stock-limitado';
+
+                        stockTexto.innerText =
+                            `Quedan ${nuevoStock}`;
+
+                    } else {
+
+                        stockTexto.className = 'stock-agotado';
+
+                        stockTexto.innerText = 'Agotado';
+
+                        card.classList.add('agotado');
+
+                        botonAgregar.disabled = true;
+                    }
+                }
 
             });
 

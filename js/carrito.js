@@ -150,6 +150,55 @@ function eliminarDelCarrito(id) {
         }
     }
 
+    // =========================
+    // DEVOLVER STOCK CATÁLOGO
+    // =========================
+
+    if (producto.personalizacion === 'catalogo') {
+
+        const cardCatalogo = document.querySelector(
+            `.card-catalogo[data-id="${producto.telaId}"]`
+        );
+
+        const stockGuardado = obtenerStockGuardado();
+
+        const stockActual =
+            stockGuardado[producto.telaId] ?? 0;
+
+        if (stockActual !== -1) {
+
+            const nuevoStock = stockActual + 1;
+
+            // Guardamos
+            stockGuardado[producto.telaId] = nuevoStock;
+
+            guardarStock(stockGuardado);
+
+            // Actualizamos visual
+            if (cardCatalogo) {
+
+                cardCatalogo.dataset.stock = nuevoStock;
+
+                const stockTexto = cardCatalogo.querySelector(
+                    '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                );
+
+                cardCatalogo.classList.remove('agotado');
+
+                if (nuevoStock > 0) {
+
+                    stockTexto.className = 'stock-limitado';
+
+                    stockTexto.innerText = `Quedan ${nuevoStock}`;
+                }
+
+                const boton = cardCatalogo.querySelector('.btn-catalogo');
+
+                boton.disabled = false;
+            }
+        }
+    }
+
     
     carrito = carrito.filter(item => item.id !== id);
     guardarCarrito();

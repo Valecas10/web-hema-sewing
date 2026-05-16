@@ -6,7 +6,7 @@
 
 const URL_EXCEL_CATALOGO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRqFqWZPXyUTBBXJAydfEeEcKcoDghf6accKDZT9ZA6dsRctXvGs1H1vBmWyhndt95fbRcLt6p30Cco/pub?gid=0&single=true&output=csv';
 
-async function cargarCatalogo() {
+async function cargarCatalogo(categoriaSeleccionada) {
 
     try {
 
@@ -47,6 +47,8 @@ async function cargarCatalogo() {
 
             if (activo.toUpperCase() !== 'SI') return;
 
+            if (categoria !== categoriaSeleccionada) return;
+
             // =========================
             // STOCK
             // =========================
@@ -62,8 +64,11 @@ async function cargarCatalogo() {
 
             } else if (stockNumero > 0) {
 
-                textoStock =
-                    `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+                if (stockNumero === 1) {
+                    textoStock = `<small class="stock-limitado">Ultima Unidad Disponible🔥</small>`;
+                } else {
+                    textoStock = `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+                }
 
             } else {
 
@@ -214,4 +219,44 @@ function inicializarCatalogo() {
 
     cargarCatalogo();
 
+}
+
+function abrirCategoria(categoria) {
+
+    document
+        .getElementById('catalogo-home')
+        .classList.add('oculto');
+
+    document
+        .getElementById('catalogo-productos')
+        .classList.remove('oculto');
+
+    cargarCatalogo(categoria);
+}
+
+function volverCategorias() {
+
+    document
+        .getElementById('catalogo-productos')
+        .classList.add('oculto');
+
+    document
+        .getElementById('catalogo-home')
+        .classList.remove('oculto');
+}
+
+function volverCatalogo() {
+
+    const catalogoProductos =
+        document.getElementById('catalogo-productos');
+
+    // Si estamos viendo productos
+    if (!catalogoProductos.classList.contains('oculto')) {
+
+        volverCategorias();
+
+    } else {
+
+        mostrarVista('inicio');
+    }
 }

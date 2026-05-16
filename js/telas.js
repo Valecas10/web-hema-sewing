@@ -59,7 +59,11 @@ async function cargarTelasDinamicas() {
             if (stockNumero === -1) {
                 textoStock = `<small class="stock-ilimitado">Disponible</small>`;
             } else if (stockNumero > 0) {
-                textoStock = `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+                if (stockNumero === 1) {
+                    textoStock = `<small class="stock-limitado">Ultima Unidad Disponible🔥</small>`;
+                } else {
+                    textoStock = `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+                }
             } else {
                 textoStock = `<small class="stock-agotado">Agotada</small>`;
             }

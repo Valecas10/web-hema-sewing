@@ -613,8 +613,9 @@
             <header class="main-header">
 
                 <button
+                    id="btn-volver-catalogo"
                     class="btn-volver"
-                    onclick="mostrarVista('inicio')">
+                    onclick="volverCatalogo()">
 
                     ← Volver
 
@@ -633,7 +634,93 @@
 
             </header>
 
-            <div id="contenedor-catalogo"></div>
+            <!-- HOME CATEGORÍAS -->
+            <div id="catalogo-home">
+
+                <div class="grid-categorias">
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('totes')">
+
+                        <img
+                            src="assets/catalogo-preview/totes.jpg"
+                            alt="Totes">
+
+                        <h2>TOTES</h2>
+
+                    </div>
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('colitas')">
+
+                        <img
+                            src="assets/catalogo-preview/colitas.jpg"
+                            alt="Colitas">
+
+                        <h2>COLITAS</h2>
+
+                    </div>
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('fundas-bidon')">
+
+                        <img
+                            src="assets/catalogo-preview/bidones.jpg"
+                            alt="Bidones">
+
+                        <h2>FUNDAS DE BIDÓN</h2>
+
+                    </div>
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('fundas-agenda')">
+
+                        <img
+                            src="assets/catalogo-preview/agendas.jpg"
+                            alt="Agendas">
+
+                        <h2>FUNDAS DE AGENDA</h2>
+
+                    </div>
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('individuales')">
+
+                        <img
+                            src="assets/catalogo-preview/individuales.jpg"
+                            alt="Individuales">
+
+                        <h2>INDIVIDUALES</h2>
+
+                    </div>
+
+                    <div
+                        class="card-categoria"
+                        onclick="abrirCategoria('posavasos')">
+
+                        <img
+                            src="assets/catalogo-preview/posavasos.jpg"
+                            alt="Posavasos">
+
+                        <h2>POSAVASOS</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PRODUCTOS -->
+            <div id="catalogo-productos" class="oculto">
+
+                <div id="contenedor-catalogo"></div>
+
+            </div>
 
         </div>
 

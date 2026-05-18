@@ -61,7 +61,7 @@
 }
 
 .btn-catalogo:hover {
-    background-color: var(--marron-hover);
+    background-color: var(--marron-claro);
 
     transform: scale(1.02);
 }

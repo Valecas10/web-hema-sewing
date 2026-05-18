@@ -120,6 +120,15 @@
         grid-template-columns: 1fr;
     }
 
+    .campo {
+        margin-bottom: 15px;
+    }
+
+    .campo input,
+    .campo select {
+        font-size: 16px;
+    }
+
 }
 
 @media (max-width: 768px) {
@@ -238,6 +247,32 @@
 
     .floating-cart img {
         height: 24px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .input-group-hema {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .label-inline {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        padding: 10px 12px;
+    }
+
+    #mapa-libre {
+        height: 250px;
+        border-radius: 15px;
+    }
+
+    .input-group-hema input,
+    .input-group-hema select {
+        min-height: 48px;
     }
 
 }

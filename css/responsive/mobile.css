@@ -43,3 +43,54 @@
         width: 100%;
     }
 }
+
+@media (max-width: 768px) {
+
+    .site-container {
+        padding: 15px;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .hero-magazine {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .central-gallery {
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .photo-frame {
+        width: 220px;
+        height: 320px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    #contenedor-catalogo {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .formulario-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

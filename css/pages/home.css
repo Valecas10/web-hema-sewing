@@ -1,0 +1,84 @@
+.hero-magazine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.central-gallery {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.central-gallery h2{
+
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    
+}
+
+.photo-frame {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    overflow: visible;
+}
+
+.photo-frame img:not(.temp-fade){
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 3 !important;
+    background-color: #eee; 
+    opacity: var(--opacidad,1);
+    transition: opacity 1.5s ease-in-out;
+}
+
+.side-text h2 {
+    font-family: var(--font-arapey);
+    font-size: 1.8rem;
+    color: var(--marron-oscuro);
+
+}
+
+.border-overlay {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--marron-claro);
+    z-index: 1;
+}
+
+.temp-fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2 !important; /* Por encima de la img principal que tiene z-index 3 */
+    opacity: 1; 
+}
+
+.frame-2 {
+    transform: translateY(-20px);
+}
+
+.cta-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cta-container .btn-main-action {
+    margin-top: 40px;
+}
+
+.space {
+    width: 85.68px;       
+}

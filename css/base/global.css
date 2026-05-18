@@ -1,0 +1,33 @@
+body {
+    background-color: var(--beige-fondo);
+    color: var(--texto);
+    font-family: var(--font-aileron);
+    line-height: 1.6;
+}
+
+.site-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.logo-img {
+    height: 60px; 
+    width: auto;  
+    display: block;
+    margin: 0;
+}
+
+.logo-img:hover {
+    opacity: 0.8;
+}
+
+#compra .logo-img{ 
+    width: auto;  
+    display: block;
+    margin: 0;
+    flex-grow: 1;      
+    display: flex;
+    justify-content: center;
+}
+

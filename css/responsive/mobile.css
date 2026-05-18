@@ -1,0 +1,45 @@
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: none; /* Escondemos el botón en computadoras */
+    }
+    .nav-menu {
+        display: flex; /* Mostramos el menú horizontal normal */
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none; /* Se oculta por defecto */
+        flex-direction: column;
+        position: fixed; /* Cambiado de absolute a fixed para que flote sobre todo */
+        top: 0;
+        right: 0;
+        background-color: #fdfaf7;
+        width: 250px; /* Un ancho más razonable para celular */
+        height: 100vh; /* Que ocupe todo el alto */
+        padding: 60px 20px;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        z-index: 9999; /* Super importante para que esté arriba de todo */
+    }
+
+    .nav-menu.mostrar {
+        display: flex; /* Se muestra cuando activamos JS */
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 30px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #a0816c;
+        z-index: 10000; /* Por encima del menú abierto */
+    }
+
+    /* Ajuste para que el botón de seguimiento no se vea gigante en móvil */
+    .btn-nav {
+        margin-top: 20px;
+        padding: 10px 20px;
+        width: 100%;
+    }
+}

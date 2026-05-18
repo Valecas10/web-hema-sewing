@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Arapey'; /* El nombre que tú quieras darle */
+  src: url('fonts/Arapey-Regular.ttf') format('truetype'); /* La ruta al archivo */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aileron';
+    src: url('fonts/aileron.thin.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --marron-oscuro: #714f38;
+    --marron-claro: #A67B5B;
+    --beige-fondo: #FDFBF9;
+    --beige-acento: #EADBC8;
+
+    --texto: #333;
+    --borde-suave: #ddd;
+
+    --font-arapey: 'Arapey', arial;
+    --font-aileron: 'Aileron', sans-serif;
+}

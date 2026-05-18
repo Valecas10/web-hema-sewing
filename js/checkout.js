@@ -79,14 +79,57 @@ function inicializarCheckout() {
 
         const trackingID = generarCodigoSeguimiento();
 
-        const productosHTML = carrito.map((producto, index) => `
-            <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-            <strong>Tote ${index + 1}</strong><br>
-            👜 Producto: ${producto.nombre}<br>
-            ✨ Personalización: ${producto.personalizacion || 'Sin personalización'}<br>
-            💰 Precio: $${producto.precio}
-            </div>
-        `).join('');
+        const productosHTML = carrito.map((producto, index) => {
+
+            // =========================
+            // PRODUCTO CATÁLOGO
+            // =========================
+
+            if (producto.personalizacion === 'catalogo') {
+
+                return `
+                    <div style="
+                        margin-bottom:15px;
+                        padding:10px;
+                        border:1px solid #ddd;
+                        border-radius:8px;
+                    ">
+
+                        <strong>Producto ${index + 1}</strong><br>
+
+                        🛍️ Producto: ${producto.nombre}<br>
+
+                        💰 Precio: $${producto.precio}
+
+                    </div>
+                `;
+            }
+
+            // =========================
+            // TOTE PERSONALIZADA
+            // =========================
+
+            return `
+                <div style="
+                    margin-bottom:15px;
+                    padding:10px;
+                    border:1px solid #ddd;
+                    border-radius:8px;
+                ">
+
+                    <strong>Tote Personalizada ${index + 1}</strong><br>
+
+                    👜 Tela: ${producto.nombre}<br>
+
+                    ✨ Personalización:
+                    ${producto.personalizacion || 'Sin personalización'}<br>
+
+                    💰 Precio: $${producto.precio}
+
+                </div>
+            `;
+
+        }).join('');
 
         const pedido = {
             cliente: document.getElementById('nombre-cliente').value,
@@ -96,6 +139,7 @@ function inicializarCheckout() {
                 
             productos: carrito,
             productos_html: productosHTML,
+            total: calcularTotal(),
 
             provincia: document.getElementById('select-provincia').value,
             ciudad: document.getElementById('input-ciudad').value,
@@ -128,6 +172,12 @@ function inicializarCheckout() {
             await emailjs.send(
                 'service_gnblx8l',
                 'template_76chn1e',
+                pedido
+            );
+
+            await emailjs.send(
+                'service_gnblx8l',
+                'template_so9n0at',
                 pedido
             );
 

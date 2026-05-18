@@ -248,3 +248,13 @@ function inicializarCarrito() {
     renderizarCarrito();
     
 }
+
+function calcularTotal() {
+    let total = 0;
+
+    carrito.forEach(item => {
+        total += item.precio * item.cantidad;
+    });
+
+    return total;
+}

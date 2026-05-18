@@ -1,0 +1,68 @@
+.oculto {
+    display: none !important;
+}
+
+.loading {
+    opacity: 0.7;
+    transform: scale(0.98);
+}
+
+button.loading:disabled {
+    cursor: wait;
+}
+
+.zoom-active {
+    transform: scale(1.8);
+    position: relative;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-radius: 8px;
+}
+
+.agotada {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    position: relative;
+    pointer-events: none;
+}
+
+.agotada::after {
+    content: "AGOTADA";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #a94442;
+    color: white;
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.stock-limitado {
+    display: block;
+    margin-top: 5px;
+    color: #a94442;
+    font-weight: bold;
+}
+
+.stock-ilimitado {
+    display: block;
+    margin-top: 5px;
+    color: #4caf50;
+}
+
+.stock-agotado {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+    font-weight: bold;
+}
+
+.seleccionada {
+    border: 3px solid var(--marron-claro) !important;
+    background-color: #fdf5f0;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}

@@ -1,0 +1,150 @@
+.btn-main-action {
+    background-color: var(--marron-oscuro);
+    color: white;
+    font-family: var(--font-aileron);
+    padding: 15px 40px;
+    border: none;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-volver {
+    background: none;
+    border: 1px solid var(--marron-claro);
+    color: var(--marron-claro);
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    float: left;
+}
+
+.btn-pay {
+    width: 100%;
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-pay:disabled, 
+.btn-deshabilitado {
+    background: #bdc3c7 !important; /* Gris */
+    color: #7f8c8d !important;    /* Texto gris oscuro */
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+.btn-catalogo {
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    background-color: var(--marron-oscuro);
+    color: white;
+
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.btn-catalogo:hover {
+    background-color: var(--marron-hover);
+
+    transform: scale(1.02);
+}
+
+.btn-remove {
+    background: #ecdcd3; /* Color neutro */
+    color: #a0816c;
+    border-radius: 8px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-remove:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+.btn-close-hema {
+    background: none;
+    border: none;
+    color: white; /* O el color que resalte en tu header */
+    font-size: 28px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+.btn-catalogo {
+    margin-top: 10px;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    background-color: var(--marron-oscuro);
+    color: white;
+
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.btn-main-action:hover {
+    background-color: var(--marron-claro);
+}
+
+.btn-close-hema {
+    background: none;
+    border: none;
+    color: white; /* O el color que resalte en tu header */
+    font-size: 28px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+.btn-close-hema:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Un brillo sutil */
+    transform: rotate(90deg); /* Efecto visual moderno al cerrar */
+    color: #f0f0f0;
+}

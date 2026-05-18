@@ -1,8 +1,21 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
 body {
     background-color: var(--beige-fondo);
     color: var(--texto);
     font-family: var(--font-aileron);
     line-height: 1.6;
+    overflow-x: hidden ;
 }
 
 .site-container {

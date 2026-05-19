@@ -60,14 +60,15 @@
                         Seguimiento
                     </button>
 
-                    <button
-                        class="menu-toggle"
-                        id="mobile-menu">
-                        ☰
-                    </button>
-
                 </nav>
 
+                <button
+                    class="menu-toggle"
+                    id="mobile-menu">
+
+                    ☰
+
+                </button>
             </header>
 
             <!-- HERO -->
@@ -186,9 +187,26 @@
 
                 <h2>Paso 1: Elige tu Tela</h2>
 
-                <div
-                    id="contenedor-telas"
-                    class="grid-seleccion">
+                <div class="carrusel-wrapper">
+
+                    <button
+                        class="btn-carrusel prev"
+                        id="btn-prev-telas">
+
+                        ←
+
+                    </button>
+
+                    <div id="contenedor-telas" class="grid-seleccion"></div>
+
+                    <button
+                        class="btn-carrusel next"
+                        id="btn-next-telas">
+
+                        →
+
+                    </button>
+
                 </div>
 
                 <input
@@ -801,6 +819,7 @@
     <script src="js/slideshow.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/telas.js"></script>
+    <script src="js/carrusel.js"></script>
     <script src="js/catalogo.js"></script>
     <script src="js/mapa.js"></script>
     <script src="js/checkout.js"></script>

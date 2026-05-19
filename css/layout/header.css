@@ -44,3 +44,12 @@
     padding: 20px 0;
     width: 100%;
 }
+
+#seguimiento .main-header{
+    display: flex;
+    justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
+    align-items: center;            /* Alineación vertical perfecta */
+    position: relative;
+    padding: 20px 0;
+    width: 100%;
+}

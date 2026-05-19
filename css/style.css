@@ -11,6 +11,7 @@
 @import url('./components/cards.css');
 @import url('./components/forms.css');
 @import url('./components/cart.css');
+@import url('./components/carrusel.css');
 
 /* PAGES */
 @import url('./pages/home.css');
@@ -25,47 +26,3 @@
 /* RESPONSIVE */
 @import url('./responsive/tablet.css');
 @import url('./responsive/mobile.css');
-
-/* =========================
-   CARRUSEL TELAS
-========================= */
-
-.carrusel-wrapper {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    width: 100%;
-}
-
-#contenedor-telas {
-
-    display: flex;
-
-    gap: 20px;
-
-    overflow-x: auto;
-
-    scroll-behavior: smooth;
-
-    padding: 20px 60px;
-
-    width: 100%;
-
-    scrollbar-width: none;
-
-    scroll-snap-type: x mandatory;
-    justify-content: flex-start;
-
-}
-
-#contenedor-telas::-webkit-scrollbar {
-    display: none;
-}
-
-.btn-carrusel {
-    z-index: 10;
-}

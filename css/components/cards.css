@@ -8,11 +8,6 @@
     background: white;
 }
 
-#contenedor-telas .card-opcion  {
-    flex: 0 0 280px;
-    scroll-snap-align: start;
-}
-
 .card-opcion img {
     width: 100%;
     height: 150px;

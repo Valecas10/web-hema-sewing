@@ -8,14 +8,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
-#seguimiento .main-header{
-    display: flex;
-    justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
-    align-items: center;            /* Alineación vertical perfecta */
-    position: relative;
-    padding: 20px 0;
-    width: 100%;
-}
+
 
 #seguimiento .btn-volver {
     float: none;       

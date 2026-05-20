@@ -60,19 +60,24 @@ async function cargarCatalogo(
 
             const stockNumero = parseInt(stock);
 
+            const stockGuardado = obtenerStockGuardado();
+
+            const stockFinal =
+                        stockGuardado[id] ?? stockNumero;
+
             let textoStock = "";
 
-            if (stockNumero === -1) {
+            if (stockFinal === -1) {
 
                 textoStock =
                     `<small class="stock-ilimitado">Disponible</small>`;
 
-            } else if (stockNumero > 0) {
+            } else if (stockFinal > 0) {
 
-                if (stockNumero === 1) {
+                if (stockFinal === 1) {
                     textoStock = `<small class="stock-limitado">Ultima Unidad Disponible🔥</small>`;
                 } else {
-                    textoStock = `<small class="stock-limitado">Quedan ${stockNumero}</small>`;
+                    textoStock = `<small class="stock-limitado">Quedan ${stockFinal}</small>`;
                 }
 
             } else {
@@ -90,7 +95,7 @@ async function cargarCatalogo(
             card.className = 'card-catalogo';
 
             card.dataset.id = id;
-            card.dataset.stock = stockNumero;
+            card.dataset.stock = stockFinal;
             card.dataset.precio = precio;
 
             card.innerHTML = `
@@ -123,7 +128,7 @@ async function cargarCatalogo(
             // AGOTADO
             // =========================
 
-            if (stockNumero === 0) {
+            if (stockFinal === 0) {
 
                 card.classList.add('agotado');
 
@@ -173,8 +178,6 @@ async function cargarCatalogo(
                     // =========================
                     // GUARDAR STOCK
                     // =========================
-
-                    const stockGuardado = obtenerStockGuardado();
 
                     stockGuardado[id] = nuevoStock;
 
@@ -252,44 +255,4 @@ function inicializarCatalogo() {
         'contenedor-posavasos'
     );
 
-}
-
-function abrirCategoria(categoria) {
-
-    document
-        .getElementById('catalogo-home')
-        .classList.add('oculto');
-
-    document
-        .getElementById('catalogo-productos')
-        .classList.remove('oculto');
-
-    cargarCatalogo(categoria);
-}
-
-function volverCategorias() {
-
-    document
-        .getElementById('catalogo-productos')
-        .classList.add('oculto');
-
-    document
-        .getElementById('catalogo-home')
-        .classList.remove('oculto');
-}
-
-function volverCatalogo() {
-
-    const catalogoProductos =
-        document.getElementById('catalogo-productos');
-
-    // Si estamos viendo productos
-    if (!catalogoProductos.classList.contains('oculto')) {
-
-        volverCategorias();
-
-    } else {
-
-        mostrarVista('inicio');
-    }
 }

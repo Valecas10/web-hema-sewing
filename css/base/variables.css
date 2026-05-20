@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: 'Aileron';
-    src: url('../../fonts/aileron.thin.otf') format('truetype');
+    src: url('../../fonts/aileron.thin.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }

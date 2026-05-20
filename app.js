@@ -47,3 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inicializarCatalogo();
 });
+
+
+function resetearTienda() {
+
+    localStorage.removeItem('stockTelas');
+
+    localStorage.removeItem('carrito');
+
+    location.reload();
+}

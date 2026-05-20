@@ -305,13 +305,22 @@
 
         gap: 14px;
 
-        padding: 15px 5px 25px;
+        padding: 15px 40px 25px 10px;
 
         scroll-padding-left: 10px;
+
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        scroll-padding-left: 10px;
+
+        position: relative;
+
     }
 
     #contenedor-telas .card-opcion {
-        flex: 0 0 125px;
+        flex: 0 0 140px;
 
         min-height: 270px;
 
@@ -339,6 +348,8 @@
     }
 
     #contenedor-telas .card-opcion img {
+        transition: transform 0.25s ease;
+
         width: 100%;
 
         height: 145px;
@@ -433,5 +444,30 @@
     .card-opcion.seleccionada:hover {
 
         border-color: var(--marron-claro);
+    }
+
+    #contenedor-telas::after {
+
+        content: '';
+
+        position: sticky;
+
+        right: 0;
+
+        top: 0;
+
+        float: right;
+
+        width: 30px;
+
+        height: 100%;
+
+        pointer-events: none;
+
+        background: linear-gradient(
+            to left,
+            #fdfaf7,
+            rgba(253,250,247,0)
+        );
     }
 }

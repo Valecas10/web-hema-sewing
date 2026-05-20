@@ -11,6 +11,25 @@
     margin-top: 50px;
 }
 
+#contenedor-catalogo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+#contenedor-totes,
+#contenedor-colitas,
+#contenedor-bidon,
+#contenedor-agendas,
+#contenedor-individuales,
+#contenedor-posavasos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
 .catalogo-info {
     padding: 20px;
 

@@ -21,6 +21,16 @@ button.loading:disabled {
     
 }
 
+.zoom-active::after {
+    transform: translateY(20px) scale(1.6)  ;
+    transform-origin: center center;
+    position: relative;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-radius: 8px;
+    
+}
+
 .agotada {
     opacity: 0.5;
     filter: grayscale(100%);
@@ -43,6 +53,7 @@ button.loading:disabled {
 }
 
 .stock-limitado {
+    text-align: center;
     display: block;
     margin-top: 5px;
     color: #a94442;
@@ -50,6 +61,7 @@ button.loading:disabled {
 }
 
 .stock-ilimitado {
+    text-align: center;
     display: block;
     margin-top: 5px;
     color: #4caf50;

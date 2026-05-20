@@ -72,6 +72,34 @@
     margin-top: 60px;
 }
 
+#contenedor-personalizacion .card-opcion.seleccionada::after {
+
+    content: 'Seleccionada';
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    background-color: var(--marron-oscuro);
+
+    color: white;
+
+    font-size: 0.65rem;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-weight: 600;
+
+    z-index: 20;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+}
+
 #contenedor-telas .card-opcion {
 
     flex: 0 0 280px;
@@ -157,7 +185,11 @@
 
     box-shadow:
         0 20px 45px rgba(113, 79, 56, 0.15);
+
+    position: relative;
+    z-index: 1;
 }
+
 
 #contenedor-telas .card-opcion.seleccionada::after {
 
@@ -179,8 +211,6 @@
     padding: 8px 12px;
 
     border-radius: 50px;
-
-    z-index: 5;
 }
 
 

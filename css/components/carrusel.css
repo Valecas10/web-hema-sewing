@@ -16,6 +16,8 @@
     scroll-snap-type: x mandatory;
     justify-content: flex-start;
     scrollbar-width: none;
+    overflow-y: visible;
+    padding-left: 30px;
 
 
     padding: 25px 10px 35px;

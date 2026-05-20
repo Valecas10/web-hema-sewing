@@ -100,7 +100,7 @@
 
     .catalogo-info {
         padding: 12px;
-        gap: 8px;
+        gap: 6px;
     }
 
     .catalogo-info h3 {
@@ -109,6 +109,7 @@
 
     .catalogo-info p {
         font-size: 0.8rem;
+        height: 100px;
     }
 
     .catalogo-info strong {
@@ -313,14 +314,18 @@
 
         overflow-x: auto;
 
-        scroll-padding-left: 10px;
+        padding-left: 30px;
 
         position: relative;
+
+        padding-right: 30px;
+
+        scroll-padding-right: 10px;
 
     }
 
     #contenedor-telas .card-opcion {
-        flex: 0 0 140px;
+        flex: 0 0 155px;
 
         min-height: 270px;
 
@@ -381,6 +386,13 @@
 
     #seccion-personalizacion {
         margin-top: 35px;
+    }
+
+    #contenedor-telas::after {
+
+        content: '';
+
+        flex: 0 0 20px;
     }
 
     .btn-carrusel {
@@ -469,5 +481,17 @@
             #fdfaf7,
             rgba(253,250,247,0)
         );
+    }
+
+    #contenedor-totes,
+    #contenedor-colitas,
+    #contenedor-bidon,
+    #contenedor-agendas,
+    #contenedor-individuales,
+    #contenedor-posavasos {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-top: 50px;
     }
 }

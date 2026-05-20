@@ -38,11 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     inicializarCarruselTelas();    
-    inicializarCatalogo();
     inicializarCheckout();
     inicializarCarrito();
     inicializarUI();
     inicializarMapa();
     cargarTelasDinamicas();
     cargarOpcionesPersonalizacion();
+
+    inicializarCatalogo();
 });

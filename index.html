@@ -623,7 +623,7 @@
     <!-- ====================== CATALOGO ========================= -->
     <!-- ========================================================= -->
 
-    <section id="catalogo">
+    <section id="catalogo" class="oculto">
 
         <div class="site-container">
 
@@ -633,7 +633,7 @@
                 <button
                     id="btn-volver-catalogo"
                     class="btn-volver"
-                    onclick="volverCatalogo()">
+                    onclick="mostrarVista('inicio')">
 
                     ← Volver
 
@@ -659,7 +659,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('totes')">
+                        onclick="mostrarVista('catalogo-totes')">
 
                         <img
                             src="assets/catalogo-preview/totes.jpg"
@@ -671,7 +671,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('colitas')">
+                        onclick="mostrarVista('catalogo-colitas')">
 
                         <img
                             src="assets/catalogo-preview/colitas.jpg"
@@ -683,7 +683,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('fundas-bidon')">
+                        onclick="mostrarVista('catalogo-bidon')">
 
                         <img
                             src="assets/catalogo-preview/bidones.jpg"
@@ -695,7 +695,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('fundas-agenda')">
+                        onclick="mostrarVista('catalogo-agendas')">
 
                         <img
                             src="assets/catalogo-preview/agendas.jpg"
@@ -707,7 +707,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('individuales')">
+                        onclick="mostrarVista('catalogo-individuales')">
 
                         <img
                             src="assets/catalogo-preview/individuales.jpg"
@@ -719,7 +719,7 @@
 
                     <div
                         class="card-categoria"
-                        onclick="abrirCategoria('posavasos')">
+                        onclick="mostrarVista('catalogo-posavasos')">
 
                         <img
                             src="assets/catalogo-preview/posavasos.jpg"
@@ -733,16 +733,240 @@
 
             </div>
 
-            <!-- PRODUCTOS -->
-            <div id="catalogo-productos" class="oculto">
+            
+        </div>
 
-                <div id="contenedor-catalogo"></div>
+    </section>
 
+    <section id="catalogo-totes" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                TOTES
+            </h1>
+
+            <div
+                id="contenedor-totes"
+                class="contenedor-catalogo">
             </div>
 
         </div>
 
     </section>
+
+    <section id="catalogo-colitas" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                COLITAS
+            </h1>
+
+            <div
+                id="contenedor-colitas"
+                class="contenedor-catalogo">
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="catalogo-bidon" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                BIDONES
+            </h1>
+
+            <div
+                id="contenedor-bidon"
+                class="contenedor-catalogo">
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="catalogo-agendas" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                AGENDAS
+            </h1>
+
+            <div
+                id="contenedor-agendas"
+                class="contenedor-catalogo">
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="catalogo-individuales" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                INDIVIDUALES
+            </h1>
+
+            <div
+                id="contenedor-individuales"
+                class="contenedor-catalogo">
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="catalogo-posavasos" class="oculto">
+
+        <div class="site-container">
+
+            <header class="main-header">
+
+                <button
+                    class="btn-volver"
+                    onclick="mostrarVista('catalogo')">
+
+                    ← Volver
+
+                </button>
+
+                <div class="logo-img">
+                    <img
+                        src="assets/Logo-crudo.png"
+                        alt="HEMA"
+                        class="logo-img">
+                </div>
+
+                <div class="space"></div>
+
+            </header>
+
+            <h1 class="titulo-categoria">
+                POSAVASOS
+            </h1>
+
+            <div
+                id="contenedor-posavasos"
+                class="contenedor-catalogo">
+            </div>
+
+        </div>
+
+    </section>
+
+
 
     <!-- CARRITO -->
     <div id="cart-container" class="cart-container">

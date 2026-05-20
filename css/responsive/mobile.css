@@ -423,7 +423,15 @@
         align-items: center;
     }
 
-    
+    .card-opcion:hover {
 
+        transform: none;
 
+        border-color: var(--borde-suave);
+    }
+
+    .card-opcion.seleccionada:hover {
+
+        border-color: var(--marron-claro);
+    }
 }

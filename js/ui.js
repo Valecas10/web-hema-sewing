@@ -11,6 +11,13 @@ function mostrarVista(vista) {
     document.getElementById('datos-comprador').classList.add('oculto');
     document.getElementById('pedido-exitoso').classList.add('oculto');
     document.getElementById('catalogo').classList.add('oculto');
+    document.getElementById('catalogo-totes').classList.add('oculto');
+    document.getElementById('catalogo-colitas').classList.add('oculto');
+    document.getElementById('catalogo-bidon').classList.add('oculto');
+    document.getElementById('catalogo-agendas').classList.add('oculto');
+    document.getElementById('catalogo-individuales').classList.add('oculto');
+    document.getElementById('catalogo-posavasos').classList.add('oculto');
+    
     const carrito = document.getElementById('cart-container');
     carrito.classList.add('oculto');
     localStorage.setItem('vistaActual', vista);
@@ -36,6 +43,24 @@ function mostrarVista(vista) {
         carrito.classList.add('oculto');
     } else if (vista === 'catalogo') {
         document.getElementById('catalogo').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-totes') {
+        document.getElementById('catalogo-totes').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-colitas') {
+        document.getElementById('catalogo-colitas').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-bidon') {
+        document.getElementById('catalogo-bidon').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-agendas') {
+        document.getElementById('catalogo-agendas').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-individuales') {
+        document.getElementById('catalogo-individuales').classList.remove('oculto');
+        carrito.classList.remove('oculto');
+    } else if (vista === 'catalogo-posavasos') {
+        document.getElementById('catalogo-posavasos').classList.remove('oculto');
         carrito.classList.remove('oculto');
     }
 }

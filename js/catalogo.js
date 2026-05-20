@@ -6,7 +6,9 @@
 
 const URL_EXCEL_CATALOGO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRqFqWZPXyUTBBXJAydfEeEcKcoDghf6accKDZT9ZA6dsRctXvGs1H1vBmWyhndt95fbRcLt6p30Cco/pub?gid=0&single=true&output=csv';
 
-async function cargarCatalogo(categoriaSeleccionada) {
+async function cargarCatalogo(  
+            categoriaSeleccionada,
+            idContenedor) {
 
     try {
 
@@ -19,7 +21,10 @@ async function cargarCatalogo(categoriaSeleccionada) {
             .slice(1)
             .filter(fila => fila.trim() !== "");
 
-        const contenedor = document.getElementById('contenedor-catalogo');
+        const contenedor = document.getElementById(idContenedor);
+
+        console.log(idContenedor);
+        console.log(contenedor);
 
         contenedor.innerHTML = "";
 
@@ -217,7 +222,35 @@ async function cargarCatalogo(categoriaSeleccionada) {
 
 function inicializarCatalogo() {
 
-    cargarCatalogo();
+    cargarCatalogo(
+        'totes',
+        'contenedor-totes'
+    );
+
+    cargarCatalogo(
+        'colitas',
+        'contenedor-colitas'
+    );
+
+    cargarCatalogo(
+        'fundas-bidon',
+        'contenedor-bidon'
+    );
+
+    cargarCatalogo(
+        'fundas-agenda',
+        'contenedor-agendas'
+    );
+
+    cargarCatalogo(
+        'individuales',
+        'contenedor-individuales'
+    );
+
+    cargarCatalogo(
+        'posavasos',
+        'contenedor-posavasos'
+    );
 
 }
 

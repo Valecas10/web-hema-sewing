@@ -1,40 +1,67 @@
+/* =========================
+   MAIN HEADER
+========================= */
+
 .main-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 30px 0;   
+    justify-content: space-between;
+
+    padding: 30px 0;
 }
+
+
+/* =========================
+   LOGO
+========================= */
 
 .logo {
     text-align: center;
 }
 
 .logo h1 {
+    color: var(--marron-oscuro);
+
     font-family: var(--font-arapey);
     font-size: 3rem;
-    color: var(--marron-oscuro);
     letter-spacing: 4px;
     line-height: 1;
 }
 
+
+/* =========================
+   SUB LOGOS
+========================= */
+
 .sub-logo-sewing {
-    font-family: var(--font-arapey);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--marron-claro);
     display: block;
+
     margin-top: -5px;
+
+    color: var(--marron-claro);
+
+    font-family: var(--font-arapey);
+    font-size: 1.2rem;
+    font-style: italic;
 }
 
 .sub-logo-alma {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #555;
+
     font-family: var(--font-aileron);
     font-size: 0.65rem;
-    text-transform: uppercase;
     letter-spacing: 3px;
-    display: block;
-    margin-top: 5px;
-    color: #555;
+    text-transform: uppercase;
 }
+
+
+/* =========================
+   LOGO IMAGE
+========================= */
 
 .logo-img {
     display: block;
@@ -43,34 +70,38 @@
     height: 60px;
 
     margin: 0;
+
+    transition: opacity 0.3s ease;
 }
 
 .logo-img:hover {
     opacity: 0.8;
 }
 
-#compra .logo-img{ 
-    width: auto;  
-    margin: 0;
-    flex-grow: 1;      
+
+/* =========================
+   HEADER COMPRA
+========================= */
+
+#compra .main-header,
+#seguimiento .main-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: var(--radius-large) 0;
+}
+
+#compra .logo-img {
     display: flex;
     justify-content: center;
-}
 
-#compra .main-header{
-    display: flex;
-    justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
-    align-items: center;            /* Alineación vertical perfecta */
-    position: relative;
-    padding: var(--radius-large) 0;
-    width: 100%;
-}
+    flex-grow: 1;
 
-#seguimiento .main-header{
-    display: flex;
-    justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
-    align-items: center;            /* Alineación vertical perfecta */
-    position: relative;
-    padding: var(--radius-large) 0;
-    width: 100%;
+    width: auto;
+
+    margin: 0;
 }

@@ -1,47 +1,80 @@
 .btn-main-action {
+    padding: 15px 40px;
+
+    border: none;
+
     background-color: var(--marron-oscuro);
     color: white;
+
     font-family: var(--font-aileron);
-    padding: 15px 40px;
-    border: none;
     letter-spacing: 2px;
+
     cursor: pointer;
-    transition: 0.3s;
+
+    transition: background-color 0.3s ease;
 }
 
-.btn-volver {
-    background: none;
-    border: 1px solid var(--marron-claro);
-    color: var(--marron-claro);
-    padding: 5px 15px;
-    border-radius: var(--radius-large);
-    cursor: pointer;
-    float: left;
+.btn-main-action:hover {
+    background-color: var(--marron-claro);
 }
+
+
+/* =========================
+   BOTÓN VOLVER
+========================= */
+
+.btn-volver {
+    float: left;
+
+    padding: 5px 15px;
+
+    border: 1px solid var(--marron-claro);
+    border-radius: var(--radius-large);
+
+    background: none;
+    color: var(--marron-claro);
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   BOTÓN PAGAR
+========================= */
 
 .btn-pay {
     width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+
+    border: none;
+    border-radius: 5px;
+
     background: #27ae60;
     color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+
     font-weight: bold;
-    margin-top: 10px;
+
+    cursor: pointer;
 }
 
-.btn-pay:disabled, 
+.btn-pay:disabled,
 .btn-deshabilitado {
-    background: #bdc3c7 !important; 
-    color: #7f8c8d !important;    
+    background: #bdc3c7 !important;
+    color: #7f8c8d !important;
+
     cursor: not-allowed !important;
+
     opacity: 0.7;
 }
 
+
+/* =========================
+   BOTÓN CATÁLOGO
+========================= */
+
 .btn-catalogo {
     margin-top: 10px;
-
     padding: 14px;
 
     border: none;
@@ -62,19 +95,30 @@
 
 .btn-catalogo:hover {
     background-color: var(--marron-claro);
-
     transform: scale(1.02);
 }
 
+
+/* =========================
+   BOTÓN REMOVE
+========================= */
+
 .btn-remove {
-    background: #ecdcd3; 
-    color: #a0816c;
-    border-radius: var(--radius-small);
-    border: none;
     padding: 5px 10px;
+
+    border: none;
+    border-radius: var(--radius-small);
+
+    background: #ecdcd3;
+    color: #a0816c;
+
     font-size: 11px;
+
     cursor: pointer;
-    transition: background 0.2s;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .btn-remove:hover {
@@ -82,30 +126,41 @@
     color: white;
 }
 
-.btn-main-action:hover {
-    background-color: var(--marron-claro);
-}
+
+/* =========================
+   BOTÓN CERRAR
+========================= */
 
 .btn-close-hema {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    font-family: 'Arial', sans-serif;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0 5px;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+
     width: 35px;
     height: 35px;
+    padding: 0 5px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: none;
+    color: white;
+
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        color 0.3s ease;
 }
 
 .btn-close-hema:hover {
-    background-color: rgba(255, 255, 255, 0.2); 
-    transform: rotate(90deg); 
+    background-color: rgba(255, 255, 255, 0.2);
     color: #f0f0f0;
+
+    transform: rotate(90deg);
 }

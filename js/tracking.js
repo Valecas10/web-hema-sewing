@@ -4,49 +4,143 @@
  * =========================
  */
 
-
 async function consultarEstadoPedido() {
-    const id = document.getElementById('input-busqueda-tracking').value.trim();
 
-    const resultado = document.getElementById('resultado-busqueda');
-    const estado = document.getElementById('estado-pedido');
+    const id =
+        document.getElementById(
+            'input-busqueda-tracking'
+        ).value.trim();
+
+
+    const resultado =
+        document.getElementById(
+            'resultado-busqueda'
+        );
+
+    const estado =
+        document.getElementById(
+            'estado-pedido'
+        );
+
+
+    /* =========================
+       VALIDAR INPUT
+    ========================= */
 
     if (!id) {
-        mostrarToast("Ingresá un código.", 'success');
+
+        mostrarToast(
+            'Ingresá un código.',
+            'success'
+        );
+
         return;
+
     }
 
+
+    /* =========================
+       CONSULTAR
+    ========================= */
+
     try {
-        const res = await fetch(`${URL_WEB_APP_EXCEL}?id=${id}`);
-        const data = await res.json();
 
-        resultado.classList.remove('oculto');
+        const res =
+            await fetch(
+                `${URL_WEB_APP_EXCEL}?id=${id}`
+            );
 
-        estado.className = 'status';
+        const data =
+            await res.json();
+
+
+        resultado.classList.remove(
+            'oculto'
+        );
+
+
+        estado.className =
+            'status';
+
+
+        /* =========================
+           ERROR
+        ========================= */
 
         if (data.error) {
-            estado.innerText = "Código no encontrado";
-            estado.classList.add('error');
-        } else {
-            const textoStatus = data.estado; 
-            estado.innerText = textoStatus;
 
-            
-            if (textoStatus === 'Pendiente') {
-                estado.classList.add('pendiente');
-            } else if (textoStatus === 'En proceso') {
-                estado.classList.add('enproceso');
-            } else if (textoStatus === 'Terminado'){
-                estado.classList.add('terminado')
-            } else if (textoStatus === 'Enviado') {
-                estado.classList.add('enviado');
-            } else if (textoStatus === 'Entregado') {
-                estado.classList.add('entregado');
+            estado.innerText =
+                'Código no encontrado';
+
+            estado.classList.add(
+                'error'
+            );
+
+        } else {
+
+            const textoStatus =
+                data.estado;
+
+
+            estado.innerText =
+                textoStatus;
+
+
+            /* =========================
+               STATUS
+            ========================= */
+
+            if (
+                textoStatus === 'Pendiente'
+            ) {
+
+                estado.classList.add(
+                    'pendiente'
+                );
+
+            } else if (
+                textoStatus === 'En proceso'
+            ) {
+
+                estado.classList.add(
+                    'enproceso'
+                );
+
+            } else if (
+                textoStatus === 'Terminado'
+            ) {
+
+                estado.classList.add(
+                    'terminado'
+                );
+
+            } else if (
+                textoStatus === 'Enviado'
+            ) {
+
+                estado.classList.add(
+                    'enviado'
+                );
+
+            } else if (
+                textoStatus === 'Entregado'
+            ) {
+
+                estado.classList.add(
+                    'entregado'
+                );
+
             }
+
         }
 
     } catch (error) {
-        
-        mostrarToast("Error al consultar.",'error');
+
+        mostrarToast(
+            'Error al consultar.',
+            'error'
+        );
+
     }
+
 }

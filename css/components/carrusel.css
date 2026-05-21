@@ -1,63 +1,77 @@
+/* =========================
+   CARRUSEL WRAPPER
+========================= */
+
 .carrusel-wrapper {
     position: relative;
+
     display: flex;
     align-items: center;
     gap: 10px;
+
     width: 100%;
 }
+
+
+/* =========================
+   CONTENEDOR TELAS
+========================= */
 
 #contenedor-telas {
     display: flex;
     align-items: stretch;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
     justify-content: flex-start;
-    scrollbar-width: none;
+    gap: 24px;
+
+    width: 100%;
+    padding: 25px 10px 35px;
+
+    overflow-x: auto;
     overflow-y: visible;
 
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
 
-    padding: 25px 10px 35px;
-    width: 100%;
+    scrollbar-width: none;
 }
 
 #contenedor-telas::-webkit-scrollbar {
     display: none;
 }
 
-.btn-carrusel {
 
+/* =========================
+   BOTÓN CARRUSEL
+========================= */
+
+.btn-carrusel {
     width: 45px;
     height: 45px;
 
+    border: 1px solid rgba(160, 129, 108, 0.2);
     border-radius: 50%;
 
-    border: 1px solid rgba(160, 129, 108, 0.2);
-    background: rgba(255,255,255,0.8);
-
+    background: rgba(255, 255, 255, 0.8);
     color: var(--marron-oscuro);
 
     backdrop-filter: blur(10px);
 
-    cursor: pointer;
-
     font-size: 1.2rem;
 
+    cursor: pointer;
+
     transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        border-color 0.3s ease;
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .btn-carrusel:hover {
+    border-color: var(--marron-oscuro);
 
     background: var(--marron-oscuro);
-
     color: white;
-
-    border-color: var(--marron-oscuro);
 
     transform: translateY(-2px);
 }

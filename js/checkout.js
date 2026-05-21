@@ -200,7 +200,7 @@ function enviarCotizacionWhatsApp() {
 
     mensaje += "¡Quedo a la espera de la cotización y el link para cargar mis datos de envío!";
 
-    const numeroWhatsApp = "5493512511146"; 
+    const numeroWhatsApp = "5492234661146"; 
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     
     window.open(url, '_blank');

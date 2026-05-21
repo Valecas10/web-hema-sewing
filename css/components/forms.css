@@ -1,132 +1,204 @@
+/* =========================
+   FORMULARIO GRID
+========================= */
+
 .formulario-grid {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
     gap: var(--radius-large);
+
     margin-bottom: 40px;
 }
 
+
+/* =========================
+   CAMPO
+========================= */
+
 .campo {
+    position: relative;
+
     display: flex;
     flex-direction: column;
     gap: var(--radius-small);
+
     margin-bottom: var(--radius-large);
-    position: relative;
 }
 
 .campo label {
+    color: #666;
+
     font-family: var(--font-aileron);
     font-size: 0.85rem;
-    text-transform: uppercase;
     letter-spacing: 1px;
-    color: #666;
+    text-transform: uppercase;
 }
 
-.campo input, 
+
+/* =========================
+   INPUTS Y SELECTS
+========================= */
+
+.campo input,
 .campo select {
     padding: var(--radius-medium) 15px;
+
     border: 1px solid var(--borde-suave);
     border-radius: var(--radius-small);
+
+    background-color: #fafafa;
+
     font-family: var(--font-aileron);
     font-size: 1rem;
-    background-color: #fafafa;
-    transition: all 0.3s ease;
+
+    transition:
+        border-color 0.3s ease,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.campo input:focus, 
+.campo input:focus,
 .campo select:focus {
     outline: none;
+
     border-color: var(--marron-claro);
+
     background-color: #fff;
+
     box-shadow: 0 0 0 3px rgba(166, 123, 91, 0.1);
 }
+
+
+/* =========================
+   INPUT GROUP
+========================= */
 
 .input-group-hema {
     display: flex;
     align-items: center;
-    background-color: white; 
-    border-radius: var(--radius-small);     
+
     overflow: hidden;
+
     border: 1px solid var(--borde-suave);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    border-radius: var(--radius-small);
+
+    background-color: white;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .input-group-hema:focus-within {
     border-color: var(--marron-claro);
+
     box-shadow: 0 0 0 3px rgba(166, 123, 91, 0.1);
 }
 
-.input-group-hema select {
-    cursor: pointer;
-    padding-right: 30px; 
-}
-
-.input-group-hema input, 
+.input-group-hema input,
 .input-group-hema select {
     flex-grow: 1;
-    border: none !important; 
-    background: transparent !important;
+
     padding: var(--radius-medium) 15px;
+
+    border: none !important;
+
+    background: transparent !important;
+    color: var(--texto);
+
     font-family: var(--font-aileron);
     font-size: 1rem;
-    color: var(--texto);
+
     outline: none;
 }
 
+.input-group-hema select {
+    padding-right: 30px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   ESTADO ERROR
+========================= */
+
 .campo.error .input-group-hema {
-    border: 2px solid #ff4d4d !important;
-    background-color: #fff9f9;
     position: relative;
+
+    border: 2px solid #ff4d4d !important;
+
+    background-color: #fff9f9;
 }
 
 .campo.error::after {
     content: '✕';
+
     position: absolute;
-    right: 15px;
     top: 50%;
-    transform: translateY(-50%);
-    color: #ff4d4d;
-    font-weight: bold;
-    font-size: 1.2rem;
-    pointer-events: none; 
+    right: 15px;
     z-index: 10;
+
+    color: #ff4d4d;
+
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    pointer-events: none;
+
+    transform: translateY(-50%);
 }
 
 .campo.error input {
     padding-right: 40px;
 }
 
-.label-inline {
-    padding: var(--radius-medium) 0 var(--radius-medium) 15px;
-    font-family: var(--font-aileron);
-    font-size: 0.9rem;
-    color: #888;
-    white-space: nowrap;
-    background-color: white;
-}
 
-
+/* =========================
+   LABEL INLINE
+========================= */
 
 .label-inline {
+    padding: var(--radius-medium) var(--radius-large);
+
     background-color: var(--marron-claro);
     color: white;
-    padding: var(--radius-medium) var(--radius-large);
+
+    font-family: var(--font-aileron);
+    font-size: 0.9rem;
+
+    white-space: nowrap;
 }
+
+
+/* =========================
+   SUGERENCIAS
+========================= */
 
 .sugerencias-estilo {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
     z-index: 2000;
-    border-radius: 0 0 var(--radius-small) var(--radius-small);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+    border-radius:
+        0 0
+        var(--radius-small)
+        var(--radius-small);
+
+    background: white;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sugerencia-item {
     padding: 10px;
-    cursor: pointer;
+
     border-bottom: 1px solid #eee;
+
+    cursor: pointer;
 }
 
 .sugerencia-item:hover {

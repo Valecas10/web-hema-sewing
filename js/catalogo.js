@@ -4,32 +4,49 @@
  * =========================
  */
 
-const URL_EXCEL_CATALOGO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRqFqWZPXyUTBBXJAydfEeEcKcoDghf6accKDZT9ZA6dsRctXvGs1H1vBmWyhndt95fbRcLt6p30Cco/pub?gid=0&single=true&output=csv';
+const URL_EXCEL_CATALOGO =
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vRqFqWZPXyUTBBXJAydfEeEcKcoDghf6accKDZT9ZA6dsRctXvGs1H1vBmWyhndt95fbRcLt6p30Cco/pub?gid=0&single=true&output=csv';
 
-async function cargarCatalogo(  
-            categoriaSeleccionada,
-            idContenedor) {
+
+/* =========================
+   CARGAR CATÁLOGO
+========================= */
+
+async function cargarCatalogo(
+    categoriaSeleccionada,
+    idContenedor
+) {
 
     try {
 
-        const respuesta = await fetch(URL_EXCEL_CATALOGO);
+        const respuesta =
+            await fetch(URL_EXCEL_CATALOGO);
 
-        const texto = await respuesta.text();
+        const texto =
+            await respuesta.text();
 
         const filas = texto
             .split('\n')
             .slice(1)
-            .filter(fila => fila.trim() !== "");
+            .filter(
+                fila => fila.trim() !== ''
+            );
 
-        const contenedor = document.getElementById(idContenedor);
+        const contenedor =
+            document.getElementById(
+                idContenedor
+            );
 
-        contenedor.innerHTML = "";
+        contenedor.innerHTML = '';
+
 
         filas.forEach(fila => {
 
-            const columnas = fila.split(',');
+            const columnas =
+                fila.split(',');
 
             if (columnas.length < 8) return;
+
 
             const [
                 id,
@@ -40,55 +57,93 @@ async function cargarCatalogo(
                 imagen,
                 descripcion,
                 activo
-            ] = columnas.map(c => c.trim());
+            ] = columnas.map(
+                columna => columna.trim()
+            );
 
-            // =========================
-            // PRODUCTO INACTIVO
-            // =========================
 
-            if (activo.toUpperCase() !== 'SI') return;
+            /* =========================
+               PRODUCTO INACTIVO
+            ========================= */
 
-            if (categoria !== categoriaSeleccionada) return;
+            if (
+                activo.toUpperCase() !== 'SI'
+            ) {
+                return;
+            }
 
-            // =========================
-            // STOCK
-            // =========================
+            if (
+                categoria !== categoriaSeleccionada
+            ) {
+                return;
+            }
 
-            const stockNumero = parseInt(stock);
 
-            const stockGuardado = obtenerStockGuardado();
+            /* =========================
+               STOCK
+            ========================= */
+
+            const stockNumero =
+                parseInt(stock);
+
+            const stockGuardado =
+                obtenerStockGuardado();
 
             const stockFinal =
-                        stockGuardado[id] ?? stockNumero;
+                stockGuardado[id] ??
+                stockNumero;
 
-            let textoStock = "";
+            let textoStock = '';
+
 
             if (stockFinal === -1) {
 
-                textoStock =
-                    `<small class="stock-ilimitado">Disponible</small>`;
+                textoStock = `
+                    <small class="stock-ilimitado">
+                        Disponible
+                    </small>
+                `;
 
             } else if (stockFinal > 0) {
 
                 if (stockFinal === 1) {
-                    textoStock = `<small class="stock-limitado">Ultima Unidad Disponible🔥</small>`;
+
+                    textoStock = `
+                        <small class="stock-limitado">
+                            Ultima Unidad Disponible🔥
+                        </small>
+                    `;
+
                 } else {
-                    textoStock = `<small class="stock-limitado">Quedan ${stockFinal}</small>`;
+
+                    textoStock = `
+                        <small class="stock-limitado">
+                            Quedan ${stockFinal}
+                        </small>
+                    `;
+
                 }
 
             } else {
 
-                textoStock =
-                    `<small class="stock-agotado">Agotado</small>`;
+                textoStock = `
+                    <small class="stock-agotado">
+                        Agotado
+                    </small>
+                `;
+
             }
 
-            // =========================
-            // CARD
-            // =========================
 
-            const card = document.createElement('div');
+            /* =========================
+               CARD
+            ========================= */
 
-            card.className = 'card-catalogo';
+            const card =
+                document.createElement('div');
+
+            card.className =
+                'card-catalogo';
 
             card.dataset.id = id;
             card.dataset.stock = stockFinal;
@@ -118,94 +173,141 @@ async function cargarCatalogo(
                 </div>
             `;
 
-            const botonAgregar = card.querySelector('.btn-catalogo');
 
-            // =========================
-            // AGOTADO
-            // =========================
+            const botonAgregar =
+                card.querySelector(
+                    '.btn-catalogo'
+                );
+
+
+            /* =========================
+               AGOTADO
+            ========================= */
 
             if (stockFinal === 0) {
 
-                card.classList.add('agotado');
+                card.classList.add(
+                    'agotado'
+                );
 
-                card.querySelector('.btn-catalogo').disabled = true;
+                botonAgregar.disabled = true;
+
             }
+
 
             contenedor.appendChild(card);
 
-            botonAgregar.addEventListener('click', () => {
 
-                const stockActual =
-                    parseInt(card.dataset.stock);
+            /* =========================
+               AGREGAR PRODUCTO
+            ========================= */
 
-                if (stockActual === 0) return;
+            botonAgregar.addEventListener(
+                'click',
+                () => {
 
-                const productoCarrito = {
+                    const stockActual =
+                        parseInt(
+                            card.dataset.stock
+                        );
 
-                    id: `${id}-${Date.now()}`,
+                    if (stockActual === 0) {
+                        return;
+                    }
 
-                    nombre: nombre,
 
-                    precio: parseFloat(precio),
+                    const productoCarrito = {
 
-                    cantidad: 1,
+                        id:
+                            `${id}-${Date.now()}`,
 
-                    imagen: `assets/catalogo/${categoria}/${imagen}`,
+                        nombre,
 
-                    telaId: id,
+                        precio:
+                            parseFloat(precio),
 
-                    personalizacion: 'catalogo'
+                        cantidad: 1,
 
-                };
+                        imagen:
+                            `assets/catalogo/${categoria}/${imagen}`,
 
-                agregarAlCarritoPersonalizado(productoCarrito);
+                        telaId: id,
 
-                // =========================
-                // DESCONTAR STOCK
-                // =========================
+                        personalizacion:
+                            'catalogo'
 
-                if (stockActual !== -1) {
+                    };
 
-                    let nuevoStock = stockActual - 1;
 
-                    card.dataset.stock = nuevoStock;
-
-                    // =========================
-                    // GUARDAR STOCK
-                    // =========================
-
-                    stockGuardado[id] = nuevoStock;
-
-                    guardarStock(stockGuardado);
-
-                    // =========================
-                    // ACTUALIZAR TEXTO
-                    // =========================
-
-                    const stockTexto = card.querySelector(
-                    '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                    agregarAlCarritoPersonalizado(
+                        productoCarrito
                     );
 
-                    if (nuevoStock > 0) {
 
-                        stockTexto.className = 'stock-limitado';
+                    /* =========================
+                       DESCONTAR STOCK
+                    ========================= */
 
-                        stockTexto.innerText =
-                            `Quedan ${nuevoStock}`;
+                    if (stockActual !== -1) {
 
-                    } else {
+                        const nuevoStock =
+                            stockActual - 1;
 
-                        stockTexto.className = 'stock-agotado';
+                        card.dataset.stock =
+                            nuevoStock;
 
-                        stockTexto.innerText = 'Agotado';
 
-                        card.classList.add('agotado');
+                        /* =========================
+                           GUARDAR STOCK
+                        ========================= */
 
-                        botonAgregar.disabled = true;
+                        stockGuardado[id] =
+                            nuevoStock;
+
+                        guardarStock(
+                            stockGuardado
+                        );
+
+
+                        /* =========================
+                           ACTUALIZAR TEXTO
+                        ========================= */
+
+                        const stockTexto =
+                            card.querySelector(
+                                '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                            );
+
+
+                        if (nuevoStock > 0) {
+
+                            stockTexto.className =
+                                'stock-limitado';
+
+                            stockTexto.innerText =
+                                `Quedan ${nuevoStock}`;
+
+                        } else {
+
+                            stockTexto.className =
+                                'stock-agotado';
+
+                            stockTexto.innerText =
+                                'Agotado';
+
+                            card.classList.add(
+                                'agotado'
+                            );
+
+                            botonAgregar.disabled =
+                                true;
+
+                        }
+
                     }
-                }
 
-            });
+                }
+            );
 
         });
 
@@ -215,8 +317,15 @@ async function cargarCatalogo(
             'Error al cargar catálogo:',
             error
         );
+
     }
+
 }
+
+
+/* =========================
+   INICIALIZAR
+========================= */
 
 function inicializarCatalogo() {
 

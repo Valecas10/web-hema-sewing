@@ -1,20 +1,27 @@
+/* =========================
+   CATÁLOGO
+========================= */
+
 #catalogo {
     min-height: 100vh;
-    background-color: var(--beige-claro);
     padding-bottom: 80px;
+
+    background-color: var(--beige-claro);
 }
+
+
+/* =========================
+   CONTENEDORES GRID
+========================= */
 
 #contenedor-catalogo {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-}
 
-#contenedor-catalogo {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
     gap: 30px;
+
     margin-top: 50px;
 }
 
@@ -25,39 +32,54 @@
 #contenedor-individuales,
 #contenedor-posavasos {
     display: grid;
+
     grid-template-columns: repeat(3, 1fr);
+
     gap: 30px;
+
     margin-top: 50px;
 }
 
+
+/* =========================
+   INFO PRODUCTO
+========================= */
+
 .catalogo-info {
-    padding: var(--radius-large);
-
     display: flex;
-    flex-direction: column;
-    gap: var(--radius-large);
-
     flex: 1;
+    flex-direction: column;
+    gap: var(--radius-medium);
+
+    padding: var(--radius-large);
 }
 
 .catalogo-info h3 {
+    color: var(--marron-oscuro);
+
     font-family: var(--font-arapey);
     font-size: 1.7rem;
-    color: var(--marron-oscuro);
 }
 
 .catalogo-info p {
-    color: #666;
-    line-height: 1.5;
-    font-size: 0.95rem;
-
     flex: 1;
+
+    color: #666;
+
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .catalogo-info strong {
-    font-size: 1.3rem;
     color: var(--marron-oscuro);
+
+    font-size: 1.3rem;
 }
+
+
+/* =========================
+   IMAGEN PRODUCTO
+========================= */
 
 .catalogo-img {
     width: 100%;

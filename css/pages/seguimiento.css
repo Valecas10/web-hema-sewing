@@ -1,109 +1,165 @@
-#seguimiento .central-gallery{
+/* =========================
+   SEGUIMIENTO
+========================= */
+
+#seguimiento .central-gallery {
+    display: flex;
     flex-direction: column;
-    background-color: var(--marron-oscuro);
+
     max-width: 500px;
+
     margin: 50px auto;
     padding: 40px;
+
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+
+    background-color: var(--marron-oscuro);
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 
+/* =========================
+   HEADER
+========================= */
 
 #seguimiento .btn-volver {
-    float: none;       
+    float: none;
+
     margin: 0;
+
     z-index: 10;
 }
 
-#seguimiento .logo-img{ 
-    width: auto;  
-    display: block;
-    margin: 0;
-    flex-grow: 1;      
+#seguimiento .logo-img {
     display: flex;
     justify-content: center;
+
+    flex-grow: 1;
+
+    width: auto;
+
+    margin: 0;
 }
 
-.busqueda-seguimiento{
-    display: flex;
-    gap: 0; /* Para que parezcan unidos */
-    justify-content: center;
-    margin-bottom: var(--radius-large);
 
+/* =========================
+   BÚSQUEDA
+========================= */
+
+.busqueda-seguimiento {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+
+    margin-bottom: var(--radius-large);
+}
+
+.busqueda-seguimiento input {
+    padding: 10px 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+
+    outline: none;
+}
+
+.busqueda-seguimiento button {
+    padding: 10px var(--radius-large);
+
+    border: none;
+    border-radius: 0 5px 5px 0;
+
+    background-color: var(--marron-claro);
+    color: var(--beige-acento);
+
+    font: var(--font-arapey);
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
 }
 
 .busqueda-seguimiento button:hover {
     background-color: #8e6f5e;
 }
 
-.busqueda-seguimiento input {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px; /* Redondea solo el lado izquierdo */
-    outline: none;
-}
 
-.busqueda-seguimiento button {
-    padding: 10px var(--radius-large);
-    font: var(--font-arapey);
-    background-color: var(--marron-claro); /* Color acorde a tu logo (marrón suave) */
-    color: var(--beige-acento);
-    border: none;
-    border-radius: 0 5px 5px 0; /* Redondea solo el lado derecho */
-    cursor: pointer;
-    transition: background 0.3s;
-}
+/* =========================
+   STATUS
+========================= */
 
 .status {
     display: inline-block;
-    padding: var(--radius-small) var(--radius-large);
-    border-radius: 50px;       /* Forma de cápsula */
-    font-weight: bold;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background-color: #f0f0f0; /* Color gris por defecto */
+
+    padding:
+        var(--radius-small)
+        var(--radius-large);
+
+    border-radius: 50px;
+
+    background-color: #f0f0f0;
     color: #666;
+
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
+
+/* =========================
+   STATUS VARIANTS
+========================= */
+
 .status.pendiente {
-    background-color: #fff4e5; /* Naranja muy claro */
-    color: #d47a00;           /* Naranja oscuro para el texto */
     border: 1px solid #ffe2b9;
+
+    background-color: #fff4e5;
+    color: #d47a00;
 }
 
 .status.enviado {
-    background-color: #e3f2fd; /* Azul claro */
-    color: #1976d2;
     border: 1px solid #bbdefb;
+
+    background-color: #e3f2fd;
+    color: #1976d2;
 }
 
 .status.error {
+    border: 1px solid #f8bbd0;
+
     background-color: #fce4ec;
     color: #c2185b;
-    border: 1px solid #f8bbd0;
 }
 
 .status.enproceso {
-    background-color: #fff9c4; /* Amarillo suave */
-    color: #856404;           /* Marrón/Dorado oscuro para contraste */
     border: 1px solid #fff3cd;
+
+    background-color: #fff9c4;
+    color: #856404;
 }
 
 .status.terminado {
-    background-color: #e8f5e9; /* Verde muy suave */
-    color: #4caf50;           /* Verde vibrante */
     border: 1px solid #c8e6c9;
+
+    background-color: #e8f5e9;
+    color: #4caf50;
 }
 
 .status.entregado {
-    background-color: #2e7d32; /* Verde sólido oscuro */
-    color: #ffffff;           /* Texto blanco para contraste */
     border: 1px solid #1b5e20;
+
+    background-color: #2e7d32;
+    color: #ffffff;
 }
+
+
+/* =========================
+   RESULTADO
+========================= */
 
 #resultado-busqueda {
     margin-top: var(--radius-large);
-    padding-top: 15px;  
+    padding-top: 15px;
 }

@@ -1,150 +1,193 @@
+/* =========================
+   PASO DATOS COMPRADOR
+========================= */
+
 #datos-comprador .paso {
-    background: var(--marron-oscuro);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px var(--radius-large) rgba(0,0,0,0.03);
     margin-top: 30px;
+    padding: 40px;
+
+    border-radius: 15px;
+
+    background: var(--marron-oscuro);
+
+    box-shadow: 0 4px var(--radius-large) rgba(0, 0, 0, 0.03);
 }
 
 #datos-comprador h3 {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid var(--beige-acento);
+
+    color: var(--beige-acento);
+
     font-family: var(--font-arapey);
     font-size: 1.8rem;
-    color: var(--beige-acento);
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--beige-acento);
-    padding-bottom: 10px;
     letter-spacing: 1px;
 }
 
+
+/* =========================
+   BOTÓN ENVIAR PEDIDO
+========================= */
+
 #boton-enviar-pedido {
     display: block;
+
     width: 100%;
     max-width: 300px;
+
     margin: 40px auto;
+    padding: 18px !important;
+
+    border-radius: 0 !important;
+
     background-color: var(--marron-oscuro) !important;
+
     font-family: var(--font-aileron);
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: 2px;
-    padding: 18px !important;
-    border-radius: 0 !important; /* Estilo revista, más cuadrado */
-    transition: 0.4s !important;
+    text-transform: uppercase;
+
+    transition:
+        background-color 0.4s ease,
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
 }
 
 #boton-enviar-pedido:hover {
     background-color: var(--marron-claro) !important;
+
     transform: translateY(-3px);
-    box-shadow: 0 10px var(--radius-large) rgba(113, 79, 56, 0.2);
+
+    box-shadow:
+        0 10px var(--radius-large)
+        rgba(113, 79, 56, 0.2);
 }
 
-.success-card {
-    background-color: var(--marron-oscuro);
-    padding: 50px;
-    border-radius: var(--radius-large);
-    text-align: center;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
 
-.success-card h2 {
-    font-family: var(--font-arapey);
-    font-size: 2.5rem;
-    color: var(--beige-acento);
-    margin-bottom: var(--radius-large);
-}
-
-.codigo-hema {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--beige-acento);
-    padding: 15px;
-    border-radius: 10px;
-    margin: 25px 0;
-    font-size: 1.3rem;
-    letter-spacing: 3px;
-    font-weight: bold;
-}
+/* =========================
+   SUCCESS
+========================= */
 
 .success-container {
     display: flex;
     justify-content: center;
+
     margin-top: 60px;
 }
 
-#contenedor-personalizacion .card-opcion.seleccionada::after {
+.success-card {
+    width: 100%;
+    max-width: 500px;
 
-    content: 'Seleccionada';
+    padding: 50px;
 
-    position: absolute;
-
-    top: 10px;
-    right: 10px;
+    border-radius: var(--radius-large);
 
     background-color: var(--marron-oscuro);
 
-    color: white;
+    text-align: center;
 
-    font-size: 0.65rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.success-card h2 {
+    margin-bottom: var(--radius-large);
+
+    color: var(--beige-acento);
+
+    font-family: var(--font-arapey);
+    font-size: 2.5rem;
+}
+
+.codigo-hema {
+    margin: 25px 0;
+    padding: 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--beige-acento);
+
+    font-size: 1.3rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+
+/* =========================
+   PERSONALIZACIÓN
+========================= */
+
+#contenedor-personalizacion .card-opcion.seleccionada::after {
+    content: 'Seleccionada';
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
 
     padding: 6px 10px;
 
     border-radius: var(--radius-large);
 
+    background-color: var(--marron-oscuro);
+    color: white;
+
+    font-size: 0.65rem;
     font-weight: 600;
 
-    z-index: 20;
+    white-space: nowrap;
 
     pointer-events: none;
-
-    white-space: nowrap;
 }
 
+
+/* =========================
+   CARDS TELAS
+========================= */
+
 #contenedor-telas .card-opcion {
+    position: relative;
 
     flex: 0 0 280px;
 
-    scroll-snap-align: center;
+    overflow: visible;
+
+    border: 1px solid rgba(160, 129, 108, 0.15);
+    border-radius: 22px;
 
     background: #ffffff;
 
-    border-radius: 22px;
-
-    overflow: visible;
-
     cursor: pointer;
 
-    border: 1px solid rgba(160, 129, 108, 0.15);
+    scroll-snap-align: center;
 
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 
     transition:
         transform 0.35s ease,
         box-shadow 0.35s ease,
         border-color 0.35s ease;
-
-    position: relative;
 }
 
 #contenedor-telas .card-opcion:hover {
+    border-color: rgba(160, 129, 108, 0.35);
 
     transform: translateY(-5px);
 
-    box-shadow:
-        0 18px 40px rgba(0,0,0,0.08);
-
-    border-color: rgba(160, 129, 108, 0.35);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
 }
 
 #contenedor-telas .card-opcion img {
+    display: block;
 
     width: 100%;
     height: 240px;
 
     object-fit: cover;
-
-    display: block;
 
     transition: transform 0.5s ease;
 }
@@ -154,71 +197,71 @@
 }
 
 #contenedor-telas .card-opcion h3 {
-
-    font-family: var(--font-arapey);
-
-    font-size: 1.3rem;
+    margin: 18px var(--radius-large) 5px;
 
     color: var(--marron-oscuro);
 
+    font-family: var(--font-arapey);
+    font-size: 1.3rem;
     letter-spacing: 1px;
-
-    margin: 18px var(--radius-large) 5px;
 }
 
 #contenedor-telas .card-opcion p {
-
-    margin: 0 var(--radius-large) var(--radius-large);
+    margin:
+        0
+        var(--radius-large)
+        var(--radius-large);
 
     color: #777;
 
     font-size: 0.9rem;
-
     line-height: 1.5;
 }
 
 #contenedor-telas .card-opcion.seleccionada {
+    position: relative;
+    z-index: 1;
 
     border: 2px solid var(--marron-claro);
 
     transform: translateY(-5px);
 
     box-shadow:
-        0 var(--radius-large) 45px rgba(113, 79, 56, 0.15);
-
-    position: relative;
-    z-index: 1;
+        0 var(--radius-large)
+        45px rgba(113, 79, 56, 0.15);
 }
 
-
 #contenedor-telas .card-opcion.seleccionada::after {
-
     content: 'Seleccionada';
 
     position: absolute;
-
     top: 15px;
     right: 15px;
 
-    background: var(--marron-oscuro);
+    padding:
+        var(--radius-small)
+        var(--radius-medium);
 
+    border-radius: 50px;
+
+    background: var(--marron-oscuro);
     color: white;
 
     font-size: 0.75rem;
-
     letter-spacing: 1px;
-
-    padding: var(--radius-small) var(--radius-medium);
-
-    border-radius: 50px;
 }
 
 
-/* Mapa */
+/* =========================
+   MAPA
+========================= */
+
 #mapa-libre {
-    height: 300px;
     width: 100%;
-    border-radius: var(--radius-medium);
-    border: 1px solid var(--borde-suave);
+    height: 300px;
+
     margin-top: var(--radius-large);
+
+    border: 1px solid var(--borde-suave);
+    border-radius: var(--radius-medium);
 }

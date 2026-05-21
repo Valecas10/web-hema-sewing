@@ -17,7 +17,7 @@
         background-color: #fdfaf7;
         width: 250px; /* Un ancho más razonable para celular */
         height: 100vh; /* Que ocupe todo el alto */
-        padding: 60px 20px;
+        padding: 60px var(--radius-large);
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         z-index: 9999; /* Super importante para que esté arriba de todo */
     }
@@ -41,8 +41,8 @@
 
     /* Ajuste para que el botón de seguimiento no se vea gigante en móvil */
     .btn-nav {
-        margin-top: 20px;
-        padding: 10px 20px;
+        margin-top: var(--radius-large);
+        padding: 10px var(--radius-large);
         width: 100%;
     }
 }
@@ -99,7 +99,7 @@
     }
 
     .catalogo-info {
-        padding: 12px;
+        padding: var(--radius-medium);
         gap: 6px;
     }
 
@@ -150,7 +150,7 @@
     #seguimiento .main-header,
     #catalogo .main-header {
 
-        gap: 8px;
+        gap: var(--radius-small);
 
         margin-bottom: 10px;
     }
@@ -252,7 +252,7 @@
     }
 
     .cart-item {
-        padding: 8px;
+        padding: var(--radius-small);
     }
 
     .cart-item-image {
@@ -261,11 +261,11 @@
     }
 
     .cart-item-content {
-        gap: 8px;
+        gap: var(--radius-small);
     }
 
     .floating-cart {
-        padding: 12px 12px 8px 12px;
+        padding: var(--radius-medium) var(--radius-medium) 8px var(--radius-medium);
     }
 
     .floating-cart img {
@@ -285,7 +285,7 @@
         width: 100%;
         padding: 10px 15px;
         font-size: 0.8rem;
-        padding: 10px 12px;
+        padding: 10px var(--radius-medium);
     }
 
     #mapa-libre {
@@ -361,7 +361,7 @@
 
         object-fit: cover;
 
-        border-radius: 12px;
+        border-radius: var(--radius-medium);
 
         margin-bottom: 10px;
     }
@@ -392,7 +392,7 @@
 
         content: '';
 
-        flex: 0 0 20px;
+        flex: 0 0 var(--radius-large);
     }
 
     .btn-carrusel {
@@ -413,7 +413,7 @@
 
         text-align: center;
 
-        margin-bottom: 20px;
+        margin-bottom: var(--radius-large);
     }
 
     #contenedor-personalizacion {
@@ -422,7 +422,7 @@
 
     overflow-x: auto;
 
-    padding: 20px 10px;
+    padding: var(--radius-large) 10px;
 
     gap: 14px;
     }

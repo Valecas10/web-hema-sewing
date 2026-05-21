@@ -6,7 +6,6 @@
     transition: all 0.3s ease;
     width: 150px;
     background: white;
-    box-sizing: border-box;
 }
 
 .card-opcion img {
@@ -14,6 +13,8 @@
     height: 150px;
     object-fit: cover;
     border-radius: 5px;
+    position: relative;
+    z-index: 1;
 }
 
 .card-opcion:hover {
@@ -26,7 +27,7 @@
     min-height: 520px;
 
     
-    border-radius: 20px;
+    border-radius: var(--radius-large);
     overflow: hidden;
 
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
@@ -59,7 +60,7 @@
 
     height: 420px;
 
-    border-radius: 20px;
+    border-radius: var(--radius-large);
 
     overflow: hidden;
 
@@ -127,9 +128,9 @@
 
 .grid-seleccion {
     display: flex;
-    gap: 20px;
+    gap: var(--radius-large);
     justify-content: center;
-    padding: 20px;
+    padding: var(--radius-large);
 }
 
 .grid-categorias {

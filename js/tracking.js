@@ -12,7 +12,7 @@ async function consultarEstadoPedido() {
     const estado = document.getElementById('estado-pedido');
 
     if (!id) {
-        alert("Ingresá un código.");
+        mostrarToast("Ingresá un código.", 'success');
         return;
     }
 
@@ -26,7 +26,7 @@ async function consultarEstadoPedido() {
 
         if (data.error) {
             estado.innerText = "Código no encontrado";
-            estado.classList.add('error'); // Opcional: una clase para errores
+            estado.classList.add('error');
         } else {
             const textoStatus = data.estado; 
             estado.innerText = textoStatus;
@@ -46,7 +46,7 @@ async function consultarEstadoPedido() {
         }
 
     } catch (error) {
-        console.error(error);
-        alert("Error al consultar.");
+        
+        mostrarToast("Error al consultar.",'error');
     }
 }

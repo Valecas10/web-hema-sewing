@@ -31,11 +31,11 @@
 }
 
 .catalogo-info {
-    padding: 20px;
+    padding: var(--radius-large);
 
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--radius-large);
 
     flex: 1;
 }

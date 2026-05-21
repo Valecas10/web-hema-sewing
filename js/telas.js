@@ -147,7 +147,6 @@ function cargarOpcionesPersonalizacion() {
         const card = document.createElement('div');
         card.className = 'card-opcion';
         
-        // Guardamos los datos en la card para usarlos después
         card.dataset.id = opc.id;
         card.dataset.precio = opc.precio;
         card.dataset.nombre = opc.nombre;
@@ -164,26 +163,21 @@ function cargarOpcionesPersonalizacion() {
             const inputPersonalizacion = document.getElementById('personalizacion-seleccionada');
 
             if (opc.id === 'sin-nada') {
-                // Si hace clic en "Sin nada", borramos todas las demás selecciones
                 document.querySelectorAll('#contenedor-personalizacion .card-opcion')
                         .forEach(c => c.classList.remove('seleccionada'));
                 card.classList.add('seleccionada');
             } else {
-                // Si hace clic en cualquier otra, le sacamos la selección a "Sin nada"
                 const sinNadaCard = document.querySelector('#contenedor-personalizacion .card-opcion[data-id="sin-nada"]');
                 if (sinNadaCard) sinNadaCard.classList.remove('seleccionada');
 
-                // Activamos/Desactivamos la card que tocó
                 card.classList.toggle('seleccionada');
 
-                // Si deseleccionó todo y no quedó ninguna marcada, volvemos a marcar "Sin nada"
                 const seleccionadas = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
                 if (seleccionadas.length === 0 && sinNadaCard) {
                     sinNadaCard.classList.add('seleccionada');
                 }
             }
 
-            // Guardamos todos los IDs seleccionados en el input oculto (ej: "bordado, volado")
             const seleccionadasFinal = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
             const idsSeleccionados = Array.from(seleccionadasFinal).map(c => c.dataset.id).join(', ');
             inputPersonalizacion.value = idsSeleccionados;
@@ -205,18 +199,16 @@ if (btnAgregarFinal) {
         const imagenTela = telaCard.querySelector('img').src;
         
         if (!telaId || !telaCard) {
-            alert("Por favor, selecciona primero una tela.");
+            mostrarToast("Por favor, selecciona primero una tela.", 'success');
             return;
         }
 
         const nombreTela = telaCard.querySelector('span').innerText;
-        let precioTotal = parseFloat(telaCard.dataset.precio); // Precio base de la tela
+        let precioTotal = parseFloat(telaCard.dataset.precio); 
 
-        // Buscamos todas las cards de personalización que estén seleccionadas
         const cardsPersonalizacion = document.querySelectorAll('#contenedor-personalizacion .card-opcion.seleccionada');
         let nombresPersonalizacion = [];
 
-        // Sumamos los precios y guardamos los nombres
         cardsPersonalizacion.forEach(card => {
             if (card.dataset.id !== 'sin-nada') {
                 precioTotal += parseFloat(card.dataset.precio || 0);
@@ -224,14 +216,12 @@ if (btnAgregarFinal) {
             }
         });
 
-        // Armamos el texto para el carrito
         const textoDetalle = nombresPersonalizacion.length > 0 
             ? `Personalización: ${nombresPersonalizacion.join(' + ')}` 
             : 'Sin personalización';
 
-        // Evita agregar si no hay stock
         if (stockActual === 0) {
-            alert("Esta tela ya no tiene stock.");
+            mostrarToast("Esta tela ya no tiene stock.", 'success');
             return;
         }
 

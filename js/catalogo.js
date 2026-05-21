@@ -23,13 +23,9 @@ async function cargarCatalogo(
 
         const contenedor = document.getElementById(idContenedor);
 
-        console.log(idContenedor);
-        console.log(contenedor);
-
         contenedor.innerHTML = "";
 
         filas.forEach(fila => {
-            //console.log(columnas);
 
             const columnas = fila.split(',');
 
@@ -172,7 +168,6 @@ async function cargarCatalogo(
 
                     let nuevoStock = stockActual - 1;
 
-                    // Actualizamos dataset
                     card.dataset.stock = nuevoStock;
 
                     // =========================

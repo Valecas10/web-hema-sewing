@@ -37,3 +37,30 @@ function generarCodigoSeguimiento() {
 
     return `HEMA-${mes}${dia}-${random}`;
 }
+
+function mostrarToast(
+    mensaje,
+    tipo = 'success'
+) {
+
+    const toast =
+        document.getElementById('toast-hema');
+
+    if (!toast) return;
+
+    toast.innerText = mensaje;
+
+    toast.className = '';
+
+    toast.classList.add(tipo);
+
+    setTimeout(() => {
+        toast.classList.add('mostrar');
+    }, 10);
+
+    setTimeout(() => {
+
+        toast.classList.remove('mostrar');
+
+    }, 3500);
+}

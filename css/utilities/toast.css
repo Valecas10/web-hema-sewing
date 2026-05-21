@@ -1,0 +1,46 @@
+#toast-hema {
+
+    position: fixed;
+
+    bottom: 30px;
+    right: 30px;
+
+    background-color: #a0816c;
+    color: white;
+
+    padding: 16px 24px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+    z-index: 9999;
+
+    opacity: 0;
+    transform: translateY(var(--radius-large));
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+
+    font-size: 0.95rem;
+
+    max-width: 320px;
+}
+
+#toast-hema.mostrar {
+
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+#toast-hema.error {
+    background-color: #c96b6b;
+}
+
+#toast-hema.success {
+    background-color: #8b7355;
+}

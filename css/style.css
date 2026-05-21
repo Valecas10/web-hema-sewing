@@ -2,6 +2,7 @@
 @import url('./base/reset.css');
 @import url('./base/variables.css');
 @import url('./base/global.css');
+@import url('./base/fonts.css');
 
 /* LAYOUT */
 @import url('./layout/header.css');
@@ -22,6 +23,7 @@
 /* UTILITIES */
 @import url('./utilities/animations.css');
 @import url('./utilities/helpers.css');
+@import url('./utilities/toast.css');
 
 /* RESPONSIVE */
 @import url('./responsive/tablet.css');

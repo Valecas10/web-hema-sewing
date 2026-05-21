@@ -1,7 +1,7 @@
 .floating-cart {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--radius-large);
+  right: var(--radius-large);
   background-color: var(--marron-oscuro);
   color: white;
   padding: 15px 15px 10px 15px;
@@ -25,7 +25,7 @@
 
 .cart-window {
     width: 300px;
-    border-radius: 20px;
+    border-radius: var(--radius-large);
     box-shadow: 0 5px 25px rgba(0,0,0,0.2);
     border: 1px solid rgba(160, 129, 108, 0.2);
     margin-bottom: 15px;
@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px); /* Desfoca lo que hay detrás */
+    backdrop-filter: blur(10px); 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     position: relative;
     left: -80px;
@@ -60,20 +60,19 @@
 .cart-items {
     max-height: 300px;
     overflow-y: auto;
-    /*padding: 10px;*/
-    border-bottom: 1px solid rgba(160, 129, 108, 0.1); /* Línea color café muy suave */
+    border-bottom: 1px solid rgba(160, 129, 108, 0.1); 
     padding: 15px 10px;
-    margin: 0; /* Quitamos márgenes para que la línea cruce de lado a lado */
-    border-radius: 0; /* Si prefieres que se vea como una lista continua */
+    margin: 0; 
+    border-radius: 0; 
 }
 
 .cart-item:first-child { border-top-left-radius: 15px; border-top-right-radius: 15px; }
 .cart-item:last-child { border-bottom: none; }
 
 .cart-item {
-    background: #fdfaf8; /* Un fondo crema muy suave */
-    border-radius: 12px;
-    margin-bottom: 8px;
+    background: #fdfaf8; 
+    border-radius: var(--radius-medium);
+    margin-bottom: var(--radius-small);
     padding: 10px;
     border: none;
 }
@@ -93,7 +92,7 @@
     width: 60px;
     height: 60px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--radius-small);
     flex-shrink: 0;
 }
 
@@ -102,7 +101,7 @@
   color: white;
   border-radius: 50%;
   padding: 2px 7px;
-  font-size: 12px;
+  font-size: var(--radius-medium);
   position: absolute;
   top: 0;
   right: 0;
@@ -111,8 +110,8 @@
 
 .cart-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: var(--radius-large);
+    right: var(--radius-large);
     z-index: 1000;
     pointer-events: none;
 }
@@ -123,6 +122,6 @@
     padding: 15px;
     display: flex;
     justify-content: space-between;
-    border-radius: 20px 20px 0 0; /* Solo arriba */
-    padding: 20px;
+    border-radius: var(--radius-large) var(--radius-large) 0 0;
+    padding: var(--radius-large);
 }

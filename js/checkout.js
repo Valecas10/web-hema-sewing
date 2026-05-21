@@ -12,13 +12,8 @@ function inicializarCheckout() {
 
     btnEnviar.addEventListener('click', async () => {
 
-        /*if (boton.disabled) return;
-
-        boton.disabled = true;*/
-        
         const boton = document.getElementById('boton-enviar-pedido');
 
-        // 1. LISTA DE INPUTS A VALIDAR
         const camposAValidar = [
             { id: 'nombre-cliente', nombre: 'Nombre' },
             { id: 'email-cliente', nombre: 'Email' },
@@ -29,22 +24,20 @@ function inicializarCheckout() {
 
         let hayError = false;
 
-        // 2. LOGICA DE VALIDACIÓN VISUAL
         camposAValidar.forEach(campo => {
             const input = document.getElementById(campo.id);
-            const contenedor = input.closest('.campo'); // El div con la clase .campo
+            const contenedor = input.closest('.campo'); 
 
             if (input.value.trim() === "") {
-                contenedor.classList.add('error'); // Activa el CSS de la cruz y borde rojo
+                contenedor.classList.add('error');
                 hayError = true;
             } else {
                 contenedor.classList.remove('error');
             }
             });
 
-         // 3. VALIDACIÓN EXTRA (Mapa y Tela)
         if (hayError || !latitudFinal) {
-            alert("Por favor, completa los campos marcados y selecciona una dirección válida en el mapa.");
+            mostrarToast("Por favor, completa los campos marcados y selecciona una dirección válida en el mapa.", 'success');
             return;
         }
 
@@ -55,7 +48,7 @@ function inicializarCheckout() {
 
         if (!regexEmail.test(email)) {
 
-            alert('Ingresá un email válido.');
+            mostrarToast('Ingresá un email válido.', 'error');
 
             emailInput.closest('.campo').classList.add('error');
 
@@ -70,7 +63,7 @@ function inicializarCheckout() {
 
         if (!/^\d+$/.test(telefonoLimpio) || telefonoLimpio.length < 8) {
 
-            alert('Ingresá un teléfono válido.');
+            mostrarToast('Ingresá un teléfono válido.', 'error');
 
             telefonoInput.closest('.campo').classList.add('error');
 
@@ -149,11 +142,8 @@ function inicializarCheckout() {
             direccionMapa: direccionValidada
         };  
 
-
-        console.log(pedido);
-
         if (!pedido.cliente || !latitudFinal) {
-            alert("Completa los datos y selecciona una dirección válida.");
+            mostrarToast("Completa los datos y selecciona una dirección válida.", 'error');
             return;
         }
 
@@ -185,8 +175,7 @@ function inicializarCheckout() {
             boton.classList.remove('loading');
 
         } catch (error) {
-            console.error(error);
-            alert("Error al enviar.");
+            mostrarToast("Error al enviar.", 'error');
             boton.classList.remove('loading');
             boton.disabled = false;
             boton.innerText = textoOriginal;
@@ -203,18 +192,14 @@ function inicializarCheckout() {
 function enviarCotizacionWhatsApp() {
     let mensaje = "¡Hola Nai! Quiero pedir un presupuesto para el siguiente pedido:\n\n";
     
-    // Recorremos el carrito para detallar cada producto
     carrito.forEach((producto, index) => {
-        // Asegurate de usar los nombres de variables exactos que tenés en tu objeto del carrito
         mensaje += `${index + 1}- ${producto.nombre}\n`;
         mensaje += `   Personalización: ${producto.personalizacion}\n`;
-        // Si tenés cantidad, podés agregarla: `Cantidad: ${producto.cantidad}`
         mensaje += `\n`; 
     });
 
     mensaje += "¡Quedo a la espera de la cotización y el link para cargar mis datos de envío!";
 
-    // El número de Hema Sewing
     const numeroWhatsApp = "5493512511146"; 
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     

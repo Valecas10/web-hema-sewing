@@ -12,22 +12,22 @@ button.loading:disabled {
 }
 
 .zoom-active {
-    transform: translateY(20px) scale(1.6)  ;
+    transform: translateY(var(--radius-large)) scale(1.6)  ;
     transform-origin: center center;
     position: relative;
     z-index: 999;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    border-radius: 8px;
+    border-radius: var(--radius-small);
     
 }
 
 .zoom-active::after {
-    transform: translateY(20px) scale(1.6)  ;
+    transform: translateY(var(--radius-large)) scale(1.6)  ;
     transform-origin: center center;
     position: relative;
     z-index: 999;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    border-radius: 8px;
+    border-radius: var(--radius-small);
     
 }
 
@@ -46,7 +46,7 @@ button.loading:disabled {
     right: 10px;
     background: #a94442;
     color: white;
-    padding: 5px 8px;
+    padding: 5px var(--radius-small);
     font-size: 11px;
     border-radius: 5px;
     font-weight: bold;

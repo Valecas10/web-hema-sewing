@@ -36,12 +36,33 @@
     color: #555;
 }
 
+.logo-img {
+    display: block;
+
+    width: auto;
+    height: 60px;
+
+    margin: 0;
+}
+
+.logo-img:hover {
+    opacity: 0.8;
+}
+
+#compra .logo-img{ 
+    width: auto;  
+    margin: 0;
+    flex-grow: 1;      
+    display: flex;
+    justify-content: center;
+}
+
 #compra .main-header{
     display: flex;
     justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
     align-items: center;            /* Alineación vertical perfecta */
     position: relative;
-    padding: 20px 0;
+    padding: var(--radius-large) 0;
     width: 100%;
 }
 
@@ -50,6 +71,6 @@
     justify-content: space-between; /* Distribuye: Botón - Logo - Espacio vacío */
     align-items: center;            /* Alineación vertical perfecta */
     position: relative;
-    padding: 20px 0;
+    padding: var(--radius-large) 0;
     width: 100%;
 }

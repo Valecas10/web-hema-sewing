@@ -109,7 +109,6 @@ function inicializarMapa() {
 
                 const direccion = `${p.street || p.name || 'Direccion Desconocida'} ${p.housenumber || ''}`;
 
-                // Actualizamos el input y la variable de validación
                 if (inputCalle) {
                     inputCalle.value = direccion;
                 }
@@ -154,19 +153,14 @@ function configurarEventosDireccion() {
             inputCiudad.disabled = false;
             limpiarCiudadYCalle();
             if (prov === "CABA") {
-                // Autocompletamos y bloqueamos ciudad
                 inputCiudad.value = "CABA";
                 inputCiudad.disabled = true;
                 estadoUbicacion.ciudad = "CABA"; 
                 inputCiudad.placeholder = "Aplica para todo CABA";
-                
-                // Habilitamos la calle para que sigan de largo
                 inputCalle.disabled = false;
             } else {
-                // Comportamiento normal para el resto de provincias
                 inputCiudad.disabled = false;
-                inputCiudad.placeholder = "Ej: Tandil"; // Restauramos tu placeholder original
-                // inputCalle ya fue deshabilitado por limpiarCiudadYCalle()
+                inputCiudad.placeholder = "Ej: Tandil";
             }
         }else {
             inputCiudad.disabled = true;
@@ -216,11 +210,8 @@ function configurarEventosDireccion() {
         return;
     }
     try {
-        // Obtenemos las coordenadas de la ciudad que ya guardamos en estadoUbicacion
         const { lat, lon } = estadoUbicacion.coords;
 
-        // Construimos la URL con lat y lon para priorizar resultados locales
-        // También incluimos la provincia y "Argentina" en el texto de búsqueda para mayor precisión
         if(provincia === "CABA"){provincia = "Buenos Aires"}
         const queryBusqueda = `${calle}, ${ciudad}, ${provincia}, Argentina`;
         const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(queryBusqueda)}&lat=${lat}&lon=${lon}&limit=10`;
@@ -307,7 +298,6 @@ function renderizarSugerenciasCiudad(features) {
                 const [lon, lat] = lugar.geometry.coordinates;
                 inputCiudad.value = nombre;
                 
-                // Actualizamos el estado global de ubicación
                 estadoUbicacion.ciudad = nombre;
                 estadoUbicacion.coords = { lat, lon };
 
@@ -345,12 +335,11 @@ function renderizarSugerenciasCalle(features) {
             const [lon, lat] = lugar.geometry.coordinates;
             inputCalle.value = dirCompleta;
 
-            // Guardamos las coordenadas finales para el pedido [source: 2]
             latitudFinal = lat;
             longitudFinal = lon;
             direccionValidada = `${dirCompleta}, ${p.city || ciudadActual}`;
 
-            actualizarMarcador(lat, lon, 17); // Zoom más cerca para ver la casa
+            actualizarMarcador(lat, lon, 17);
             sugerenciasCalle.innerHTML = "";
         };
         sugerenciasCalle.appendChild(div);

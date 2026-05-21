@@ -29,7 +29,7 @@
     display: flex;
     gap: 0; /* Para que parezcan unidos */
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: var(--radius-large);
 
 }
 
@@ -45,7 +45,7 @@
 }
 
 .busqueda-seguimiento button {
-    padding: 10px 20px;
+    padding: 10px var(--radius-large);
     font: var(--font-arapey);
     background-color: var(--marron-claro); /* Color acorde a tu logo (marrón suave) */
     color: var(--beige-acento);
@@ -57,7 +57,7 @@
 
 .status {
     display: inline-block;
-    padding: 8px 20px;
+    padding: var(--radius-small) var(--radius-large);
     border-radius: 50px;       /* Forma de cápsula */
     font-weight: bold;
     font-size: 0.9rem;
@@ -104,6 +104,6 @@
 }
 
 #resultado-busqueda {
-    margin-top: 20px;
+    margin-top: var(--radius-large);
     padding-top: 15px;  
 }

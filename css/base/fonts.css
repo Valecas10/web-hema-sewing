@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Arapey';
+  src: url('../../fonts/Arapey-Regular.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'Aileron';
+    src: url('../../fonts/aileron.thin.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}

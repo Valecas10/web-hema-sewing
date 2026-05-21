@@ -71,12 +71,11 @@ window.onload = function() {
     if (ultimaVista) {
         mostrarVista(ultimaVista);
     } else {
-        mostrarVista('inicio'); // Si es la primera vez que entra, va al inicio
+        mostrarVista('inicio');
     }
 };
 
 window.addEventListener('hashchange', function() {
-    // Obtenemos el hash actual (quitándole el símbolo #)
     const vistaDeseada = window.location.hash.replace('#', '');
     
     if (vistaDeseada) {

@@ -1,15 +1,15 @@
 .formulario-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: var(--radius-large);
     margin-bottom: 40px;
 }
 
 .campo {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: var(--radius-small);
+    margin-bottom: var(--radius-large);
     position: relative;
 }
 
@@ -23,9 +23,9 @@
 
 .campo input, 
 .campo select {
-    padding: 12px 15px;
+    padding: var(--radius-medium) 15px;
     border: 1px solid var(--borde-suave);
-    border-radius: 8px;
+    border-radius: var(--radius-small);
     font-family: var(--font-aileron);
     font-size: 1rem;
     background-color: #fafafa;
@@ -43,8 +43,8 @@
 .input-group-hema {
     display: flex;
     align-items: center;
-    background-color: white; /* Fondo blanco como en tu imagen */
-    border-radius: 8px;      /* Bordes redondeados suaves */
+    background-color: white; 
+    border-radius: var(--radius-small);     
     overflow: hidden;
     border: 1px solid var(--borde-suave);
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -57,16 +57,15 @@
 
 .input-group-hema select {
     cursor: pointer;
-    /* Esto ayuda a que el texto no se pegue al borde derecho si la provincia es larga */
     padding-right: 30px; 
 }
 
 .input-group-hema input, 
 .input-group-hema select {
     flex-grow: 1;
-    border: none !important; /* Quitamos el borde individual */
+    border: none !important; 
     background: transparent !important;
-    padding: 12px 15px;
+    padding: var(--radius-medium) 15px;
     font-family: var(--font-aileron);
     font-size: 1rem;
     color: var(--texto);
@@ -88,20 +87,19 @@
     color: #ff4d4d;
     font-weight: bold;
     font-size: 1.2rem;
-    pointer-events: none; /* Para que no interfiera al hacer clic en el input */
+    pointer-events: none; 
     z-index: 10;
 }
 
-/* Ajuste para que el input no pise la cruz */
 .campo.error input {
     padding-right: 40px;
 }
 
 .label-inline {
-    padding: 12px 0 12px 15px;
+    padding: var(--radius-medium) 0 var(--radius-medium) 15px;
     font-family: var(--font-aileron);
     font-size: 0.9rem;
-    color: #888; /* Color grisáceo para el label */
+    color: #888;
     white-space: nowrap;
     background-color: white;
 }
@@ -111,7 +109,7 @@
 .label-inline {
     background-color: var(--marron-claro);
     color: white;
-    padding: 12px 20px;
+    padding: var(--radius-medium) var(--radius-large);
 }
 
 .sugerencias-estilo {
@@ -121,7 +119,7 @@
     right: 0;
     background: white;
     z-index: 2000;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 var(--radius-small) var(--radius-small);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 

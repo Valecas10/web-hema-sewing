@@ -234,6 +234,7 @@
 #contenedor-telas .card-opcion.seleccionada::after {
     content: 'Seleccionada';
 
+    z-index: 99;
     position: absolute;
     top: 15px;
     right: 15px;

@@ -468,6 +468,7 @@
         gap: 14px;
 
         overflow-x: auto;
+        overflow-y: visible;
 
         padding:
             15px

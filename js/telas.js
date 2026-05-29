@@ -244,7 +244,7 @@ async function cargarTelasDinamicas() {
                ZOOM
             ========================= */
 
-            const activarZoom = (e) => {
+            /*const activarZoom = (e) => {
 
                 if (
                     e.type === 'touchstart'
@@ -275,12 +275,15 @@ async function cargarTelasDinamicas() {
                     'zoom-active'
                 );
 
-            };
+            };*/
+
 
 
             /* =========================
                EVENTOS MOUSE
             ========================= */
+
+            /*
 
             img.addEventListener(
                 'mousedown',
@@ -295,13 +298,14 @@ async function cargarTelasDinamicas() {
             img.addEventListener(
                 'mouseleave',
                 desactivarZoom
-            );
+            ); */
 
 
             /* =========================
                EVENTOS MOBILE
             ========================= */
 
+            /*
             img.addEventListener(
                 'touchstart',
                 activarZoom,
@@ -316,7 +320,7 @@ async function cargarTelasDinamicas() {
             img.addEventListener(
                 'touchmove',
                 desactivarZoom
-            );
+            ); */
 
 
             /* =========================
@@ -385,6 +389,22 @@ async function cargarTelasDinamicas() {
 
             contenedor.appendChild(card);
 
+            img.addEventListener("click", (e) => {
+
+                e.stopPropagation();
+
+                const overlay =
+                    document.getElementById("zoom-overlay");
+
+                const zoomImg =
+                    document.getElementById("zoom-img");
+
+                zoomImg.src = img.src;
+
+                overlay.classList.add("active");
+
+            });
+
         });
 
     } catch (error) {
@@ -397,6 +417,15 @@ async function cargarTelasDinamicas() {
     }
 
 }
+
+const overlay =
+    document.getElementById("zoom-overlay");
+
+overlay.addEventListener("click", () => {
+
+    overlay.classList.remove("active");
+
+});
 
 
 /* =========================

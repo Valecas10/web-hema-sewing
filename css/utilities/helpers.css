@@ -26,19 +26,46 @@ button.loading:disabled {
    ZOOM
 ========================= */
 
-.zoom-active {
-    position: relative;
-    z-index: 999;
+#zoom-overlay {
+    position: fixed !important;
+    inset: 0;
+    z-index: 99999;
 
-    border-radius: var(--radius-small);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    transform:
-        translateY(var(--radius-large))
-        scale(1.6);
+    background: rgba(0, 0, 0, 0.65);
 
-    transform-origin: center center;
+    opacity: 0;
+    visibility: hidden;
 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: 0.25s ease;
+
+    touch-action: none;
+}
+
+#zoom-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#zoom-img {
+    width: 85vw;
+    max-width: 420px;
+    max-height: 80vh;
+
+    object-fit: contain;
+
+    border-radius: 20px;
+
+    transform: scale(0.9);
+
+    transition: transform 0.25s ease;
+}
+
+#zoom-overlay.active #zoom-img {
+    transform: scale(1);
 }
 
 

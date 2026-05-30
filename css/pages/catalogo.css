@@ -76,6 +76,42 @@
     font-size: 1.3rem;
 }
 
+.selector-colores {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin: 10px 0;
+}
+
+.color-option {
+
+    width: 22px;
+
+    height: 22px;
+
+    border-radius: 50%;
+
+    border: 2px solid transparent;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.color-option:hover {
+
+    transform: scale(1.15);
+}
+
+.color-option.activo {
+
+    border-color: #a0816c;
+
+    transform: scale(1.15);
+}
+
 
 /* =========================
    IMAGEN PRODUCTO

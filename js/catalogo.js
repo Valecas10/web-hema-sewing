@@ -32,6 +32,8 @@ async function cargarCatalogo(
                 fila => fila.trim() !== ''
             );
 
+        const productosAgrupados = {};
+
         const contenedor =
             document.getElementById(
                 idContenedor
@@ -56,12 +58,60 @@ async function cargarCatalogo(
                 stock,
                 imagen,
                 descripcion,
+                color,
                 activo
             ] = columnas.map(
                 columna => columna.trim()
             );
 
+            if (!productosAgrupados[nombre]) {
 
+                productosAgrupados[nombre] = {
+                    nombre,
+                    categoria,
+                    descripcion,
+                    variantes: []
+                };
+            }
+
+            productosAgrupados[nombre].variantes.push({
+                id,
+                precio,
+                stock,
+                imagen,
+                color,
+                activo
+            });
+        
+            });
+
+
+        Object.values(productosAgrupados).forEach(producto => {
+
+            const varianteInicial =
+                producto.variantes[0];
+
+            let varianteSeleccionada =
+                varianteInicial;
+
+            const {
+                id,
+                precio,
+                stock,
+                imagen,
+                color,
+                activo
+            } = varianteInicial;
+
+            const nombre =
+                producto.nombre;
+
+            const categoria =
+                producto.categoria;
+
+            const descripcion =
+                producto.descripcion;
+        
             /* =========================
                PRODUCTO INACTIVO
             ========================= */
@@ -149,6 +199,28 @@ async function cargarCatalogo(
             card.dataset.stock = stockFinal;
             card.dataset.precio = precio;
 
+            console.log(producto.variantes);
+
+            let coloresHTML = '';
+
+            if (varianteInicial.color !== 'UNICO') {
+
+                coloresHTML = `
+                    <div class="selector-colores">
+
+                        ${producto.variantes.map(variante => `
+                            <button
+                                class="color-option"
+                                data-id="${variante.id}"
+                                data-color="${variante.color}"
+                                style="background:${variante.color}">
+                            </button>
+                        `).join('')}
+
+                    </div>
+                `;
+            }
+
             card.innerHTML = `
                 <img
                     src="assets/catalogo/${categoria}/${imagen}"
@@ -160,9 +232,13 @@ async function cargarCatalogo(
 
                     <h3>${nombre}</h3>
 
+                    ${coloresHTML}
+
                     <p>${descripcion}</p>
 
-                    <strong>$${precio}</strong>
+                    <strong class="precio-catalogo">
+                        $${precio}
+                    </strong>
 
                     ${textoStock}
 
@@ -178,6 +254,120 @@ async function cargarCatalogo(
                 card.querySelector(
                     '.btn-catalogo'
                 );
+
+            const imagenCard =
+                card.querySelector(
+                    '.catalogo-img'
+                );
+
+            const precioCard =
+                card.querySelector(
+                    '.precio-catalogo'
+                );
+
+            const stockTexto =
+                card.querySelector(
+                    '.stock-limitado, .stock-ilimitado, .stock-agotado'
+                );
+
+            const colores =
+                card.querySelectorAll(
+                    '.color-option'
+                );
+
+                colores.forEach(colorBtn => {
+
+                    colorBtn.addEventListener(
+                        'click',
+                        () => {
+
+                            colores.forEach(btn =>
+                                btn.classList.remove(
+                                    'activo'
+                                )
+                            );
+
+                            colorBtn.classList.add(
+                                'activo'
+                            );
+
+                            const variante =
+                                producto.variantes.find(
+                                    v =>
+                                        v.id ===
+                                        colorBtn.dataset.id
+                                );
+
+                            if (!variante) return;
+
+                            varianteSeleccionada =
+                                variante;
+
+                            imagenCard.src =
+                                `assets/catalogo/${categoria}/${variante.imagen}`;
+
+                            precioCard.innerText =
+                                `$${variante.precio}`;
+
+                            const stockGuardado =
+                                obtenerStockGuardado();
+
+                            const stockActual =
+                                stockGuardado[variante.id]
+                                ??
+                                parseInt(
+                                    variante.stock
+                                );
+
+                            card.dataset.stock =
+                                stockActual;
+
+                            card.dataset.id =
+                                variante.id;
+
+                            card.dataset.precio =
+                                variante.precio;
+
+                            if (stockTexto) {
+
+                                if (stockActual === -1) {
+
+                                    stockTexto.className =
+                                        'stock-ilimitado';
+
+                                    stockTexto.innerText =
+                                        'Disponible';
+
+                                } else if (
+                                    stockActual > 0
+                                ) {
+
+                                    stockTexto.className =
+                                        'stock-limitado';
+
+                                    stockTexto.innerText =
+                                        stockActual === 1
+                                        ?
+                                        'Ultima Unidad Disponible🔥'
+                                        :
+                                        `Quedan ${stockActual}`;
+
+                                } else {
+
+                                    stockTexto.className =
+                                        'stock-agotado';
+
+                                    stockTexto.innerText =
+                                        'Agotado';
+                                }
+                            }
+
+                            botonAgregar.disabled =
+                                stockActual === 0;
+                        }
+                    );
+
+                });
 
 
             /* =========================
@@ -219,17 +409,17 @@ async function cargarCatalogo(
                     const productoCarrito = {
 
                         id:
-                            `${id}-${Date.now()}`,
+                            `${varianteSeleccionada.id}-${Date.now()}`,
 
                         nombre,
 
                         precio:
-                            parseFloat(precio),
+                            parseFloat(varianteSeleccionada.precio),
 
                         cantidad: 1,
 
                         imagen:
-                            `assets/catalogo/${categoria}/${imagen}`,
+                            `assets/catalogo/${categoria}/${varianteSeleccionada.imagen}`,
 
                         telaId: id,
 
@@ -311,6 +501,7 @@ async function cargarCatalogo(
 
         });
 
+        
     } catch (error) {
 
         console.error(

@@ -20,17 +20,14 @@ async function cargarCatalogo(
     try {
 
         const respuesta =
-            await fetch(URL_EXCEL_CATALOGO);
-
-        const texto =
-            await respuesta.text();
-
-        const filas = texto
-            .split('\n')
-            .slice(1)
-            .filter(
-                fila => fila.trim() !== ''
+            await fetch(
+                `${URL_WEB_APP_EXCEL}?action=getPublicCatalog`
             );
+
+        const productos =
+            await respuesta.json();
+
+        console.log(productos);
 
         const productosAgrupados = {};
 
@@ -41,16 +38,9 @@ async function cargarCatalogo(
 
         contenedor.innerHTML = '';
 
+        productos.forEach(producto => {
 
-        filas.forEach(fila => {
-
-            const columnas =
-                fila.split(',');
-
-            if (columnas.length < 8) return;
-
-
-            const [
+            const {
                 id,
                 nombre,
                 categoria,
@@ -60,9 +50,7 @@ async function cargarCatalogo(
                 descripcion,
                 color,
                 activo
-            ] = columnas.map(
-                columna => columna.trim()
-            );
+            } = producto;
 
             if (!productosAgrupados[nombre]) {
 
@@ -72,6 +60,7 @@ async function cargarCatalogo(
                     descripcion,
                     variantes: []
                 };
+
             }
 
             productosAgrupados[nombre].variantes.push({
@@ -82,9 +71,8 @@ async function cargarCatalogo(
                 color,
                 activo
             });
-        
-            });
 
+        });
 
         Object.values(productosAgrupados).forEach(producto => {
 
@@ -116,9 +104,7 @@ async function cargarCatalogo(
                PRODUCTO INACTIVO
             ========================= */
 
-            if (
-                activo.toUpperCase() !== 'SI'
-            ) {
+            if (!activo) {
                 return;
             }
 

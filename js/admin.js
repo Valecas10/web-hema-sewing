@@ -46,6 +46,7 @@ function cambiarSeccion(seccion) {
     // Cambiar visibilidad de secciones
     document.getElementById('section-pedidos').classList.add('oculto');
     document.getElementById('section-dashboard').classList.add('oculto');
+    document.getElementById('section-catalogo').classList.add('oculto');
     
     if (seccion === 'pedidos') {
         document.getElementById('section-pedidos').classList.remove('oculto');
@@ -55,6 +56,10 @@ function cambiarSeccion(seccion) {
         document.getElementById('section-dashboard').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Resumen del Negocio';
         cargarEstadisticas();
+    } else if (seccion === 'catalogo') {
+        document.getElementById('section-catalogo').classList.remove('oculto');
+        document.getElementById('seccion-titulo').innerText = 'Gestión de Catálogo';
+        cargarCatalogo();
     }
 }
 

@@ -144,6 +144,32 @@ function doGet(e) {
       }))
       .setMimeType(ContentService.MimeType.JSON);
     }
+    // OBTENER CATÁLOGO DE PRODUCTOS
+    if (action === "getCatalog") {
+      const catSheet = sheet.getSheetByName("Productos");
+      if (!catSheet) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "Hoja 'Productos' no encontrada" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const dataCat = catSheet.getDataRange().getValues();
+      const lista = [];
+      for (let i = 1; i < dataCat.length; i++) {
+        if (!dataCat[i][0]) continue;
+        lista.push({
+          id:          String(dataCat[i][0]),
+          nombre:      dataCat[i][1],
+          categoria:   dataCat[i][2],
+          descripcion: dataCat[i][3],
+          precio:      parseFloat(dataCat[i][4] || 0),
+          stock:       parseInt(dataCat[i][5] || 0),
+          imagen:      dataCat[i][6],
+          color:       dataCat[i][7],
+          activo:      String(dataCat[i][8]).toLowerCase() !== "false"
+        });
+      }
+      return ContentService.createTextOutput(JSON.stringify(lista))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
   }
 
   return ContentService.createTextOutput(JSON.stringify({ error: "Acción no reconocida o parámetros incorrectos" }))
@@ -238,6 +264,122 @@ function doPost(e) {
       ]);
 
       return ContentService.createTextOutput(JSON.stringify({ success: true, tracking_id: postData.tracking_id }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // =================== ACCIONES DE CATÁLOGO ===================
+
+    // OBTENER FILA DE PRODUCTO POR ID (helper)
+    function buscarFilaProducto(catSheet, id) {
+      const vals = catSheet.getDataRange().getValues();
+      for (let i = 1; i < vals.length; i++) {
+        if (String(vals[i][0]) === String(id)) return i + 1; // fila 1-indexed
+      }
+      return -1;
+    }
+
+    // CREAR PRODUCTO
+    if (action === "createProduct") {
+      if (!validarToken(postData.token)) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "No autorizado" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const catSheet = sheet.getSheetByName("Productos");
+      if (!catSheet) return ContentService.createTextOutput(JSON.stringify({ error: "Hoja 'Productos' no encontrada" })).setMimeType(ContentService.MimeType.JSON);
+
+      const nuevoId = "PROD-" + new Date().getTime();
+      catSheet.appendRow([
+        nuevoId,
+        postData.nombre,
+        postData.categoria || "",
+        postData.descripcion || "",
+        parseFloat(postData.precio || 0),
+        parseInt(postData.stock || 0),
+        postData.imagen || "",
+        postData.color || "",
+        postData.activo !== "false" ? "true" : "false"
+      ]);
+      const usuario = decodificarTokenUsuario(postData.token);
+      registrarActividad(usuario, "Crear Producto", "Nuevo producto: " + postData.nombre + " (ID: " + nuevoId + ")");
+      return ContentService.createTextOutput(JSON.stringify({ success: true, id: nuevoId }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ACTUALIZAR PRODUCTO
+    if (action === "updateProduct") {
+      if (!validarToken(postData.token)) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "No autorizado" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const catSheet = sheet.getSheetByName("Productos");
+      const fila = buscarFilaProducto(catSheet, postData.id);
+      if (fila === -1) return ContentService.createTextOutput(JSON.stringify({ error: "Producto no encontrado" })).setMimeType(ContentService.MimeType.JSON);
+
+      catSheet.getRange(fila, 2, 1, 8).setValues([[
+        postData.nombre,
+        postData.categoria || "",
+        postData.descripcion || "",
+        parseFloat(postData.precio || 0),
+        parseInt(postData.stock || 0),
+        postData.imagen || "",
+        postData.color || "",
+        postData.activo !== "false" ? "true" : "false"
+      ]]);
+      const usuario = decodificarTokenUsuario(postData.token);
+      registrarActividad(usuario, "Editar Producto", "Editado: " + postData.nombre + " (ID: " + postData.id + ")");
+      return ContentService.createTextOutput(JSON.stringify({ success: true }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ELIMINAR PRODUCTO
+    if (action === "deleteProduct") {
+      if (!validarToken(postData.token)) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "No autorizado" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const catSheet = sheet.getSheetByName("Productos");
+      const fila = buscarFilaProducto(catSheet, postData.id);
+      if (fila === -1) return ContentService.createTextOutput(JSON.stringify({ error: "Producto no encontrado" })).setMimeType(ContentService.MimeType.JSON);
+
+      catSheet.deleteRow(fila);
+      const usuario = decodificarTokenUsuario(postData.token);
+      registrarActividad(usuario, "Eliminar Producto", "Eliminado ID: " + postData.id);
+      return ContentService.createTextOutput(JSON.stringify({ success: true }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ACTUALIZAR STOCK
+    if (action === "updateStock") {
+      if (!validarToken(postData.token)) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "No autorizado" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const catSheet = sheet.getSheetByName("Productos");
+      const fila = buscarFilaProducto(catSheet, postData.id);
+      if (fila === -1) return ContentService.createTextOutput(JSON.stringify({ error: "Producto no encontrado" })).setMimeType(ContentService.MimeType.JSON);
+
+      catSheet.getRange(fila, 6).setValue(parseInt(postData.stock || 0));
+      const usuario = decodificarTokenUsuario(postData.token);
+      registrarActividad(usuario, "Actualizar Stock", "Producto ID: " + postData.id + " → Stock: " + postData.stock);
+      return ContentService.createTextOutput(JSON.stringify({ success: true }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ACTIVAR / DESACTIVAR PRODUCTO
+    if (action === "toggleProducto") {
+      if (!validarToken(postData.token)) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "No autorizado" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const catSheet = sheet.getSheetByName("Productos");
+      const fila = buscarFilaProducto(catSheet, postData.id);
+      if (fila === -1) return ContentService.createTextOutput(JSON.stringify({ error: "Producto no encontrado" })).setMimeType(ContentService.MimeType.JSON);
+
+      const nuevoEstado = postData.activo === true || postData.activo === "true" ? "true" : "false";
+      catSheet.getRange(fila, 9).setValue(nuevoEstado);
+      const usuario = decodificarTokenUsuario(postData.token);
+      registrarActividad(usuario, "Toggle Producto", "Producto ID: " + postData.id + " → activo: " + nuevoEstado);
+      return ContentService.createTextOutput(JSON.stringify({ success: true }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 

@@ -70,7 +70,7 @@
                 <button class="nav-item" onclick="cambiarSeccion('dashboard')">
                     <span class="nav-icon">📊</span> Dashboard
                 </button>
-                <button class="nav-item deshabilitado-sprint" disabled>
+                <button class="nav-item" onclick="cambiarSeccion('catalogo')">
                     <span class="nav-icon">🛍️</span> Catálogo <small>(Sprint 3)</small>
                 </button>
                 <button class="nav-item deshabilitado-sprint" disabled>
@@ -159,7 +159,33 @@
                     </div>
                 </section>
 
-                <!-- SECCION DASHBOARD -->
+                <!-- SECCION CATÁLOGO -->
+                <section id="section-catalogo" class="admin-section oculto">
+                    <!-- Barra de acciones -->
+                    <div class="catalog-toolbar">
+                        <div class="search-box">
+                            <input
+                                type="text"
+                                id="catalogo-search"
+                                placeholder="Buscar por nombre o categoría..."
+                                oninput="filtrarCatalogo()"
+                            >
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="catalogo-filter-estado" onchange="filtrarCatalogo()">
+                                <option value="todos">Todos</option>
+                                <option value="activo">Activos</option>
+                                <option value="inactivo">Inactivos</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="abrirModalProducto()">+ Nuevo Producto</button>
+                    </div>
+
+                    <!-- Grid de tarjetas de productos -->
+                    <div class="card-grid" id="catalogo-grid">
+                        <p class="catalog-loading">Cargando catálogo...</p>
+                    </div>
+                </section>
                 <section id="section-dashboard" class="admin-section oculto">
                     <div class="dashboard-grid">
                         <div class="dashboard-card chart-card">
@@ -208,11 +234,86 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL PRODUCTO (CREAR / EDITAR) ==================== -->
+    <div id="modal-producto" class="modal-overlay oculto">
+        <div class="modal-card modal-card-wide">
+            <header class="modal-header">
+                <h2 id="modal-producto-titulo">Nuevo Producto</h2>
+                <button class="btn-close-modal" onclick="cerrarModalProducto()">×</button>
+            </header>
+
+            <div class="modal-content">
+                <form id="form-producto" onsubmit="event.preventDefault(); guardarProducto();">
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="prod-nombre">Nombre *</label>
+                            <input type="text" id="prod-nombre" placeholder="Ej: Tote Bag Personalizada" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-categoria">Categoría</label>
+                            <select id="prod-categoria">
+                                <option value="totes">Totes</option>
+                                <option value="colitas">Colitas</option>
+                                <option value="fundas-bidon">Fundas Bidón</option>
+                                <option value="fundas-agenda">Fundas Agenda</option>
+                                <option value="individuales">Individuales</option>
+                                <option value="posavasos">Posavasos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prod-descripcion">Descripción</label>
+                        <textarea id="prod-descripcion" rows="3" placeholder="Descripción del producto..."></textarea>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="form-group">
+                            <label for="prod-precio">Precio (ARS) *</label>
+                            <input type="number" id="prod-precio" min="0" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-stock">Stock</label>
+                            <input type="number" id="prod-stock" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-activo">Estado</label>
+                            <select id="prod-activo">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="prod-imagen">URL de imagen</label>
+                            <input type="text" id="prod-imagen" placeholder="https://... o ruta local">
+                        </div>
+                        <div class="form-group">
+                            <label for="prod-color">Color base</label>
+                            <input type="text" id="prod-color" placeholder="Ej: Crudo, Negro...">
+                        </div>
+                    </div>
+
+                    <div class="modal-form-actions">
+                        <button type="button" class="btn-cancelar" onclick="cerrarModalProducto()">Cancelar</button>
+                        <button type="submit" id="btn-guardar-producto" class="btn-primary">Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast-hema"></div>
 
     <!-- Scripts -->
-    <script src="app.js"></script> <!-- Reutiliza URL_WEB_APP_EXCEL -->
+    <script src="app.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/admin-catalog.js"></script>
 </body>
 </html>
+

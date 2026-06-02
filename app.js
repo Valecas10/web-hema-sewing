@@ -9,7 +9,7 @@ const URL_EXCEL_TELAS =
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
 
 const URL_WEB_APP_EXCEL =
-    'https://script.google.com/macros/s/AKfycbzgNUfs9YXJJQ_2dnZ_QPD2dLIxqOq7oAjDKyTmH_3uBTwJS1088_OKPTFr9NIMY9AM/exec';
+    'https://script.google.com/macros/s/AKfycbyUgCfbIi_dKkZ737BLQvfSXPkf7rEtWny6oRUff_k9OES4ZbYKhNn-rRllQkujd_8/exec';
     
 // ================== VARIABLES GLOBALES ==================
 

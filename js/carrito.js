@@ -231,7 +231,9 @@ function eliminarDelCarrito(id) {
                         'stock-limitado';
 
                     stockTexto.innerText =
-                        `Quedan ${nuevoStock}`;
+                        nuevoStock === 1
+                        ? 'Ultima Unidad Disponible🔥'
+                        : `Quedan ${nuevoStock}`;
 
                 }
 
@@ -247,11 +249,6 @@ function eliminarDelCarrito(id) {
     ========================= */
 
     if (producto.personalizacion === 'catalogo') {
-
-        const cardCatalogo =
-            document.querySelector(
-                `.card-catalogo[data-id="${producto.telaId}"]`
-            );
 
         const stockGuardado =
             obtenerStockGuardado();
@@ -269,38 +266,8 @@ function eliminarDelCarrito(id) {
 
             guardarStock(stockGuardado);
 
-            if (cardCatalogo) {
-
-                cardCatalogo.dataset.stock =
-                    nuevoStock;
-
-                const stockTexto =
-                    cardCatalogo.querySelector(
-                        '.stock-limitado, .stock-ilimitado, .stock-agotado'
-                    );
-
-                cardCatalogo.classList.remove(
-                    'agotado'
-                );
-
-                if (nuevoStock > 0) {
-
-                    stockTexto.className =
-                        'stock-limitado';
-
-                    stockTexto.innerText =
-                        `Quedan ${nuevoStock}`;
-
-                }
-
-                const boton =
-                    cardCatalogo.querySelector(
-                        '.btn-catalogo'
-                    );
-
-                boton.disabled = false;
-
-            }
+            // Refresh cards belonging to this product
+            actualizarTarjetasProducto(producto);
 
         }
 
@@ -322,8 +289,49 @@ function eliminarDelCarrito(id) {
    AGREGAR PRODUCTO
 ========================= */
 
-function agregarAlCarritoPersonalizado(producto) {
+function actualizarTarjetasProducto(producto) {
+    // Find all catalog cards that belong to this product name
+    const cards = document.querySelectorAll(`.card-catalogo[data-producto="${producto.nombre}"]`);
+    const stockGuardado = obtenerStockGuardado();
+    cards.forEach(card => {
+        const varianteId = card.dataset.id;
+        // Determine stock: prefer saved stock, else fallback to product variant data if available, else use existing dataset stock
+        const stockActual = stockGuardado[varianteId] ?? (
+            producto.variantes ?
+                parseInt((producto.variantes.find(v => v.id === varianteId) || {}).stock || '0') :
+                (parseInt(card.dataset.stock) || 0)
+        );
+        // Update dataset and UI
+        card.dataset.stock = stockActual;
+        const stockTexto = card.querySelector('.stock-limitado, .stock-ilimitado, .stock-agotado');
+        if (stockTexto) {
+            if (stockActual === -1) {
+                stockTexto.className = 'stock-ilimitado';
+                stockTexto.innerText = 'Disponible';
+                card.classList.remove('agotado');
+            } else if (stockActual === 0) {
+                stockTexto.className = 'stock-agotado';
+                stockTexto.innerText = 'Agotado';
+                card.classList.add('agotado');
+            } else if (stockActual === 1) {
+                stockTexto.className = 'stock-limitado';
+                stockTexto.innerText = 'Ultima Unidad Disponible🔥';
+                card.classList.remove('agotado');
+            } else {
+                stockTexto.className = 'stock-limitado';
+                stockTexto.innerText = `Quedan ${stockActual}`;
+                card.classList.remove('agotado');
+            }
+        }
+        const boton = card.querySelector('.btn-catalogo');
+        if (boton) {
+            boton.disabled = stockActual === 0;
+        }
+    });
+}
+window.actualizarTarjetasProducto = actualizarTarjetasProducto;
 
+function agregarAlCarritoPersonalizado(producto) {
     carrito.push(producto);
 
     guardarCarrito();
@@ -349,8 +357,10 @@ function agregarAlCarritoPersonalizado(producto) {
         }, 500);
 
     }
-
 }
+window.agregarAlCarritoPersonalizado = agregarAlCarritoPersonalizado;
+
+
 
 
 /* =========================
@@ -432,3 +442,4 @@ function calcularTotal() {
     return total;
 
 }
+window.inicializarCarrito = inicializarCarrito;

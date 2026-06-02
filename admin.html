@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/Logo-crudo.png" type="image/png">
+    <title>HEMA Sewing - Panel de Administración</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init('GtTEbj4qoWdwpMU81');
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- ==================== PANTALLA LOGIN ==================== -->
+    <section id="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <h1>HEMA</h1>
+                <span class="sub-logo-sewing">SEWING</span>
+                <span class="sub-logo-alma">handmade with love</span>
+            </div>
+            
+            <h2>Acceso Administrativo</h2>
+            
+            <form id="form-login" onsubmit="event.preventDefault(); procesarLogin();">
+                <div class="campo-login">
+                    <label for="username">Usuario:</label>
+                    <input type="text" id="username" placeholder="Nai" required autocomplete="username">
+                </div>
+                
+                <div class="campo-login">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" id="btn-login" class="btn-admin">Ingresar</button>
+            </form>
+            
+            <p id="login-error" class="error-msg oculto"></p>
+        </div>
+    </section>
+
+    <!-- ==================== PANEL PRINCIPAL (DASHBOARD) ==================== -->
+    <section id="admin-dashboard" class="oculto">
+        
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <h2>HEMA</h2>
+                <span>ADMIN</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item activo" onclick="cambiarSeccion('pedidos')">
+                    <span class="nav-icon">📦</span> Pedidos
+                </button>
+                <button class="nav-item" onclick="cambiarSeccion('dashboard')">
+                    <span class="nav-icon">📊</span> Dashboard
+                </button>
+                <button class="nav-item deshabilitado-sprint" disabled>
+                    <span class="nav-icon">🛍️</span> Catálogo <small>(Sprint 3)</small>
+                </button>
+                <button class="nav-item deshabilitado-sprint" disabled>
+                    <span class="nav-icon">🧵</span> Telas <small>(Sprint 4)</small>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logoutAdmin()">
+                    <span>🚪</span> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+        
+        <!-- MAIN CONTENT AREA -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 id="seccion-titulo">Gestión de Pedidos</h1>
+                <div class="user-profile">
+                    <span class="avatar">👩‍🎨</span>
+                    <span class="username-display">Nai</span>
+                </div>
+            </header>
+            
+            <div class="admin-content-wrapper">
+                
+                <!-- SECCION PEDIDOS -->
+                <section id="section-pedidos" class="admin-section">
+                    <!-- Tarjetas de estado rápido -->
+                    <div class="orders-summary-cards">
+                        <div class="summary-card stat-pendiente">
+                            <span class="card-num" id="stat-pendiente-count">0</span>
+                            <span class="card-label">Pendientes</span>
+                        </div>
+                        <div class="summary-card stat-proceso">
+                            <span class="card-num" id="stat-proceso-count">0</span>
+                            <span class="card-label">En Proceso</span>
+                        </div>
+                        <div class="summary-card stat-terminado">
+                            <span class="card-num" id="stat-terminado-count">0</span>
+                            <span class="card-label">Terminados</span>
+                        </div>
+                        <div class="summary-card stat-enviado">
+                            <span class="card-num" id="stat-enviado-count">0</span>
+                            <span class="card-label">Enviados</span>
+                        </div>
+                    </div>
+
+                    <!-- Filtros y Buscador -->
+                    <div class="filters-container">
+                        <div class="search-box">
+                            <input type="text" id="admin-search-input" placeholder="Buscar por tracking, cliente o email..." oninput="filtrarPedidos()">
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="admin-filter-status" onchange="filtrarPedidos()">
+                                <option value="todos">Todos los Estados</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Terminado">Terminado</option>
+                                <option value="Enviado">Enviado</option>
+                                <option value="Entregado">Entregado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de pedidos -->
+                    <div class="table-container">
+                        <table id="table-orders">
+                            <thead>
+                                <tr>
+                                    <th>Tracking</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Estado</th>
+                                    <th>Total</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-orders-body">
+                                <!-- Filas agregadas dinámicamente -->
+                                <tr>
+                                    <td colspan="6" class="table-loading">Cargando pedidos...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCION DASHBOARD -->
+                <section id="section-dashboard" class="admin-section oculto">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card chart-card">
+                            <h3>Ventas Recientes</h3>
+                            <div class="sales-metrics-grid">
+                                <div class="sales-metric-box">
+                                    <span class="sales-value" id="dash-sales-total">$0</span>
+                                    <span class="sales-label">Total Histórico</span>
+                                </div>
+                                <div class="sales-metric-box">
+                                    <span class="sales-value" id="dash-sales-mes">$0</span>
+                                    <span class="sales-label">Ventas del Mes</span>
+                                </div>
+                                <div class="sales-metric-box">
+                                    <span class="sales-value" id="dash-sales-semana">$0</span>
+                                    <span class="sales-label">Últimos 7 días</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card text-card">
+                            <h3>Productos más vendidos</h3>
+                            <ul id="dash-top-products" class="top-products-list">
+                                <!-- Cargado dinámicamente -->
+                                <li>Cargando estadísticas...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </section>
+
+    <!-- ==================== DETALLE DE PEDIDO (MODAL OVERLAY) ==================== -->
+    <div id="modal-detalle-pedido" class="modal-overlay oculto">
+        <div class="modal-card">
+            <header class="modal-header">
+                <h2>Detalle del Pedido</h2>
+                <button class="btn-close-modal" onclick="cerrarModalPedido()">×</button>
+            </header>
+            
+            <div class="modal-content" id="modal-pedido-content">
+                <!-- Contenido inyectado dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-hema"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script> <!-- Reutiliza URL_WEB_APP_EXCEL -->
+    <script src="js/admin.js"></script>
+</body>
+</html>

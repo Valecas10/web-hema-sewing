@@ -194,6 +194,8 @@ async function cargarCatalogo(
 
             card.className =
                 'card-catalogo';
+            card.dataset.producto =
+                nombre;
 
             card.dataset.id = id;
             card.dataset.stock = stockFinal;
@@ -362,10 +364,16 @@ async function cargarCatalogo(
                                 }
                             }
 
-                            botonAgregar.disabled =
-                                stockActual === 0;
-                        }
-                    );
+                             botonAgregar.disabled =
+                                 stockActual === 0;
+
+                             if (stockActual === 0) {
+                                 card.classList.add('agotado');
+                             } else {
+                                 card.classList.remove('agotado');
+                             }
+                         }
+                     );
 
                 });
 
@@ -396,10 +404,8 @@ async function cargarCatalogo(
                 'click',
                 () => {
 
-                    const stockActual =
-                        parseInt(
-                            card.dataset.stock
-                        );
+                    const stockGuardadoActual = obtenerStockGuardado();
+                    const stockActual = stockGuardadoActual[varianteSeleccionada.id] ?? parseInt(card.dataset.stock);
 
                     if (stockActual === 0) {
                         return;
@@ -421,7 +427,7 @@ async function cargarCatalogo(
                         imagen:
                             `assets/catalogo/${categoria}/${varianteSeleccionada.imagen}`,
 
-                        telaId: id,
+                        telaId: varianteSeleccionada.id,
 
                         personalizacion:
                             'catalogo'
@@ -451,11 +457,11 @@ async function cargarCatalogo(
                            GUARDAR STOCK
                         ========================= */
 
-                        stockGuardado[id] =
+                        stockGuardadoActual[varianteSeleccionada.id] =
                             nuevoStock;
 
                         guardarStock(
-                            stockGuardado
+                            stockGuardadoActual
                         );
 
 
@@ -475,7 +481,9 @@ async function cargarCatalogo(
                                 'stock-limitado';
 
                             stockTexto.innerText =
-                                `Quedan ${nuevoStock}`;
+                                nuevoStock === 1
+                                ? 'Ultima Unidad Disponible🔥'
+                                : `Quedan ${nuevoStock}`;
 
                         } else {
 

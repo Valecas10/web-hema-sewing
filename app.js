@@ -9,8 +9,8 @@ const URL_EXCEL_TELAS =
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1TGS0fsPl0LDGIW7GgB9GwgilhT-Swc6_ivAxF_O11-pv8E_3qjeEg4IG9KPAKdq74qTAwrrhRe4F/pub?output=csv';
 
 const URL_WEB_APP_EXCEL =
-    'https://script.google.com/macros/s/AKfycbyjlJFTNdSATW4m6HG5xkqN3OIK89NyWboaEOaNYOdmUOEyttZ6EI9ugZfjIRUjdtoq/exec';
-
+    'https://script.google.com/macros/s/AKfycbzgNUfs9YXJJQ_2dnZ_QPD2dLIxqOq7oAjDKyTmH_3uBTwJS1088_OKPTFr9NIMY9AM/exec';
+    
 // ================== VARIABLES GLOBALES ==================
 
 const Tote ={}
@@ -37,15 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
         btnDatosComprador.onclick = () => mostrarVista('datos-comprador');
     }
 
-    inicializarCarruselTelas();    
-    inicializarCheckout();
-    inicializarCarrito();
-    inicializarUI();
-    inicializarMapa();
-    cargarTelasDinamicas();
-    cargarOpcionesPersonalizacion();
+    if (typeof inicializarCarruselTelas === 'function') inicializarCarruselTelas();    
+    if (typeof inicializarCheckout === 'function') inicializarCheckout();
+    if (typeof inicializarCarrito === 'function') inicializarCarrito();
+    if (typeof inicializarUI === 'function') inicializarUI();
+    if (typeof inicializarMapa === 'function') inicializarMapa();
+    if (typeof cargarTelasDinamicas === 'function') cargarTelasDinamicas();
+    if (typeof cargarOpcionesPersonalizacion === 'function') cargarOpcionesPersonalizacion();
 
-    inicializarCatalogo();
+    if (typeof inicializarCatalogo === 'function') inicializarCatalogo();
 });
 
 

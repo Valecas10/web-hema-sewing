@@ -47,6 +47,7 @@ function cambiarSeccion(seccion) {
     document.getElementById('section-pedidos').classList.add('oculto');
     document.getElementById('section-dashboard').classList.add('oculto');
     document.getElementById('section-catalogo').classList.add('oculto');
+    document.getElementById('section-telas').classList.add('oculto');
     
     if (seccion === 'pedidos') {
         document.getElementById('section-pedidos').classList.remove('oculto');
@@ -60,6 +61,10 @@ function cambiarSeccion(seccion) {
         document.getElementById('section-catalogo').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Gestión de Catálogo';
         cargarCatalogo();
+    } else if (seccion === 'telas') {
+        document.getElementById('section-telas').classList.remove('oculto');
+        document.getElementById('seccion-titulo').innerText = 'Gestión de Telas';
+        cargarAdminTelas();
     }
 }
 

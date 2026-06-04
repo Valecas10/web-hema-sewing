@@ -4,10 +4,6 @@
  * =========================
  */
 
-const URL_EXCEL_CATALOGO =
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vRqFqWZPXyUTBBXJAydfEeEcKcoDghf6accKDZT9ZA6dsRctXvGs1H1vBmWyhndt95fbRcLt6p30Cco/pub?gid=0&single=true&output=csv';
-
-
 /* =========================
    CARGAR CATÁLOGO
 ========================= */
@@ -26,8 +22,6 @@ async function cargarCatalogo(
 
         const productos =
             await respuesta.json();
-
-        console.log(productos);
 
         const productosAgrupados = {};
 
@@ -186,8 +180,6 @@ async function cargarCatalogo(
             card.dataset.id = id;
             card.dataset.stock = stockFinal;
             card.dataset.precio = precio;
-
-            console.log(producto.variantes);
 
             let coloresHTML = '';
 

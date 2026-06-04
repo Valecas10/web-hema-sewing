@@ -49,6 +49,67 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
+  if (action === "getPublicCatalog") {
+
+      const catSheet =
+          sheet.getSheetByName("Productos");
+
+      const dataCat =
+          catSheet.getDataRange().getValues();
+
+      const lista = [];
+
+      for (let i = 1; i < dataCat.length; i++) {
+
+          if (!dataCat[i][0]) continue;
+
+          lista.push({
+              id: String(dataCat[i][0]),
+              nombre: dataCat[i][1],
+              categoria: dataCat[i][2],
+              descripcion: dataCat[i][3],
+              precio: parseFloat(dataCat[i][4] || 0),
+              stock: parseInt(dataCat[i][5] || 0),
+              imagen: dataCat[i][6],
+              color: dataCat[i][7],
+              activo: String(dataCat[i][8])
+          });
+
+      }
+
+      return ContentService
+          .createTextOutput(
+              JSON.stringify(lista)
+          )
+          .setMimeType(
+              ContentService.MimeType.JSON
+          );
+  }
+
+  if (action === "getAdminTelas") {
+      const catSheet = sheet.getSheetByName("Telas");
+      if (!catSheet) {
+        return ContentService.createTextOutput(JSON.stringify({ error: "Hoja 'Productos' no encontrada" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      const dataCat = catSheet.getDataRange().getValues();
+      const lista = [];
+      for (let i = 1; i < dataCat.length; i++) {
+        if (!dataCat[i][0]) continue;
+        lista.push({
+          id:          String(dataCat[i][0]),
+          nombre:      dataCat[i][1],
+          costo:       parseFloat(dataCat[i][2] || 0),
+          imagen:      dataCat[i][3],
+          stock:       parseInt(dataCat[i][4] || 0),
+          activo:      String(dataCat[i][5]).toLowerCase()
+  
+        });
+      }
+      return ContentService.createTextOutput(JSON.stringify(lista))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
   // 2. CONTROL DE SEGURIDAD PARA ACCIONES DE ADMINISTRADOR
   if (action) {
     if (!validarToken(token)) {
@@ -144,6 +205,9 @@ function doGet(e) {
       }))
       .setMimeType(ContentService.MimeType.JSON);
     }
+
+    
+
     // OBTENER CATÁLOGO DE PRODUCTOS
     if (action === "getCatalog") {
       const catSheet = sheet.getSheetByName("Productos");
@@ -383,6 +447,304 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    // =================== ACCIONES DE TELAS ===================
+
+    // OBTENER FILA DE TELA POR ID (helper)
+    function buscarFilaTela(telasSheet, id) {
+
+      const vals = telasSheet.getDataRange().getValues();
+
+      for (let i = 1; i < vals.length; i++) {
+        if (String(vals[i][0]) === String(id)) {
+          return i + 1;
+        }
+      }
+      return -1;
+    }
+
+
+    // CREAR TELA
+    if (action === "createTela") {
+
+      if (!validarToken(postData.token)) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "No autorizado"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const telasSheet =
+        sheet.getSheetByName("Telas");
+
+      if (!telasSheet) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "Hoja 'Telas' no encontrada"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const nuevoId =
+        "TELA-" + new Date().getTime();
+
+      telasSheet.appendRow([
+        nuevoId,
+        postData.nombre,
+        parseFloat(postData.costo || 0),
+        postData.imagen || "",
+        parseInt(postData.stock || 0),
+        postData.activo !== "false"
+          ? "true"
+          : "false"
+      ]);
+
+      const usuario =
+        decodificarTokenUsuario(
+          postData.token
+        );
+
+      registrarActividad(
+        usuario,
+        "Crear Tela",
+        "Nueva tela: " +
+          postData.nombre +
+          " (ID: " +
+          nuevoId +
+          ")"
+      );
+
+      return ContentService
+        .createTextOutput(
+          JSON.stringify({
+            success: true,
+            id: nuevoId
+          })
+        )
+        .setMimeType(ContentService.MimeType.JSON);
+
+    }
+
+
+    // ACTUALIZAR TELA
+    if (action === "updateTela") {
+
+      if (!validarToken(postData.token)) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "No autorizado"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const telasSheet =
+        sheet.getSheetByName("Telas");
+
+      const fila =
+        buscarFilaTela(
+          telasSheet,
+          postData.id
+        );
+
+      if (fila === -1) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "Tela no encontrada"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      telasSheet
+        .getRange(fila, 2, 1, 5)
+        .setValues([[
+          postData.nombre,
+          parseFloat(postData.costo || 0),
+          postData.imagen || "",
+          parseInt(postData.stock || 0),
+          postData.activo !== "false"
+            ? "true"
+            : "false"
+        ]]);
+
+      const usuario =
+        decodificarTokenUsuario(
+          postData.token
+        );
+
+      registrarActividad(
+        usuario,
+        "Editar Tela",
+        "Editada: " +
+          postData.nombre +
+          " (ID: " +
+          postData.id +
+          ")"
+      );
+
+      return ContentService
+        .createTextOutput(
+          JSON.stringify({
+            success: true
+          })
+        )
+        .setMimeType(ContentService.MimeType.JSON);
+
+    }
+
+
+    // ACTUALIZAR STOCK TELA
+    if (action === "updateStockTela") {
+
+      if (!validarToken(postData.token)) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "No autorizado"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const telasSheet =
+        sheet.getSheetByName("Telas");
+
+      const fila =
+        buscarFilaTela(
+          telasSheet,
+          postData.id
+        );
+
+      if (fila === -1) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "Tela no encontrada"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      telasSheet
+        .getRange(fila, 5)
+        .setValue(
+          parseInt(postData.stock || 0)
+        );
+
+      const usuario =
+        decodificarTokenUsuario(
+          postData.token
+        );
+
+      registrarActividad(
+        usuario,
+        "Actualizar Stock Tela",
+        "Tela ID: " +
+          postData.id +
+          " → Stock: " +
+          postData.stock
+      );
+
+      return ContentService
+        .createTextOutput(
+          JSON.stringify({
+            success: true
+          })
+        )
+        .setMimeType(ContentService.MimeType.JSON);
+
+    }
+
+
+    // ACTIVAR / DESACTIVAR TELA
+    if (action === "toggleTela") {
+
+      if (!validarToken(postData.token)) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "No autorizado"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const telasSheet =
+        sheet.getSheetByName("Telas");
+
+      const fila =
+        buscarFilaTela(
+          telasSheet,
+          postData.id
+        );
+
+      if (fila === -1) {
+
+        return ContentService
+          .createTextOutput(
+            JSON.stringify({
+              error: "Tela no encontrada"
+            })
+          )
+          .setMimeType(ContentService.MimeType.JSON);
+
+      }
+
+      const nuevoEstado =
+        postData.activo === true ||
+        postData.activo === "true"
+          ? "true"
+          : "false";
+
+      telasSheet
+        .getRange(fila, 6)
+        .setValue(nuevoEstado);
+
+      const usuario =
+        decodificarTokenUsuario(
+          postData.token
+        );
+
+      registrarActividad(
+        usuario,
+        "Toggle Tela",
+        "Tela ID: " +
+          postData.id +
+          " → activo: " +
+          nuevoEstado
+      );
+
+      return ContentService
+        .createTextOutput(
+          JSON.stringify({
+            success: true
+          })
+        )
+        .setMimeType(ContentService.MimeType.JSON);
+
+    }
+
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({ error: error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -418,6 +780,8 @@ function registrarActividad(usuario, accion, detalle) {
     Logger.log("Error al registrar actividad: " + e.toString());
   }
 }
+
+
 
 // Generación básica de tokens de sesión
 function generarTokenUnico(usuario) {

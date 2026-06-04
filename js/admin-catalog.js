@@ -58,7 +58,7 @@ function renderizarCatalogo(productos) {
 
         card.innerHTML = `
             <div class="product-card-img-wrap">
-                <img src="${imgSrc}" alt="${p.nombre}" onerror="this.src='assets/Logo.jpg'">
+                <img src="assets/catalogo/${p.categoria}/${imgSrc}" alt="${p.nombre}" onerror="this.src='assets/Logo.jpg'">
                 <span class="product-badge ${badgeClass}">${badgeLabel}</span>
             </div>
             <div class="product-card-body">

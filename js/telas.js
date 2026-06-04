@@ -88,16 +88,10 @@ async function cargarTelasDinamicas() {
 
         const respuesta =
             await fetch(
-                URL_EXCEL_TELAS
+                `${URL_WEB_APP_EXCEL}?action=getTelas`
             );
 
-        const texto =
-            await respuesta.text();
-
-        const filas =
-            texto
-                .split('\n')
-                .slice(1);
+        const telas = await respuesta.json();
 
         const contenedor =
             document.getElementById(
@@ -107,29 +101,17 @@ async function cargarTelasDinamicas() {
         const stockGuardado =
             obtenerStockGuardado();
 
-
         contenedor.innerHTML = '';
 
+        telas.forEach(tela => {
 
-        filas.forEach(fila => {
-
-            const columnas =
-                fila.split(',');
-
-            if (columnas.length < 3) {
-                return;
-            }
-
-
-            const [
+            const {
                 nombre,
                 costo,
-                rutaImagen,
+                imagen: rutaImagen,
                 id,
                 stock
-            ] = columnas.map(
-                c => c.trim()
-            );
+            } = tela;
 
 
             const imagenDirecta =
@@ -150,7 +132,6 @@ async function cargarTelasDinamicas() {
             card.dataset.valor = id;
             card.dataset.precio = costo;
             card.dataset.stock = stock;
-
 
             const stockOriginal =
                 parseInt(stock);
@@ -238,90 +219,6 @@ async function cargarTelasDinamicas() {
                 card.querySelector('img');
 
             let timer;
-
-
-            /* =========================
-               ZOOM
-            ========================= */
-
-            /*const activarZoom = (e) => {
-
-                if (
-                    e.type === 'touchstart'
-                ) {
-                    e.preventDefault();
-                }
-
-
-                timer = setTimeout(
-                    () => {
-
-                        img.classList.add(
-                            'zoom-active'
-                        );
-
-                    },
-                    500
-                );
-
-            };
-
-
-            const desactivarZoom = () => {
-
-                clearTimeout(timer);
-
-                img.classList.remove(
-                    'zoom-active'
-                );
-
-            };*/
-
-
-
-            /* =========================
-               EVENTOS MOUSE
-            ========================= */
-
-            /*
-
-            img.addEventListener(
-                'mousedown',
-                activarZoom
-            );
-
-            img.addEventListener(
-                'mouseup',
-                desactivarZoom
-            );
-
-            img.addEventListener(
-                'mouseleave',
-                desactivarZoom
-            ); */
-
-
-            /* =========================
-               EVENTOS MOBILE
-            ========================= */
-
-            /*
-            img.addEventListener(
-                'touchstart',
-                activarZoom,
-                { passive: false }
-            );
-
-            img.addEventListener(
-                'touchend',
-                desactivarZoom
-            );
-
-            img.addEventListener(
-                'touchmove',
-                desactivarZoom
-            ); */
-
 
             /* =========================
                SELECCIONAR TELA

@@ -71,10 +71,10 @@
                     <span class="nav-icon">📊</span> Dashboard
                 </button>
                 <button class="nav-item" onclick="cambiarSeccion('catalogo')">
-                    <span class="nav-icon">🛍️</span> Catálogo <small>(Sprint 3)</small>
+                    <span class="nav-icon">🛍️</span> Catálogo 
                 </button>
-                <button class="nav-item deshabilitado-sprint" disabled>
-                    <span class="nav-icon">🧵</span> Telas <small>(Sprint 4)</small>
+                <button class="nav-item" onclick="cambiarSeccion('telas')">
+                    <span class="nav-icon">🧵</span> Telas 
                 </button>
             </nav>
             
@@ -215,6 +215,44 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- SECCION TELAS -->
+                <section id="section-telas" class="admin-section oculto">
+
+                    <!-- Barra de acciones -->
+                    <div class="catalog-toolbar">
+
+                        <div class="search-box">
+                            <input
+                                type="text"
+                                id="telas-admin-search"
+                                placeholder="Buscar tela..."
+                                oninput="filtrarTelasAdmin()"
+                            >
+                        </div>
+
+                        <button
+                            class="btn-primary"
+                            onclick="abrirModalTela()">
+
+                            + Nueva Tela
+
+                        </button>
+
+                    </div>
+
+                    <!-- Grid de tarjetas -->
+                    <div
+                        class="card-grid"
+                        id="telas-admin-grid">
+
+                        <p class="catalog-loading">
+                            Cargando telas...
+                        </p>
+
+                    </div>
+
+                </section>
                 
             </div>
         </main>
@@ -307,6 +345,143 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL TELA (CREAR / EDITAR) ==================== -->
+    <div id="modal-tela" class="modal-overlay oculto">
+
+        <div class="modal-card modal-card-wide">
+
+            <header class="modal-header">
+
+                <h2 id="modal-tela-titulo">
+                    Nueva Tela
+                </h2>
+
+                <button
+                    class="btn-close-modal"
+                    onclick="cerrarModalTela()">
+
+                    ×
+
+                </button>
+
+            </header>
+
+            <div class="modal-content">
+
+                <form
+                    id="form-tela"
+                    onsubmit="event.preventDefault(); guardarTela();">
+
+                    <div class="form-group">
+
+                        <label for="tela-nombre">
+                            Nombre *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tela-nombre"
+                            placeholder="Ej: Flores Vintage"
+                            required>
+
+                    </div>
+
+                    <div class="form-grid-3">
+
+                        <div class="form-group">
+
+                            <label for="tela-costo">
+                                Costo (ARS) *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tela-costo"
+                                min="0"
+                                placeholder="0"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="tela-stock">
+                                Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tela-stock"
+                                min="-1"
+                                value="0">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="tela-activa">
+                                Estado
+                            </label>
+
+                            <select id="tela-activa">
+
+                                <option value="true">
+                                    Activa
+                                </option>
+
+                                <option value="false">
+                                    Inactiva
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="tela-imagen">
+                            URL de imagen
+                        </label>
+
+                        <input
+                            type="text"
+                            id="tela-imagen"
+                            placeholder="https://...">
+
+                    </div>
+
+                    <div class="modal-form-actions">
+
+                        <button
+                            type="button"
+                            class="btn-cancelar"
+                            onclick="cerrarModalTela()">
+
+                            Cancelar
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            id="btn-guardar-tela"
+                            class="btn-primary">
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast-hema"></div>
 
@@ -314,6 +489,7 @@
     <script src="app.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/admin-catalog.js"></script>
+    <script src="js/admin-telas.js"></script>
 </body>
 </html>
 

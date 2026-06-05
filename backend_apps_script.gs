@@ -86,6 +86,76 @@ function doGet(e) {
           );
   }
 
+  if (action === "getTelas") {
+
+  const telasSheet =
+    sheet.getSheetByName("Telas");
+
+  if (!telasSheet) {
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify({
+          error: "Hoja 'Telas' no encontrada"
+        })
+      )
+      .setMimeType(ContentService.MimeType.JSON);
+
+  }
+
+  const dataTelas =
+    telasSheet.getDataRange().getValues();
+
+  const lista = [];
+
+  for (let i = 1; i < dataTelas.length; i++) {
+
+    if (!dataTelas[i][0]) continue;
+
+    const activa =
+      String(dataTelas[i][5])
+        .toLowerCase() !== "false";
+
+    if (!activa) continue;
+
+    lista.push({
+
+      id:
+        String(dataTelas[i][0]),
+
+      nombre:
+        dataTelas[i][1],
+
+      costo:
+        parseFloat(
+          dataTelas[i][2] || 0
+        ),
+
+      imagen:
+        dataTelas[i][3],
+
+      stock:
+        parseInt(
+          dataTelas[i][4] || 0
+        ),
+
+      activo:
+        activa
+
+    });
+
+  }
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify(lista)
+      )
+      .setMimeType(
+        ContentService.MimeType.JSON
+      );
+
+  }
+
   if (action === "getAdminTelas") {
       const catSheet = sheet.getSheetByName("Telas");
       if (!catSheet) {
@@ -206,8 +276,6 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
     }
 
-    
-
     // OBTENER CATÁLOGO DE PRODUCTOS
     if (action === "getCatalog") {
       const catSheet = sheet.getSheetByName("Productos");
@@ -235,6 +303,200 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
   }
+
+  if (action === "getExportOrders") {
+
+    const listaPedidos = [];
+
+    for (let i = 1; i < dataPedidos.length; i++) {
+
+      if (!dataPedidos[i][0]) continue;
+
+      listaPedidos.push({
+        tracking_id: dataPedidos[i][0],
+        fecha: dataPedidos[i][1],
+        cliente: dataPedidos[i][2],
+        email: dataPedidos[i][3],
+        telefono: dataPedidos[i][4],
+        estado: dataPedidos[i][12] || "Pendiente",
+        total: parseFloat(dataPedidos[i][6] || 0)
+      });
+
+    }
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify(listaPedidos)
+      )
+      .setMimeType(
+        ContentService.MimeType.JSON
+      );
+
+  }
+
+  if (action === "getExportCatalog") {
+
+    const catSheet =
+      sheet.getSheetByName("Productos");
+
+    const dataCat =
+      catSheet.getDataRange().getValues();
+
+    const lista = [];
+
+    for (let i = 1; i < dataCat.length; i++) {
+
+      if (!dataCat[i][0]) continue;
+
+      lista.push({
+        id: dataCat[i][0],
+        nombre: dataCat[i][1],
+        categoria: dataCat[i][2],
+        precio: dataCat[i][4],
+        stock: dataCat[i][5],
+        color: dataCat[i][7],
+        activo: dataCat[i][8]
+      });
+
+    }
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify(lista)
+      )
+      .setMimeType(
+        ContentService.MimeType.JSON
+      );
+
+  }
+
+  if (action === "getExportTelas") {
+
+    const telasSheet =
+      sheet.getSheetByName("Telas");
+
+    const dataTelas =
+      telasSheet.getDataRange().getValues();
+
+    const lista = [];
+
+    for (let i = 1; i < dataTelas.length; i++) {
+
+      if (!dataTelas[i][0]) continue;
+
+      lista.push({
+        id: dataTelas[i][0],
+        nombre: dataTelas[i][1],
+        costo: dataTelas[i][2],
+        imagen: dataTelas[i][3],
+        stock: dataTelas[i][4],
+        activo: dataTelas[i][5]
+      });
+
+    }
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify(lista)
+      )
+      .setMimeType(
+        ContentService.MimeType.JSON
+      );
+
+  }
+
+  if (action === "getBackupCompleto") {
+
+    const backup = {
+
+      fecha_backup: new Date(),
+
+      pedidos: [],
+
+      catalogo: [],
+
+      telas: []
+
+    };
+
+    // pedidos
+    for (let i = 1; i < dataPedidos.length; i++) {
+
+      if (!dataPedidos[i][0]) continue;
+
+      backup.pedidos.push({
+        tracking_id: dataPedidos[i][0],
+        fecha: dataPedidos[i][1],
+        cliente: dataPedidos[i][2],
+        email: dataPedidos[i][3],
+        telefono: dataPedidos[i][4],
+        productos: dataPedidos[i][5],
+        total: dataPedidos[i][6],
+        estado: dataPedidos[i][12]
+      });
+
+    }
+
+    // catálogo
+
+    const catSheet =
+      sheet.getSheetByName("Productos");
+
+    const dataCat =
+      catSheet.getDataRange().getValues();
+
+    for (let i = 1; i < dataCat.length; i++) {
+
+      if (!dataCat[i][0]) continue;
+
+      backup.catalogo.push({
+        id: dataCat[i][0],
+        nombre: dataCat[i][1],
+        categoria: dataCat[i][2],
+        descripcion: dataCat[i][3],
+        precio: dataCat[i][4],
+        stock: dataCat[i][5],
+        imagen: dataCat[i][6],
+        color: dataCat[i][7],
+        activo: dataCat[i][8]
+      });
+
+    }
+
+    // telas 
+
+    const telasSheet =
+      sheet.getSheetByName("Telas");
+
+    const dataTelas =
+      telasSheet.getDataRange().getValues();
+
+    const lista = [];
+
+    for (let i = 1; i < dataTelas.length; i++) {
+
+      if (!dataTelas[i][0]) continue;
+
+      lista.push({
+        id: dataTelas[i][0],
+        nombre: dataTelas[i][1],
+        costo: dataTelas[i][2],
+        imagen: dataTelas[i][3],
+        stock: dataTelas[i][4],
+        activo: dataTelas[i][5]
+      });
+
+    }
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify(backup)
+      )
+      .setMimeType(
+        ContentService.MimeType.JSON
+      );
+
+}
 
   return ContentService.createTextOutput(JSON.stringify({ error: "Acción no reconocida o parámetros incorrectos" }))
     .setMimeType(ContentService.MimeType.JSON);

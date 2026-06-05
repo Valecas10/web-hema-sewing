@@ -97,6 +97,7 @@ function renderizarCarrito() {
        ITEMS
     ========================= */
 
+
     carrito.forEach(item => {
 
         total += item.precio * item.cantidad;
@@ -105,6 +106,11 @@ function renderizarCarrito() {
         const div = document.createElement('div');
 
         div.className = 'cart-item';
+
+        const esBordado =
+            item.personalizacion
+                ?.toLowerCase()
+                .includes('bordado');
 
         div.innerHTML = `
             <div class="cart-item-content">
@@ -123,7 +129,11 @@ function renderizarCarrito() {
                     </small>
 
                     <small>
-                        $${item.precio * item.cantidad}
+                        ${
+                            esBordado
+                                ? 'Precio a cotizar'
+                                : '$' + (item.precio * item.cantidad)
+                        }
                     </small>
                 </div>
 
@@ -157,6 +167,11 @@ function renderizarCarrito() {
             .includes('bordado')
     );
 
+    const totalLabel =
+    document.getElementById(
+        'cart-total-label'
+    );
+
     if (requiereCotizacion) {
 
         btnCheckout.innerText =
@@ -164,6 +179,9 @@ function renderizarCarrito() {
 
         btnCheckout.onclick =
             enviarCotizacionWhatsApp;
+
+        totalLabel.innerHTML =
+            'Pedido sujeto a cotización';
 
     } else {
 
@@ -173,6 +191,11 @@ function renderizarCarrito() {
         btnCheckout.onclick = () => {
             mostrarVista('datos-comprador');
         };
+
+        totalLabel.innerHTML =
+            'Total: $<span id="total-price">' +
+            total +
+            '</span>';
 
     }
 

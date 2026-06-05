@@ -48,6 +48,7 @@ function cambiarSeccion(seccion) {
     document.getElementById('section-dashboard').classList.add('oculto');
     document.getElementById('section-catalogo').classList.add('oculto');
     document.getElementById('section-telas').classList.add('oculto');
+    document.getElementById('section-backups').classList.add('oculto');
     
     if (seccion === 'pedidos') {
         document.getElementById('section-pedidos').classList.remove('oculto');
@@ -65,6 +66,9 @@ function cambiarSeccion(seccion) {
         document.getElementById('section-telas').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Gestión de Telas';
         cargarAdminTelas();
+    } else if (seccion === 'backups') {
+        document.getElementById('section-backups').classList.remove('oculto');
+        document.getElementById('seccion-titulo').innerText = 'Gestión de Backups';
     }
 }
 

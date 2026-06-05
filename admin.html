@@ -76,6 +76,9 @@
                 <button class="nav-item" onclick="cambiarSeccion('telas')">
                     <span class="nav-icon">🧵</span> Telas 
                 </button>
+                <button class="nav-item" onclick="cambiarSeccion('backups')">
+                    <span class="nav-icon">💾</span> Backups
+                </button>
             </nav>
             
             <div class="sidebar-footer">
@@ -186,6 +189,7 @@
                         <p class="catalog-loading">Cargando catálogo...</p>
                     </div>
                 </section>
+
                 <section id="section-dashboard" class="admin-section oculto">
                     <div class="dashboard-grid">
                         <div class="dashboard-card chart-card">
@@ -214,6 +218,46 @@
                             </ul>
                         </div>
                     </div>
+                </section>
+
+                <section id="section-backups" class="admin-section oculto">
+
+                    <div class="backup-grid">
+
+                        <button
+                            class="btn-primary"
+                            id="btn-export-pedidos">
+
+                            Exportar Pedidos CSV
+
+                        </button>
+
+                        <button
+                            class="btn-primary"
+                            id="btn-export-catalogo">
+
+                            Exportar Catálogo CSV
+
+                        </button>
+
+                        <button
+                            class="btn-primary"
+                            id="btn-export-telas">
+
+                            Exportar Telas CSV
+
+                        </button>
+
+                        <button
+                            class="btn-primary"
+                            id="btn-backup-completo">
+
+                            Crear Backup Completo
+
+                        </button>
+
+                    </div>
+
                 </section>
 
                 <!-- SECCION TELAS -->
@@ -487,9 +531,10 @@
 
     <!-- Scripts -->
     <script src="app.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/admin-catalog.js"></script>
-    <script src="js/admin-telas.js"></script>
+    <script src="js/admin/admin.js"></script>
+    <script src="js/admin/admin-catalog.js"></script>
+    <script src="js/admin/admin-telas.js"></script>
+    <script src="js/admin/admin-backups.js"></script>
 </body>
 </html>
 

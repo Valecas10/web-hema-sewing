@@ -306,6 +306,18 @@ body {
     font-weight: 600;
 }
 
+/* ====================== BACKUPS ========================= */
+
+.backup-grid {
+    display: grid;
+    gap: 16px;
+    max-width: 500px;
+}
+
+.backup-grid .btn-primary {
+    width: 100%;
+}
+
 /* ==================== SECCIÓN PEDIDOS ==================== */
 
 /* Tarjetas rápidas de métricas */

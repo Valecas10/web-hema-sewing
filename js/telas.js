@@ -37,7 +37,7 @@ const opcionesPersonalizacion = [
     {
         id: 'bordado',
         nombre: 'Agregar Bordado',
-        precio: 2500,
+        precio: 0,
         img: 'assets/opciones/Bordado.webp'
     },
 
@@ -382,6 +382,13 @@ function cargarOpcionesPersonalizacion() {
                 <small>
                     ${opc.precio > 0 ? '+$' + opc.precio : ''}
                 </small>
+
+                ${
+                    opc.id === 'bordado'
+                        ? '<small class="texto-cotizacion">Cotiza por diseño</small>'
+                        : ''
+                }
+
             `;
 
 

@@ -212,6 +212,16 @@ function eliminarDelCarrito(id) {
         item => item.id === id
     );
 
+    console.log("Intentando borrar:", id);
+
+     const antes = carrito.length;
+
+    carrito = carrito.filter(item => item.id !== id);
+
+    console.log("Antes:", antes);
+    console.log("Después:", carrito.length);
+
+
     if (producto) {
 
         const telaCard = document.querySelector(
@@ -264,33 +274,33 @@ function eliminarDelCarrito(id) {
 
         }
 
-    }
 
+        /* =========================
+           DEVOLVER STOCK CATÁLOGO
+        ========================= */
 
-    /* =========================
-       DEVOLVER STOCK CATÁLOGO
-    ========================= */
+        if (producto.personalizacion === 'catalogo') {
 
-    if (producto.personalizacion === 'catalogo') {
+            const stockGuardado =
+                obtenerStockGuardado();
 
-        const stockGuardado =
-            obtenerStockGuardado();
+            const stockActual =
+                stockGuardado[producto.telaId] ?? 0;
 
-        const stockActual =
-            stockGuardado[producto.telaId] ?? 0;
+            if (stockActual !== -1) {
 
-        if (stockActual !== -1) {
+                const nuevoStock =
+                    stockActual + 1;
 
-            const nuevoStock =
-                stockActual + 1;
+                stockGuardado[producto.telaId] =
+                    nuevoStock;
 
-            stockGuardado[producto.telaId] =
-                nuevoStock;
+                guardarStock(stockGuardado);
 
-            guardarStock(stockGuardado);
+                // Refresh cards belonging to this product
+                actualizarTarjetasProducto(producto);
 
-            // Refresh cards belonging to this product
-            actualizarTarjetasProducto(producto);
+            }
 
         }
 

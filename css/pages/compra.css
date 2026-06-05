@@ -40,7 +40,7 @@
     margin: 40px auto;
     padding: 18px !important;
 
-    border-radius: 0 !important;
+    border-radius: var(--radius-small) !important;
 
     background-color: var(--marron-oscuro) !important;
 

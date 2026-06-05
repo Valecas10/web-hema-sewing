@@ -188,9 +188,9 @@ async function cargarCatalogo(
                 coloresHTML = `
                     <div class="selector-colores">
 
-                        ${producto.variantes.map(variante => `
+                        ${producto.variantes.map((variante, index) => `
                             <button
-                                class="color-option"
+                                class="color-option ${index === 0 ? 'activo' : ''}"
                                 data-id="${variante.id}"
                                 data-color="${variante.color}"
                                 style="background:${variante.color}">

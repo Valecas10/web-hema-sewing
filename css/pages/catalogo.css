@@ -14,7 +14,7 @@
    CONTENEDORES GRID
 ========================= */
 
-#contenedor-catalogo {
+.contenedor-catalogo {
     display: grid;
 
     grid-template-columns:
@@ -25,19 +25,15 @@
     margin-top: 50px;
 }
 
-#contenedor-totes,
-#contenedor-colitas,
-#contenedor-bidon,
-#contenedor-agendas,
-#contenedor-individuales,
-#contenedor-posavasos {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 30px;
-
-    margin-top: 50px;
+.titulo-categoria {
+    color: var(--marron-oscuro);
+    font-family: var(--font-arapey);
+    font-size: 2.8rem;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 

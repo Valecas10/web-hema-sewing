@@ -18,6 +18,15 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
+#seguimiento h2 {
+    color: var(--beige-acento);
+    font-family: var(--font-arapey);
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 1.5px;
+}
+
 
 /* =========================
    HEADER
@@ -59,7 +68,7 @@
     padding: 10px 15px;
 
     border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px;
+    border-radius: var(--radius-small) 0 0 var(--radius-small);
 
     outline: none;
 }
@@ -68,12 +77,12 @@
     padding: 10px var(--radius-large);
 
     border: none;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 var(--radius-small) var(--radius-small) 0;
 
     background-color: var(--marron-claro);
     color: var(--beige-acento);
 
-    font: var(--font-arapey);
+    font-family: var(--font-arapey);
 
     cursor: pointer;
 

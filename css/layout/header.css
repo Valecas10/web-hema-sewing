@@ -83,8 +83,7 @@
    HEADER COMPRA
 ========================= */
 
-#compra .main-header,
-#seguimiento .main-header {
+section:not(#inicio) .main-header {
     position: relative;
 
     display: flex;
@@ -95,7 +94,7 @@
     padding: var(--radius-large) 0;
 }
 
-#compra .logo-img {
+section:not(#inicio) .logo-img {
     display: flex;
     justify-content: center;
 

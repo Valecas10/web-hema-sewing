@@ -6,54 +6,48 @@
 
 function inicializarCarruselTelas() {
 
-    const contenedor =
-        document.getElementById(
-            'contenedor-telas'
-        );
-
-    const btnPrev =
-        document.getElementById(
-            'btn-prev-telas'
-        );
-
-    const btnNext =
-        document.getElementById(
-            'btn-next-telas'
-        );
-
-    if (!contenedor || !btnPrev || !btnNext) {
-        return;
-    }
-
-
     const scrollCantidad = 320;
 
+    // Carrusel de Telas
+    const contenedorTelas = document.getElementById('contenedor-telas');
+    const btnPrevTelas = document.getElementById('btn-prev-telas');
+    const btnNextTelas = document.getElementById('btn-next-telas');
 
-    /* =========================
-       NEXT
-    ========================= */
-
-    btnNext.addEventListener('click', () => {
-
-        contenedor.scrollBy({
-            left: scrollCantidad,
-            behavior: 'smooth'
+    if (contenedorTelas && btnPrevTelas && btnNextTelas) {
+        btnNextTelas.addEventListener('click', () => {
+            contenedorTelas.scrollBy({
+                left: scrollCantidad,
+                behavior: 'smooth'
+            });
         });
 
-    });
+        btnPrevTelas.addEventListener('click', () => {
+            contenedorTelas.scrollBy({
+                left: -scrollCantidad,
+                behavior: 'smooth'
+            });
+        });
+    }
 
+    // Carrusel de Personalización
+    const contenedorPers = document.getElementById('contenedor-personalizacion');
+    const btnPrevPers = document.getElementById('btn-prev-personalizacion');
+    const btnNextPers = document.getElementById('btn-next-personalizacion');
 
-    /* =========================
-       PREV
-    ========================= */
-
-    btnPrev.addEventListener('click', () => {
-
-        contenedor.scrollBy({
-            left: -scrollCantidad,
-            behavior: 'smooth'
+    if (contenedorPers && btnPrevPers && btnNextPers) {
+        btnNextPers.addEventListener('click', () => {
+            contenedorPers.scrollBy({
+                left: scrollCantidad,
+                behavior: 'smooth'
+            });
         });
 
-    });
+        btnPrevPers.addEventListener('click', () => {
+            contenedorPers.scrollBy({
+                left: -scrollCantidad,
+                behavior: 'smooth'
+            });
+        });
+    }
 
 }

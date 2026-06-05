@@ -14,11 +14,13 @@
 
 
 /* =========================
-   CONTENEDOR TELAS
+   CONTENEDOR CARRUSELES
 ========================= */
 
-#contenedor-telas {
+#contenedor-telas,
+#contenedor-personalizacion {
     display: flex;
+    flex-wrap: nowrap !important;
     align-items: stretch;
     justify-content: flex-start;
     gap: 24px;
@@ -35,7 +37,8 @@
     scrollbar-width: none;
 }
 
-#contenedor-telas::-webkit-scrollbar {
+#contenedor-telas::-webkit-scrollbar,
+#contenedor-personalizacion::-webkit-scrollbar {
     display: none;
 }
 

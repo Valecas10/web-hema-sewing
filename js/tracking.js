@@ -31,7 +31,7 @@ async function consultarEstadoPedido() {
 
         mostrarToast(
             'Ingresá un código.',
-            'success'
+            'error'
         );
 
         return;

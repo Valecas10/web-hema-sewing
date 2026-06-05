@@ -228,37 +228,9 @@ async function cargarTelasDinamicas() {
                 'click',
                 () => {
 
-                    document
-                        .querySelectorAll(
-                            '#contenedor-telas .card-opcion'
-                        )
-                        .forEach(t =>
-                            t.classList.remove(
-                                'seleccionada'
-                            )
-                        );
-
-
-                    card.classList.add(
-                        'seleccionada'
-                    );
-
-
-                    document.getElementById(
-                        'tela-seleccionada'
-                    ).value = id;
-
-
-                    const stock =
-                        parseInt(
-                            card.dataset.stock
-                        );
-
-
                     if (stockNumero === 0) {
                         return;
                     }
-
 
                     document
                         .querySelectorAll(
@@ -534,7 +506,7 @@ if (btnAgregarFinal) {
 
                 mostrarToast(
                     'Por favor, selecciona primero una tela.',
-                    'success'
+                    'error'
                 );
 
                 return;
@@ -598,7 +570,7 @@ if (btnAgregarFinal) {
 
                 mostrarToast(
                     'Esta tela ya no tiene stock.',
-                    'success'
+                    'error'
                 );
 
                 return;

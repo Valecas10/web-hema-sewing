@@ -37,7 +37,7 @@ function inicializarCheckout() {
             });
 
         if (hayError || !latitudFinal) {
-            mostrarToast("Por favor, completa los campos marcados y selecciona una dirección válida en el mapa.", 'success');
+            mostrarToast("Por favor, completa los campos marcados y selecciona una dirección válida en el mapa.", 'error');
             return;
         }
 

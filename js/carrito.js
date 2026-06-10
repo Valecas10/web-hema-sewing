@@ -36,7 +36,7 @@ function renderizarCarrito() {
     const cartBtn = document.getElementById('cart-button');
     const btnCheckout = document.getElementById('btn-checkout');
 
-    if (!lista || !totalTxt || !contador) return;
+    if (!lista || !contador) return;
 
     lista.innerHTML = '';
 
@@ -151,8 +151,6 @@ function renderizarCarrito() {
 
     });
 
-
-    totalTxt.innerText = total;
     contador.innerText = unidades;
 
 
@@ -212,15 +210,10 @@ function eliminarDelCarrito(id) {
         item => item.id === id
     );
 
-    console.log("Intentando borrar:", id);
 
      const antes = carrito.length;
 
     carrito = carrito.filter(item => item.id !== id);
-
-    console.log("Antes:", antes);
-    console.log("Después:", carrito.length);
-
 
     if (producto) {
 
@@ -254,20 +247,14 @@ function eliminarDelCarrito(id) {
                         '.stock-limitado, .stock-ilimitado, .stock-agotado'
                     );
 
-                telaCard.classList.remove(
-                    'agotada'
-                );
+                telaCard.classList.remove('agotada');
 
-                if (nuevoStock > 0) {
-
-                    stockTexto.className =
-                        'stock-limitado';
-
+                if (stockTexto && nuevoStock > 0) {
+                    stockTexto.className = 'stock-limitado';
                     stockTexto.innerText =
                         nuevoStock === 1
-                        ? 'Ultima Unidad Disponible🔥'
-                        : `Quedan ${nuevoStock}`;
-
+                            ? 'Ultima Unidad Disponible🔥'
+                            : `Quedan ${nuevoStock}`;
                 }
 
             }
@@ -312,7 +299,6 @@ function eliminarDelCarrito(id) {
     );
 
     guardarCarrito();
-
     renderizarCarrito();
 
 }

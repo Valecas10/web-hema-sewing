@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/Logo-crudo.png" type="image/png">
     <title>HEMA Sewing - Panel de Administración</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -191,33 +193,15 @@
                 </section>
 
                 <section id="section-dashboard" class="admin-section oculto">
-                    <div class="dashboard-grid">
-                        <div class="dashboard-card chart-card">
-                            <h3>Ventas Recientes</h3>
-                            <div class="sales-metrics-grid">
-                                <div class="sales-metric-box">
-                                    <span class="sales-value" id="dash-sales-total">$0</span>
-                                    <span class="sales-label">Total Histórico</span>
-                                </div>
-                                <div class="sales-metric-box">
-                                    <span class="sales-value" id="dash-sales-mes">$0</span>
-                                    <span class="sales-label">Ventas del Mes</span>
-                                </div>
-                                <div class="sales-metric-box">
-                                    <span class="sales-value" id="dash-sales-semana">$0</span>
-                                    <span class="sales-label">Últimos 7 días</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dashboard-card text-card">
-                            <h3>Productos más vendidos</h3>
-                            <ul id="dash-top-products" class="top-products-list">
-                                <!-- Cargado dinámicamente -->
-                                <li>Cargando estadísticas...</li>
-                            </ul>
-                        </div>
+
+                    <div id="stats-content">
+
+                        <p class="catalog-loading">
+                            Cargando estadísticas...
+                        </p>
+
                     </div>
+
                 </section>
 
                 <section id="section-backups" class="admin-section oculto">
@@ -534,7 +518,9 @@
     <script src="js/admin/admin.js"></script>
     <script src="js/admin/admin-catalog.js"></script>
     <script src="js/admin/admin-telas.js"></script>
+    <script src="js/admin/admin-stats.js"></script>
     <script src="js/admin/admin-backups.js"></script>
+    
 </body>
 </html>
 

@@ -276,6 +276,246 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
     }
 
+    if (action === "getStatsAvanzadas") {
+
+      let totalPedidos = 0;
+      let pedidosEntregados = 0;
+      let pedidosPendientes = 0;
+
+      let ventasTotal = 0;
+      let ventasMes = 0;
+      let ventasSemana = 0;
+
+      const estados = {
+        pendiente: 0,
+        enProceso: 0,
+        terminado: 0,
+        enviado: 0,
+        entregado: 0
+      };
+
+      const topProductos = {};
+      const ventasPorCategoria = {};
+      const ventasPorPeriodo = {};
+
+      // ===== MAPA DE CATEGORÍAS =====
+
+      const productosSheet =
+        sheet.getSheetByName("Productos");
+
+      const productosData =
+        productosSheet.getDataRange().getValues();
+
+      const mapaCategorias = {};
+
+      for (let i = 1; i < productosData.length; i++) {
+
+        const nombre =
+          String(productosData[i][1] || "").trim();
+
+        const categoria =
+          String(productosData[i][2] || "").trim();
+
+        if (nombre) {
+          mapaCategorias[nombre] = categoria;
+        }
+
+      }
+
+      // ===== FECHAS =====
+
+      const hoy = new Date();
+
+      const inicioMes =
+        new Date(
+          hoy.getFullYear(),
+          hoy.getMonth(),
+          1
+        );
+
+      const hace7Dias =
+        new Date(
+          hoy.getTime() -
+          (7 * 24 * 60 * 60 * 1000)
+        );
+
+      // ===== RECORRER PEDIDOS =====
+
+      for (let i = 1; i < dataPedidos.length; i++) {
+
+        if (!dataPedidos[i][0]) continue;
+
+        totalPedidos++;
+
+        const fecha =
+          new Date(dataPedidos[i][1]);
+
+        const total =
+          parseFloat(dataPedidos[i][6] || 0);
+
+        const estado =
+          String(
+            dataPedidos[i][12] || "Pendiente"
+          );
+
+        ventasTotal += total;
+
+        if (fecha >= inicioMes) {
+          ventasMes += total;
+        }
+
+        if (fecha >= hace7Dias) {
+          ventasSemana += total;
+        }
+
+        switch (estado.toLowerCase()) {
+
+          case "pendiente":
+            estados.pendiente++;
+            pedidosPendientes++;
+            break;
+
+          case "en proceso":
+            estados.enProceso++;
+            break;
+
+          case "terminado":
+            estados.terminado++;
+            break;
+
+          case "enviado":
+            estados.enviado++;
+            break;
+
+          case "entregado":
+            estados.entregado++;
+            pedidosEntregados++;
+            break;
+
+        }
+
+        // ===== VENTAS POR MES =====
+
+        const periodo =
+          Utilities.formatDate(
+            fecha,
+            Session.getScriptTimeZone(),
+            "MM/yyyy"
+          );
+
+        ventasPorPeriodo[periodo] =
+          (ventasPorPeriodo[periodo] || 0)
+          + total;
+
+        // ===== PRODUCTOS =====
+
+        const productos =
+          parsearProductosSeguro(
+            dataPedidos[i][5]
+          );
+
+        productos.forEach(prod => {
+
+          const nombre =
+            prod.nombre || "Producto";
+
+          const cantidad =
+            parseInt(
+              prod.cantidad || 1
+            );
+
+          const precio =
+            parseFloat(
+              prod.precio || 0
+            );
+
+          topProductos[nombre] =
+            (topProductos[nombre] || 0)
+            + cantidad;
+
+          let categoria =
+            mapaCategorias[nombre];
+
+          if (!categoria) {
+
+            if (
+              nombre.toLowerCase()
+                .includes("tote")
+            ) {
+
+              categoria = "totes";
+
+            } else {
+
+              categoria =
+                "personalizados";
+
+            }
+
+          }
+
+          ventasPorCategoria[categoria] =
+            (ventasPorCategoria[categoria] || 0)
+            + (precio * cantidad);
+
+        });
+
+      }
+
+      return ContentService
+        .createTextOutput(
+          JSON.stringify({
+
+            totalPedidos,
+            pedidosEntregados,
+            pedidosPendientes,
+
+            ventasTotal,
+            ventasMes,
+            ventasSemana,
+
+            estados,
+
+            topProductos:
+              Object.entries(topProductos)
+                .map(([nombre, cantidad]) => ({
+                  nombre,
+                  cantidad
+                }))
+                .sort(
+                  (a, b) =>
+                    b.cantidad - a.cantidad
+                )
+                .slice(0, 5),
+
+            ventasPorPeriodo:
+              Object.entries(
+                ventasPorPeriodo
+              ).map(
+                ([periodo, total]) => ({
+                  periodo,
+                  total
+                })
+              ),
+
+            ventasPorCategoria:
+              Object.entries(
+                ventasPorCategoria
+              ).map(
+                ([categoria, total]) => ({
+                  categoria,
+                  total
+                })
+              )
+
+          })
+        )
+        .setMimeType(
+          ContentService.MimeType.JSON
+        );
+
+    }
+
     // OBTENER CATÁLOGO DE PRODUCTOS
     if (action === "getCatalog") {
       const catSheet = sheet.getSheetByName("Productos");

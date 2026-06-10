@@ -29,7 +29,7 @@ function mostrarPanelAdmin() {
     
     // Cargar datos iniciales
     cargarPedidos();
-    cargarEstadisticas();
+    cargarEstadisticasAvanzadas();
 }
 
 function cambiarSeccion(seccion) {
@@ -57,7 +57,7 @@ function cambiarSeccion(seccion) {
     } else if (seccion === 'dashboard') {
         document.getElementById('section-dashboard').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Resumen del Negocio';
-        cargarEstadisticas();
+        cargarEstadisticasAvanzadas();
     } else if (seccion === 'catalogo') {
         document.getElementById('section-catalogo').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Gestión de Catálogo';

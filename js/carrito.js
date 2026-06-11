@@ -461,4 +461,5 @@ function calcularTotal() {
     return total;
 
 }
+
 window.inicializarCarrito = inicializarCarrito;

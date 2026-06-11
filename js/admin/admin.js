@@ -49,6 +49,7 @@ function cambiarSeccion(seccion) {
     document.getElementById('section-catalogo').classList.add('oculto');
     document.getElementById('section-telas').classList.add('oculto');
     document.getElementById('section-backups').classList.add('oculto');
+    document.getElementById('section-presupuestos').classList.add('oculto');
     
     if (seccion === 'pedidos') {
         document.getElementById('section-pedidos').classList.remove('oculto');
@@ -69,6 +70,10 @@ function cambiarSeccion(seccion) {
     } else if (seccion === 'backups') {
         document.getElementById('section-backups').classList.remove('oculto');
         document.getElementById('seccion-titulo').innerText = 'Gestión de Backups';
+    } else if (seccion === 'presupuestos') {
+        document.getElementById('section-presupuestos').classList.remove('oculto');
+        document.getElementById('seccion-titulo').innerText = 'Gestión de Presupuestos';
+        cargarPresupuestos();
     }
 }
 

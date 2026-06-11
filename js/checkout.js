@@ -189,8 +189,29 @@ function inicializarCheckout() {
 
 }
 
-function enviarCotizacionWhatsApp() {
-    let mensaje = "¡Hola Nai! Quiero pedir un presupuesto para el siguiente pedido:\n\n";
+async function enviarCotizacionWhatsApp() {
+
+    const response =
+            await fetch(
+                URL_WEB_APP_EXCEL,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'crearPresupuesto',
+                        productos: carrito
+                    })
+                }
+            );
+
+    console.log(response);
+
+    const data = await response.json();
+
+    console.log(data);
+
+    const tracking = data.tracking;
+
+    let mensaje = "¡Hola! Quiero pedir un presupuesto para el siguiente pedido:\n\n";
     
     carrito.forEach((producto, index) => {
         mensaje += `${index + 1}- ${producto.nombre}\n`;

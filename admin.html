@@ -81,6 +81,9 @@
                 <button class="nav-item" onclick="cambiarSeccion('backups')">
                     <span class="nav-icon">💾</span> Backups
                 </button>
+                <button class="nav-item" onclick="cambiarSeccion('presupuestos')">
+                    <span class="nav-icon">📋</span> Presupuestos
+                </button>
             </nav>
             
             <div class="sidebar-footer">
@@ -239,6 +242,95 @@
                             Crear Backup Completo
 
                         </button>
+
+                    </div>
+
+                </section>
+
+                <section id="section-presupuestos" class="admin-section oculto" >
+
+                    <div class="presupuestos-summary-cards">
+
+                        <div class="summary-card stat-presupuesto">
+                            <h3>Pendientes</h3>
+                            <span id="presupuestos-pendientes">
+                                0
+                            </span>
+                        </div>
+
+                        <div class="summary-card stat-presupuestado">
+                            <h3>Presupuestados</h3>
+                            <span id="presupuestos-listos">
+                                0
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="filters-container">
+                        <div class="search-box">
+                            <input
+                                type="text"
+                                id="presupuestos-search-input"
+                                placeholder="Buscar presupuesto..."
+                            >
+                        </div>
+
+                        <select id="presupuestos-filter-status">
+
+                            <option value="todos">
+                                Todos los estados
+                            </option>
+
+                            <option value="Pendiente Presupuesto">
+                                Pendiente Presupuesto
+                            </option>
+
+                            <option value="Presupuestado">
+                                Presupuestado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="table-container">
+
+                        <table class="admin-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Código</th>
+
+                                    <th>Fecha</th>
+
+                                    <th>Estado</th>
+
+                                    <th>Total</th>
+
+                                    <th>Acciones</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="tabla-presupuestos">
+
+                                <tr>
+
+                                    <td colspan="5">
+
+                                        Cargando presupuestos...
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
 
                     </div>
 
@@ -510,6 +602,40 @@
 
     </div>
 
+    <!-- ==================== MODAL PRESUPUESTO ============================== -->
+    <div
+        id="modal-detalle-presupuesto"
+        class="modal-overlay oculto"
+    >
+
+        <div class="modal-card">
+
+            <header class="modal-header">
+
+                <h2>
+                    Detalle del Presupuesto
+                </h2>
+
+                <button
+                    class="btn-close-modal"
+                    onclick="cerrarModalPresupuesto()"
+                >
+                    ×
+                </button>
+
+            </header>
+
+            <div
+                class="modal-content"
+                id="modal-presupuesto-content"
+            >
+
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast-hema"></div>
 
@@ -520,6 +646,7 @@
     <script src="js/admin/admin-telas.js"></script>
     <script src="js/admin/admin-stats.js"></script>
     <script src="js/admin/admin-backups.js"></script>
+    <script src="js/admin/admin-presupuestos.js"></script>
     
 </body>
 </html>

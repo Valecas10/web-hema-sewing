@@ -126,7 +126,6 @@ function renderizarTablaPresupuestos(
 function mostrarDetallePresupuesto(
     tracking
 ) {
-
     const presupuesto =
         todosLosPresupuestos.find(
             p => p.tracking === tracking
@@ -146,11 +145,19 @@ function mostrarDetallePresupuesto(
         0
     );
 
+    const tieneBordado =
+    presupuesto.productos.some(
+        producto =>
+            producto.personalizacion
+                ?.toLowerCase()
+                .includes('bordado')
+    );
+
     const modal =
         document.getElementById(
             'modal-detalle-presupuesto'
         );
-
+   
     const content =
         document.getElementById(
             'modal-presupuesto-content'
@@ -158,119 +165,66 @@ function mostrarDetallePresupuesto(
 
     let productosHTML = '';
 
+    let bloqueBordado = '';
+
+    if (tieneBordado) {
+
+        bloqueBordado = `
+
+            <div class="producto-header">
+
+                <strong>
+                    ${producto.nombre}
+                </strong>
+
+            </div>
+
+            <div class="producto-bordado-row">
+
+                <span>
+                    $${producto.precio}
+                </span>
+
+                <span>+</span>
+
+                <input
+                    type="number"
+                    class="input-bordado"
+                    data-base="${producto.precio}"
+                    value="0"
+                    min="0"
+                >
+
+                <span>=</span>
+
+                <span
+                    class="precio-final-producto"
+                >
+                    $${producto.precio}
+                </span>
+
+            </div>
+
+        `;
+    }
+
     presupuesto.productos.forEach(
         producto => {
 
             productosHTML += `
+
                 <div class="modal-product-item">
 
                     <strong>
                         ${producto.nombre}
                     </strong>
 
-                    <br>
-
-                    Cantidad:
-                    ${producto.cantidad || 1}
-
-                </div>
-
-                <hr>
-
-                <div class="presupuesto-total-box">
-
-                    <div class="presupuesto-total-label">
-                        Total actual
-                    </div>
-
-                    <div class="presupuesto-total-valor">
-                        $${totalBase}
-                    </div>
+                    <span style="float:right;">
+                        $${producto.precio || 0}
+                    </span>
 
                 </div>
 
-                <div class="modal-status-update">
-
-                    <label>
-                        Estado
-                    </label>
-
-                    <select
-                        id="presupuesto-estado"
-                    >
-
-                        <option
-                            value="Pendiente Presupuesto"
-                            ${
-                                presupuesto.estado ===
-                                'Pendiente Presupuesto'
-                                    ? 'selected'
-                                    : ''
-                            }
-                        >
-                            Pendiente Presupuesto
-                        </option>
-
-                        <option
-                            value="Presupuestado"
-                            ${
-                                presupuesto.estado ===
-                                'Presupuestado'
-                                    ? 'selected'
-                                    : ''
-                            }
-                        >
-                            Presupuestado
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>
-                        Costo Bordado
-                    </label>
-
-                    <input
-                        type="number"
-                        id="presupuesto-bordado"
-                        data-base="${totalBase}"
-                        value="0"
-                    >
-
-                </div>
-
-                <div class="presupuesto-total-box">
-
-                    <div class="presupuesto-total-label">
-                        Total Final
-                    </div>
-
-                    <div
-                        class="presupuesto-total-valor"
-                        id="presupuesto-total-final"
-                    >
-                        $${totalBase}
-                    </div>
-
-                </div>
-
-                <div class="presupuesto-acciones">
-
-                    <button
-                        class="btn-primary"
-                        onclick="
-                            guardarPresupuesto(
-                                '${presupuesto.tracking}'
-                            )
-                        "
-                    >
-                        Guardar Presupuesto
-                    </button>
-
-                </div>
             `;
 
         }
@@ -283,21 +237,83 @@ function mostrarDetallePresupuesto(
             ${presupuesto.tracking}
         </p>
 
-        <p>
-            <strong>Estado:</strong>
-            ${presupuesto.estado}
-        </p>
+        <div class="modal-status-update">
+
+            <label>
+                Estado
+            </label>
+
+            <select id="presupuesto-estado">
+
+                <option
+                    value="Pendiente Presupuesto"
+                    ${
+                        presupuesto.estado ===
+                        'Pendiente Presupuesto'
+                            ? 'selected'
+                            : ''
+                    }
+                >
+                    Pendiente Presupuesto
+                </option>
+
+                <option
+                    value="Presupuestado"
+                    ${
+                        presupuesto.estado ===
+                        'Presupuestado'
+                            ? 'selected'
+                            : ''
+                    }
+                >
+                    Presupuestado
+                </option>
+
+            </select>
+
+        </div>
 
         <hr>
 
         ${productosHTML}
 
+        ${bloqueBordado}
+
+        <hr>
+
+        <div class="presupuesto-total-box">
+
+            <div class="presupuesto-total-label">
+                Total Presupuesto
+            </div>
+
+            <div
+                class="presupuesto-total-valor"
+                id="presupuesto-total-final"
+            >
+                $${totalBase}
+            </div>
+
+        </div>
+
+        <div class="presupuesto-acciones">
+
+            <button
+                class="btn-primary"
+                onclick="
+                    guardarPresupuesto(
+                        '${presupuesto.tracking}'
+                    )
+                "
+            >
+                Guardar Presupuesto
+            </button>
+
+        </div>
+
     `;
 
-    modal.classList.remove(
-        'oculto'
-    );
-
+    modal.classList.remove('oculto');
 }
 
 function cerrarModalPresupuesto() {
